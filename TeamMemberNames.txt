@@ -4,3 +4,4 @@ Application: MoodMixer
 Elliott Diaz
 
 David Lam
+Cynthia Torres-Marquez
