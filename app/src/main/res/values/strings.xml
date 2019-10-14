@@ -5,4 +5,6 @@
     <string name="songlist_viewer">Songlist</string>
     <string name="mood_viewer">Mood</string>
     <string name="library_viewer">Library</string>
+    <string name="song_name">Song Name</string>
+    <string name="genre">Genre</string>
 </resources>
