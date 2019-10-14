@@ -19,6 +19,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         //Code for bottom navigation view
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setSelectedItemId(R.id.nav_music_viewer);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
@@ -31,7 +32,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     switch (menuItem.getItemId()){
                         case R.id.nav_music_viewer:
                             //selectedFragment = new MusicPlayerActivity();
-                            openMusicPlayerActivity();
                             break;
                         case R.id.nav_playlist:
                             openPlaylistActivity();
@@ -63,4 +63,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SongsListActivity.class);
         startActivity(intent);
     }
+
+
 }
