@@ -18,6 +18,7 @@ public class SongsListActivity extends AppCompatActivity {
 
         //Code for bottom navigation view
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setSelectedItemId(R.id.nav_songlist);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
@@ -37,7 +38,7 @@ public class SongsListActivity extends AppCompatActivity {
                             //selectedFragment = new PlaylistActivity();
                             break;
                         case R.id.nav_songlist:
-                            openSongsListActivity();
+
                             //selectedFragment = new SongsListActivity();
                             break;
                     }
