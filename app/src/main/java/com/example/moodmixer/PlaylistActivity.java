@@ -49,11 +49,6 @@ public class PlaylistActivity extends AppCompatActivity {
                 }
             };
 
-
-    public void openPlaylistActivity(){
-        Intent intent = new Intent(this, PlaylistActivity.class);
-        startActivity(intent);
-    }
     public void openMusicPlayerActivity(){
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
