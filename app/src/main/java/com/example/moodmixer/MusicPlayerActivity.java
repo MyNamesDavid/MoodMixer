@@ -7,21 +7,36 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
+    private ImageButton playImageButton;
+    private ImageButton nextSongImageButton;
+    private ImageButton previousSongImageButton;
+    private ImageButton chartsImageButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_music_player);
 
-        //Code for bottom navigation view
+        // Setup Buttons
+        playImageButton = findViewById(R.id.play_imagebutton);
+        nextSongImageButton = findViewById(R.id.next_song_imagebutton);
+        previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
+        chartsImageButton = findViewById(R.id.charts_imagebutton);
+
+        // Setup Tab Bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_music_viewer);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
+
 
     public void playMusicButtonTapped() {
 
@@ -39,6 +54,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     public void chartsButtonTapped() {
 
     }
+
 
     // MARK: Tab Bar
 

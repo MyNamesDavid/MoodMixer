@@ -35,7 +35,8 @@
             android:layout_marginHorizontal="75dp"
             android:layout_marginTop="485dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/previous_song_image" />
+            android:background="@drawable/previous_song_image"
+            android:id="@+id/previous_song_imagebutton"/>
 
         <ImageButton
             android:layout_width="75dp"
@@ -43,7 +44,8 @@
             android:layout_marginHorizontal="150dp"
             android:layout_marginTop="475dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/play_button_image" />
+            android:background="@drawable/play_button_image"
+            android:id="@+id/play_imagebutton" />
 
 
         <ImageButton
@@ -52,7 +54,8 @@
             android:layout_marginHorizontal="250dp"
             android:layout_marginTop="485dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/next_song_image" />
+            android:background="@drawable/next_song_image"
+            android:id="@+id/next_song_imagebutton" />
 
         <ImageView
             android:layout_width="300dp"
@@ -80,7 +83,8 @@
             android:layout_height="50dp"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="100dp"
-            android:background="@drawable/charts_icon_image" />
+            android:background="@drawable/charts_icon_image"
+            android:id="@+id/charts_imagebutton"/>
 
     </FrameLayout>
 
