@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class PlaylistActivity extends AppCompatActivity {
 
@@ -20,6 +23,8 @@ public class PlaylistActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_playlist);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        populatePlaylist();
     }
 
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -56,5 +61,16 @@ public class PlaylistActivity extends AppCompatActivity {
     public void openSongsListActivity(){
         Intent intent = new Intent(this, SongsListActivity.class);
         startActivity(intent);
+    }
+
+    private void populatePlaylist(){
+        //Construct data source
+        ArrayList<Playlists> playlistsArray = Playlists.getPlaylists();
+        //Create adapter
+        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this,playlistsArray);
+        //attatch Data to listView
+        ListView playlistListView = (ListView) findViewById(R.id.list_of_playlists);
+        playlistListView.setAdapter(playlistAdapter);
+
     }
 }
