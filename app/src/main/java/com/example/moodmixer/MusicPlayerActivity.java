@@ -22,13 +22,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
-    private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     //Fragment selectedFragment = null;
 
-                    switch (menuItem.getItemId()){
+                    switch (menuItem.getItemId()) {
                         case R.id.nav_music_viewer:
                             //selectedFragment = new MusicPlayerActivity();
                             openMusicPlayerActivity();
@@ -44,22 +44,23 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     }
 
                     //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                      //      selectedFragment).commit();
+                    //      selectedFragment).commit();
                     //Want to select clicked item
                     return true;
                 }
             };
 
-
-    public void openPlaylistActivity(){
+    public void openPlaylistActivity() {
         Intent intent = new Intent(this, PlaylistActivity.class);
         startActivity(intent);
     }
-    public void openMusicPlayerActivity(){
+
+    public void openMusicPlayerActivity() {
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
     }
-    public void openSongsListActivity(){
+
+    public void openSongsListActivity() {
         Intent intent = new Intent(this, SongsListActivity.class);
         startActivity(intent);
     }
