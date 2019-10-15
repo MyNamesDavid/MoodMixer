@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -14,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class PlaylistActivity extends AppCompatActivity {
+
+    FloatingActionButton floatingActionButtonPlaylist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +33,16 @@ public class PlaylistActivity extends AppCompatActivity {
         populatePlaylist();
 
         //Code for Floating action button
-        FloatingActionButton floatingActionButton =
-                (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButtonPlaylist =
+                (FloatingActionButton) findViewById(R.id.floating_action_button_playlist);
+        floatingActionButtonPlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handles the click
+
+            }
+        });
+
     }
 
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -62,7 +73,8 @@ public class PlaylistActivity extends AppCompatActivity {
             };
 
 
-    
+
+
 
     public void openMusicPlayerActivity(){
         Intent intent = new Intent(this, MusicPlayerActivity.class);
