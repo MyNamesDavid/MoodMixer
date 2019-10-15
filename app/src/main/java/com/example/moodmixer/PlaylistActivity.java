@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,13 @@ public class PlaylistActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.nav_playlist);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+
+        //Code for populating the playlist
         populatePlaylist();
+
+        //Code for Floating action button
+        FloatingActionButton floatingActionButton =
+                (FloatingActionButton) findViewById(R.id.fab);
     }
 
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -53,6 +60,9 @@ public class PlaylistActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+
+    
 
     public void openMusicPlayerActivity(){
         Intent intent = new Intent(this, MusicPlayerActivity.class);
