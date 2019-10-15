@@ -22,6 +22,25 @@ public class MusicPlayerActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
+    public void playMusicButtonTapped() {
+
+    }
+
+    public void nextSongButtonTapped() {
+
+    }
+
+    public void previousSongButtonTapped() {
+        // reset current song on single tap
+        // play previous song on double tap
+    }
+
+    public void chartsButtonTapped() {
+
+    }
+
+    // MARK: Tab Bar
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override

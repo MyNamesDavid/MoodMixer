@@ -69,12 +69,18 @@
             android:background="@drawable/AlbumCover" />
 
         <ImageView
-            android:background="@drawable/WeatherIcon"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="100dp"
             android:layout_marginHorizontal="300dp"
-            />
+            android:layout_marginTop="100dp"
+            android:background="@drawable/WeatherIcon" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="75dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/chartsIcon" />
 
     </FrameLayout>
 
