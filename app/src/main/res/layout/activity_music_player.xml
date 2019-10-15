@@ -23,6 +23,45 @@
             android:textAlignment="center"
             android:textSize="30sp"
             />
+
+        <ImageButton
+            android:background="@drawable/PreviousSongButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="75dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="565dp"
+            />
+
+        <ImageButton
+            android:background="@drawable/PlayButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginHorizontal="175dp"
+            android:layout_marginTop="550dp"
+            android:layout_marginBottom="10dp"
+            />
+
+
+        <ImageButton
+            android:background="@drawable/NextSongButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="295dp"
+            android:layout_marginTop="565dp"
+            android:layout_marginBottom="10dp"
+            />
+
+        <ImageView
+            android:background="@drawable/Line"
+            android:layout_width="300dp"
+            android:layout_height="5dp"
+            android:layout_marginHorizontal="55dp"
+            android:layout_marginTop="500dp"
+            />
+
+
+
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
