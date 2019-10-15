@@ -26,7 +26,7 @@
             android:layout_margin="16dp"
             app:srcCompat="@drawable/add_vector"
             android:scaleType="center"
-            app:rippleColor="@color/blue"
+            app:rippleColor="@color/aqua"
             />
     </FrameLayout>
 
