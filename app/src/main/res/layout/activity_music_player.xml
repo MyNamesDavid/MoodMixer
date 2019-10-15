@@ -13,6 +13,12 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/Background"
+            />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,6 +26,7 @@
             android:background="#70000000"
             android:paddingVertical="20dp"
             android:text="MoodMixer"
+            android:textColor="@color/white"
             android:textAlignment="center"
             android:textSize="30sp"
             />
@@ -59,8 +66,6 @@
             android:layout_marginHorizontal="55dp"
             android:layout_marginTop="500dp"
             />
-
-
 
     </FrameLayout>
 
