@@ -8,8 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
+import java.util.ArrayList;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
@@ -17,7 +21,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageButton nextSongImageButton;
     private ImageButton previousSongImageButton;
     private ImageButton chartsImageButton;
-
+    private List<ImageView> albumCoverImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +35,26 @@ public class MusicPlayerActivity extends AppCompatActivity {
         previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
         chartsImageButton = findViewById(R.id.charts_imagebutton);
 
+        // Create A collection of album covers to cycle through
+        albumCoverImages = new ArrayList<ImageView>();
+
         // Setup Tab Bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_music_viewer);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
-
-    public void playMusicButtonTapped() {
-
+    public void playSongButtonTapped() {
+        // increment a progress bar
     }
 
     public void nextSongButtonTapped() {
-
+        // cycle through albumCoverImages
     }
 
     public void previousSongButtonTapped() {
+        // cycle through albumCoverImages
+
         // reset current song on single tap
         // play previous song on double tap
     }
@@ -54,7 +62,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
     public void chartsButtonTapped() {
 
     }
-
 
     // MARK: Tab Bar
 
