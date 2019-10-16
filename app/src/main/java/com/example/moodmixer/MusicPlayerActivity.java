@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,6 +23,13 @@ import java.util.ArrayList;
 public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String TAG = "MusicPlayerActivity";
+
+    private TextView moodOneImageView;
+    private TextView moodTwoImageView;
+    private TextView moodThreeImageView;
+    private TextView moodFourImageView;
+    private TextView moodFiveImageView;
+    private TextView moodSixImageView;
 
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
@@ -42,13 +50,22 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         case R.id.nav_music_viewer:
                             //selectedFragment = new MusicPlayerActivity();
                             break;
+
                         case R.id.nav_playlist:
                             openPlaylistActivity();
                             //selectedFragment = new PlaylistActivity();
                             break;
+
                         case R.id.nav_songlist:
                             openSongsListActivity();
                             //selectedFragment = new SongsListActivity();
+                            break;
+                        case R.id.nav_library:
+                            openLibraryActivity();
+                            break;
+
+                        case R.id.nav_mood:
+                            toggleMoodViews();
                             break;
                     }
 
@@ -76,6 +93,45 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpWeatherImageButton();
         setUpAlbumCoverCollection();
         setUpTabBarController();
+        setUpMoodViews();
+    }
+
+    private void setUpMoodViews() {
+        moodOneImageView = findViewById(R.id.moodone_imageview);
+        moodTwoImageView = findViewById(R.id.moodtwo_imageview);
+        moodThreeImageView = findViewById(R.id.moodthree_imageview);
+        moodFourImageView = findViewById(R.id.moodfour_imageview);
+        moodFiveImageView = findViewById(R.id.moodfive_imageview);
+        moodSixImageView = findViewById(R.id.moodsix_imageview);
+
+        moodOneImageView.setVisibility(View.INVISIBLE);
+        moodTwoImageView.setVisibility(View.INVISIBLE);
+        moodThreeImageView.setVisibility(View.INVISIBLE);
+        moodFourImageView.setVisibility(View.INVISIBLE);
+        moodFiveImageView.setVisibility(View.INVISIBLE);
+        moodSixImageView.setVisibility(View.INVISIBLE);
+    }
+
+    private void toggleMoodViews() {
+
+        switch (moodOneImageView.getVisibility()) {
+            case View.VISIBLE:
+                moodOneImageView.setVisibility(View.INVISIBLE);
+                moodTwoImageView.setVisibility(View.INVISIBLE);
+                moodThreeImageView.setVisibility(View.INVISIBLE);
+                moodFourImageView.setVisibility(View.INVISIBLE);
+                moodFiveImageView.setVisibility(View.INVISIBLE);
+                moodSixImageView.setVisibility(View.INVISIBLE);
+                break;
+            case View.INVISIBLE:
+                moodOneImageView.setVisibility(View.VISIBLE);
+                moodTwoImageView.setVisibility(View.VISIBLE);
+                moodThreeImageView.setVisibility(View.VISIBLE);
+                moodFourImageView.setVisibility(View.VISIBLE);
+                moodFiveImageView.setVisibility(View.VISIBLE);
+                moodSixImageView.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     // MARK: Setup
@@ -83,6 +139,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     /**
      * Set Up Bottom Tab Bar Navigation Item
      */
+
+
     private void setUpTabBarController() {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -172,6 +230,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void openMusicPlayerActivity() {
 
         Intent intent = new Intent(this, MusicPlayerActivity.class);
+        startActivity(intent);
+    }
+    public void openLibraryActivity() {
+        Intent intent = new Intent(this, LibraryActivity.class);
         startActivity(intent);
     }
 
