@@ -27,6 +27,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageView moodOneImageView;
     private ImageView moodTwoImageView;
     private ImageView moodThreeImageView;
+    private ImageView moodFourImageView;
+    private ImageView moodFiveImageView;
+    private ImageView moodSixImageView;
+
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
     private ImageButton previousSongImageButton;
@@ -93,10 +97,16 @@ public class MusicPlayerActivity extends AppCompatActivity {
         moodOneImageView = findViewById(R.id.moodone_imageview);
         moodTwoImageView = findViewById(R.id.moodtwo_imageview);
         moodThreeImageView = findViewById(R.id.moodthree_imageview);
+        moodFourImageView = findViewById(R.id.moodfour_imageview);
+        moodFiveImageView = findViewById(R.id.moodfive_imageview);
+        moodSixImageView = findViewById(R.id.moodsix_imageview);
 
         moodOneImageView.setVisibility(View.INVISIBLE);
         moodTwoImageView.setVisibility(View.INVISIBLE);
         moodThreeImageView.setVisibility(View.INVISIBLE);
+        moodFourImageView.setVisibility(View.INVISIBLE);
+        moodFiveImageView.setVisibility(View.INVISIBLE);
+        moodSixImageView.setVisibility(View.INVISIBLE);
     }
 
     private void toggleMoodViews() {
@@ -106,11 +116,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 moodOneImageView.setVisibility(View.INVISIBLE);
                 moodTwoImageView.setVisibility(View.INVISIBLE);
                 moodThreeImageView.setVisibility(View.INVISIBLE);
+                moodFourImageView.setVisibility(View.INVISIBLE);
+                moodFiveImageView.setVisibility(View.INVISIBLE);
+                moodSixImageView.setVisibility(View.INVISIBLE);
                 break;
             case View.INVISIBLE:
                 moodOneImageView.setVisibility(View.VISIBLE);
                 moodTwoImageView.setVisibility(View.VISIBLE);
                 moodThreeImageView.setVisibility(View.VISIBLE);
+                moodFourImageView.setVisibility(View.VISIBLE);
+                moodFiveImageView.setVisibility(View.VISIBLE);
+                moodSixImageView.setVisibility(View.VISIBLE);
                 break;
         }
     }
