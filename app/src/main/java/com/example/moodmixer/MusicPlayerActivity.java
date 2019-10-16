@@ -2,7 +2,6 @@ package com.example.moodmixer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.sql.Array;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -28,7 +28,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageButton previousSongImageButton;
     private ImageButton chartsImageButton;
     private ImageButton weatherImageButton;
-    private List<ImageView> albumCoverImages;
+    private ImageView albumCoverImageView;
+    private int[] albumCoverImages;
+    private int songIndex = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,7 +74,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpPreviousSongImageButton();
         setUpChartsImageButton();
         setUpWeatherImageButton();
-        setUpAlbumCoverImagesCollection();
+        setUpAlbumCoverCollection();
         setUpTabBarController();
     }
 
@@ -105,6 +107,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: nextSongImageButton Tapped");
+                presentNextSong();
             }
         });
     }
@@ -116,6 +119,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: previousSongImageButton Tapped");
+                presentPreviousSong();
             }
         });
     }
@@ -142,13 +146,16 @@ public class MusicPlayerActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Create A collection of album covers to cycle through
-     */
-    private void setUpAlbumCoverImagesCollection() {
+    private void setUpAlbumCoverCollection() {
 
-        albumCoverImages = new ArrayList<ImageView>();
+        albumCoverImages = new int[]{
+                R.drawable.album_cover_image,
+                R.drawable.zeppelin_albumcover,
+                R.drawable.pinkfloyd_albumcover,
+                R.drawable.beatles_albumcover
+        };
 
+        albumCoverImageView = findViewById(R.id.album_cover_imageview);
     }
 
     // MARK: Navigation
@@ -174,15 +181,24 @@ public class MusicPlayerActivity extends AppCompatActivity {
         // increment a progress bar
     }
 
-    private void nextSongButtonTapped() {
+    private void presentNextSong() {
         // cycle through albumCoverImages
+
+
+        songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
+
+        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
     }
 
-    private void previousSongButtonTapped() {
+    private void presentPreviousSong() {
         // cycle through albumCoverImages
 
         // reset current song on single tap
         // play previous song on double tap
+
+        songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
+
+        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
     }
 
     private void chartsButtonTapped() {
@@ -194,7 +210,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void toastMessage(String message) {
 
         Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP,0,120);
+        toast.setGravity(Gravity.TOP, 0, 120);
         toast.show();
     }
 }
