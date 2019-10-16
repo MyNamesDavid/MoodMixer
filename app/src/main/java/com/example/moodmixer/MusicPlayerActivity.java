@@ -48,6 +48,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
                             openSongsListActivity();
                             //selectedFragment = new SongsListActivity();
                             break;
+                        case R.id.nav_library:
+                            openLibraryActivity();
+                            break;
                     }
 
                     //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -160,6 +163,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void openMusicPlayerActivity() {
         Intent intent = new Intent(this, MusicPlayerActivity.class);
+        startActivity(intent);
+    }
+    public void openLibraryActivity() {
+        Intent intent = new Intent(this, LibraryActivity.class);
         startActivity(intent);
     }
 
