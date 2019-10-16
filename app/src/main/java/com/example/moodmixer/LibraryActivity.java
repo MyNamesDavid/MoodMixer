@@ -3,44 +3,32 @@ package com.example.moodmixer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-
-public class SongsListActivity extends AppCompatActivity {
-
-
+public class LibraryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_songs_list);
+        setContentView(R.layout.activity_library);
 
-        //Code for bottom navigation view
+        // Setup Tab Bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.nav_songlist);
+        bottomNav.setSelectedItemId(R.id.nav_library);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-        //listview
-        populateSongsList();
     }
 
-
-
-    private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     //Fragment selectedFragment = null;
 
-                    switch (menuItem.getItemId()){
+                    switch (menuItem.getItemId()) {
                         case R.id.nav_music_viewer:
                             //selectedFragment = new MusicPlayerActivity();
                             openMusicPlayerActivity();
@@ -50,11 +38,10 @@ public class SongsListActivity extends AppCompatActivity {
                             //selectedFragment = new PlaylistActivity();
                             break;
                         case R.id.nav_songlist:
-
+                            openSongsListActivity();
                             //selectedFragment = new SongsListActivity();
                             break;
                         case R.id.nav_library:
-                            openLibraryActivity();
                             break;
                     }
 
@@ -65,30 +52,23 @@ public class SongsListActivity extends AppCompatActivity {
                 }
             };
 
-
-    public void openPlaylistActivity(){
+    public void openPlaylistActivity() {
         Intent intent = new Intent(this, PlaylistActivity.class);
         startActivity(intent);
     }
-    public void openMusicPlayerActivity(){
+
+    public void openMusicPlayerActivity() {
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
     }
+
+    public void openSongsListActivity() {
+        Intent intent = new Intent(this, SongsListActivity.class);
+        startActivity(intent);
+    }
+
     public void openLibraryActivity() {
         Intent intent = new Intent(this, LibraryActivity.class);
         startActivity(intent);
     }
-
-    private void populateSongsList(){
-        //Construct data source
-        ArrayList<Songs> songsArray = Songs.getSongs();
-        //Create adapter
-        SongListAdapter songAdapter = new SongListAdapter(this,songsArray);
-        //attatch Data to listView
-        ListView songListView = (ListView) findViewById(R.id.list_of_songs);
-        songListView.setAdapter(songAdapter);
-
-    }
-
-
 }
