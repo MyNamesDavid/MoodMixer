@@ -27,52 +27,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageButton chartsImageButton;
     private List<ImageView> albumCoverImages;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Log.d(TAG, "onCreate - start");
-
-        setContentView(R.layout.activity_music_player);
-
-        setUpPlayImageButton();
-        setUpNextSongImageButton();
-        setUpPreviousSongImageButton();
-        setUpChartsImageButton();
-        setUpAlbumCoverImagesCollection();
-        setUpTabBarController();
-    }
-
-    public void playSongButtonTapped() {
-        // increment a progress bar
-    }
-
-    public void nextSongButtonTapped() {
-        // cycle through albumCoverImages
-    }
-
-    public void previousSongButtonTapped() {
-        // cycle through albumCoverImages
-
-        // reset current song on single tap
-        // play previous song on double tap
-    }
-
-    public void chartsButtonTapped() {
-
-    }
-
-    // MARK: Tab Bar
-
-    /**
-     * Set Up Bottom Tab Bar Navigation Item
-     */
-    private void setUpTabBarController() {
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.nav_music_viewer);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
-    }
-
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -100,23 +54,36 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 }
             };
 
-    public void openPlaylistActivity() {
-        Intent intent = new Intent(this, PlaylistActivity.class);
-        startActivity(intent);
+    // MARK: Lifecycle
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate - start");
+
+        setContentView(R.layout.activity_music_player);
+
+        setUpPlayImageButton();
+        setUpNextSongImageButton();
+        setUpPreviousSongImageButton();
+        setUpChartsImageButton();
+        setUpAlbumCoverImagesCollection();
+        setUpTabBarController();
     }
 
-    public void openMusicPlayerActivity() {
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
+    // MARK: Setup
+
+    /**
+     * Set Up Bottom Tab Bar Navigation Item
+     */
+    private void setUpTabBarController() {
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setSelectedItemId(R.id.nav_music_viewer);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
-    public void openSongsListActivity() {
-        Intent intent = new Intent(this, SongsListActivity.class);
-        startActivity(intent);
-    }
-
-
-    public void setUpPlayImageButton() {
+    private void setUpPlayImageButton() {
 
         playImageButton = findViewById(R.id.play_imagebutton);
         playImageButton.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +94,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         });
     }
 
-    public void setUpNextSongImageButton() {
+    private void setUpNextSongImageButton() {
 
         nextSongImageButton = findViewById(R.id.next_song_imagebutton);
         nextSongImageButton.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +105,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         });
     }
 
-    public void setUpPreviousSongImageButton() {
+    private void setUpPreviousSongImageButton() {
 
         previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
         previousSongImageButton.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +116,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         });
     }
 
-    public void setUpChartsImageButton() {
+    private void setUpChartsImageButton() {
 
         chartsImageButton = findViewById(R.id.charts_imagebutton);
         chartsImageButton.setOnClickListener(new View.OnClickListener() {
@@ -163,9 +130,47 @@ public class MusicPlayerActivity extends AppCompatActivity {
     /**
      * Create A collection of album covers to cycle through
      */
-    public void setUpAlbumCoverImagesCollection() {
+    private void setUpAlbumCoverImagesCollection() {
 
         albumCoverImages = new ArrayList<ImageView>();
+
+    }
+
+    // MARK: Navigation
+
+    private void openPlaylistActivity() {
+        Intent intent = new Intent(this, PlaylistActivity.class);
+        startActivity(intent);
+    }
+
+    private void openMusicPlayerActivity() {
+        Intent intent = new Intent(this, MusicPlayerActivity.class);
+        startActivity(intent);
+    }
+
+    private void openSongsListActivity() {
+        Intent intent = new Intent(this, SongsListActivity.class);
+        startActivity(intent);
+    }
+
+    // MARK: Actions
+
+    private void playSongButtonTapped() {
+        // increment a progress bar
+    }
+
+    private void nextSongButtonTapped() {
+        // cycle through albumCoverImages
+    }
+
+    private void previousSongButtonTapped() {
+        // cycle through albumCoverImages
+
+        // reset current song on single tap
+        // play previous song on double tap
+    }
+
+    private void chartsButtonTapped() {
 
     }
 }
