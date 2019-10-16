@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,6 +24,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String TAG = "MusicPlayerActivity";
 
+    private ImageView moodOneImageView;
+    private ImageView moodTwoImageView;
+    private ImageView moodThreeImageView;
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
     private ImageButton previousSongImageButton;
@@ -42,13 +46,19 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         case R.id.nav_music_viewer:
                             //selectedFragment = new MusicPlayerActivity();
                             break;
+
                         case R.id.nav_playlist:
                             openPlaylistActivity();
                             //selectedFragment = new PlaylistActivity();
                             break;
+
                         case R.id.nav_songlist:
                             openSongsListActivity();
                             //selectedFragment = new SongsListActivity();
+                            break;
+
+                        case R.id.nav_mood:
+                            toggleMoodViews();
                             break;
                     }
 
@@ -76,6 +86,33 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpWeatherImageButton();
         setUpAlbumCoverCollection();
         setUpTabBarController();
+        setUpMoodViews();
+    }
+
+    private void setUpMoodViews() {
+        moodOneImageView = findViewById(R.id.moodone_imageview);
+        moodTwoImageView = findViewById(R.id.moodtwo_imageview);
+        moodThreeImageView = findViewById(R.id.moodthree_imageview);
+
+        moodOneImageView.setVisibility(View.INVISIBLE);
+        moodTwoImageView.setVisibility(View.INVISIBLE);
+        moodThreeImageView.setVisibility(View.INVISIBLE);
+    }
+
+    private void toggleMoodViews() {
+
+        switch (moodOneImageView.getVisibility()) {
+            case View.VISIBLE:
+                moodOneImageView.setVisibility(View.INVISIBLE);
+                moodTwoImageView.setVisibility(View.INVISIBLE);
+                moodThreeImageView.setVisibility(View.INVISIBLE);
+                break;
+            case View.INVISIBLE:
+                moodOneImageView.setVisibility(View.VISIBLE);
+                moodTwoImageView.setVisibility(View.VISIBLE);
+                moodThreeImageView.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     // MARK: Setup
@@ -83,6 +120,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     /**
      * Set Up Bottom Tab Bar Navigation Item
      */
+
+
     private void setUpTabBarController() {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
