@@ -3,13 +3,20 @@ package com.example.moodmixer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class SongsListActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +27,12 @@ public class SongsListActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_songlist);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        //listview
+        populateSongsList();
     }
+
+
 
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -59,4 +71,16 @@ public class SongsListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
     }
+
+    private void populateSongsList(){
+        //Construct data source
+        ArrayList<Songs> songsArray = Songs.getSongs();
+        //Create adapter
+        SongListAdapter songAdapter = new SongListAdapter(this,songsArray);
+        //attatch Data to listView
+        ListView songListView = (ListView) findViewById(R.id.list_of_songs);
+        songListView.setAdapter(songAdapter);
+
+    }
+
 }

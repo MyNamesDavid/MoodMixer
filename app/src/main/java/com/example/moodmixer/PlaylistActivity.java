@@ -6,10 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 public class PlaylistActivity extends AppCompatActivity {
+
+    FloatingActionButton floatingActionButtonPlaylist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +27,22 @@ public class PlaylistActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_playlist);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+
+        //Code for populating the playlist
+        populatePlaylist();
+
+        //Code for Floating action button
+        floatingActionButtonPlaylist =
+                (FloatingActionButton) findViewById(R.id.floating_action_button_playlist);
+        floatingActionButtonPlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handles the click
+
+            }
+        });
+
     }
 
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -49,6 +72,10 @@ public class PlaylistActivity extends AppCompatActivity {
                 }
             };
 
+
+
+
+
     public void openMusicPlayerActivity(){
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
@@ -56,5 +83,16 @@ public class PlaylistActivity extends AppCompatActivity {
     public void openSongsListActivity(){
         Intent intent = new Intent(this, SongsListActivity.class);
         startActivity(intent);
+    }
+
+    private void populatePlaylist(){
+        //Construct data source
+        ArrayList<Playlists> playlistsArray = Playlists.getPlaylists();
+        //Create adapter
+        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this,playlistsArray);
+        //attatch Data to listView
+        ListView playlistListView = (ListView) findViewById(R.id.list_of_playlists);
+        playlistListView.setAdapter(playlistAdapter);
+
     }
 }
