@@ -24,12 +24,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String TAG = "MusicPlayerActivity";
 
-    private ImageView moodOneImageView;
-    private ImageView moodTwoImageView;
-    private ImageView moodThreeImageView;
-    private ImageView moodFourImageView;
-    private ImageView moodFiveImageView;
-    private ImageView moodSixImageView;
+    private TextView moodOneImageView;
+    private TextView moodTwoImageView;
+    private TextView moodThreeImageView;
+    private TextView moodFourImageView;
+    private TextView moodFiveImageView;
+    private TextView moodSixImageView;
 
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
