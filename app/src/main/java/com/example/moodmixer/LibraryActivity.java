@@ -2,68 +2,25 @@ package com.example.moodmixer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.List;
-import java.util.ArrayList;
-
-public class MusicPlayerActivity extends AppCompatActivity {
-
-    private ImageButton playImageButton;
-    private ImageButton nextSongImageButton;
-    private ImageButton previousSongImageButton;
-    private ImageButton chartsImageButton;
-    private List<ImageView> albumCoverImages;
+public class LibraryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_music_player);
-
-        // Setup Buttons
-        playImageButton = findViewById(R.id.play_imagebutton);
-        nextSongImageButton = findViewById(R.id.next_song_imagebutton);
-        previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
-        chartsImageButton = findViewById(R.id.charts_imagebutton);
-
-        // Create A collection of album covers to cycle through
-        albumCoverImages = new ArrayList<ImageView>();
+        setContentView(R.layout.activity_library);
 
         // Setup Tab Bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.nav_music_viewer);
+        bottomNav.setSelectedItemId(R.id.nav_library);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
-
-    public void playSongButtonTapped() {
-        // increment a progress bar
-    }
-
-    public void nextSongButtonTapped() {
-        // cycle through albumCoverImages
-    }
-
-    public void previousSongButtonTapped() {
-        // cycle through albumCoverImages
-
-        // reset current song on single tap
-        // play previous song on double tap
-    }
-
-    public void chartsButtonTapped() {
-
-    }
-
-    // MARK: Tab Bar
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,6 +31,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     switch (menuItem.getItemId()) {
                         case R.id.nav_music_viewer:
                             //selectedFragment = new MusicPlayerActivity();
+                            openMusicPlayerActivity();
                             break;
                         case R.id.nav_playlist:
                             openPlaylistActivity();
@@ -84,7 +42,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
                             //selectedFragment = new SongsListActivity();
                             break;
                         case R.id.nav_library:
-                            openLibraryActivity();
                             break;
                     }
 
@@ -104,13 +61,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
     }
-    public void openLibraryActivity() {
-        Intent intent = new Intent(this, LibraryActivity.class);
-        startActivity(intent);
-    }
 
     public void openSongsListActivity() {
         Intent intent = new Intent(this, SongsListActivity.class);
+        startActivity(intent);
+    }
+
+    public void openLibraryActivity() {
+        Intent intent = new Intent(this, LibraryActivity.class);
         startActivity(intent);
     }
 }

@@ -8,4 +8,7 @@
     <string name="song_name">Song Name</string>
     <string name="genre">Genre</string>
     <string name="playlist_name">Playlist Name</string>
+    <string name="source_title">Change source to:</string>
+    <string name="spotify_source_title">Spotify Premium</string>
+    <string name="local_source_title">Local Music</string>
 </resources>
