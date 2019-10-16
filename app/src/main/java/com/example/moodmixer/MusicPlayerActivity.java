@@ -131,6 +131,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: chartsImageButton Tapped");
+                toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
             }
         });
     }
@@ -177,7 +178,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     // MARK: Actions
 
-    private void playSongButtonTapped() {
+    private void playSong() {
         // increment a progress bar
     }
 
@@ -201,7 +202,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
     }
 
-    private void chartsButtonTapped() {
+    private void presentChartsActivity() {
 
     }
 
@@ -209,7 +210,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void toastMessage(String message) {
 
-        Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 120);
         toast.show();
     }
