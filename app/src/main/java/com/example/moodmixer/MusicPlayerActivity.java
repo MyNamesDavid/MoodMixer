@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -16,6 +18,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class MusicPlayerActivity extends AppCompatActivity {
+
+    private static final String TAG = "MusicPlayerActivity";
 
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
@@ -27,21 +31,16 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG, "onCreate - start");
+
         setContentView(R.layout.activity_music_player);
 
-        // Setup Buttons
-        playImageButton = findViewById(R.id.play_imagebutton);
-        nextSongImageButton = findViewById(R.id.next_song_imagebutton);
-        previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
-        chartsImageButton = findViewById(R.id.charts_imagebutton);
-
-        // Create A collection of album covers to cycle through
-        albumCoverImages = new ArrayList<ImageView>();
-
-        // Setup Tab Bar
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.nav_music_viewer);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        setUpPlayImageButton();
+        setUpNextSongImageButton();
+        setUpPreviousSongImageButton();
+        setUpChartsImageButton();
+        setUpAlbumCoverImagesCollection();
+        setUpTabBarController();
     }
 
     public void playSongButtonTapped() {
@@ -64,6 +63,15 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     // MARK: Tab Bar
+
+    /**
+     * Set Up Bottom Tab Bar Navigation Item
+     */
+    private void setUpTabBarController() {
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setSelectedItemId(R.id.nav_music_viewer);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -105,5 +113,59 @@ public class MusicPlayerActivity extends AppCompatActivity {
     public void openSongsListActivity() {
         Intent intent = new Intent(this, SongsListActivity.class);
         startActivity(intent);
+    }
+
+
+    public void setUpPlayImageButton() {
+
+        playImageButton = findViewById(R.id.play_imagebutton);
+        playImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: playImageButton Tapped");
+            }
+        });
+    }
+
+    public void setUpNextSongImageButton() {
+
+        nextSongImageButton = findViewById(R.id.next_song_imagebutton);
+        nextSongImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: nextSongImageButton Tapped");
+            }
+        });
+    }
+
+    public void setUpPreviousSongImageButton() {
+
+        previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
+        previousSongImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: previousSongImageButton Tapped");
+            }
+        });
+    }
+
+    public void setUpChartsImageButton() {
+
+        chartsImageButton = findViewById(R.id.charts_imagebutton);
+        chartsImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: chartsImageButton Tapped");
+            }
+        });
+    }
+
+    /**
+     * Create A collection of album covers to cycle through
+     */
+    public void setUpAlbumCoverImagesCollection() {
+
+        albumCoverImages = new ArrayList<ImageView>();
+
     }
 }
