@@ -107,6 +107,52 @@
     </RelativeLayout>
 
 
+    <ImageView
+        android:id="@+id/moodsix_imageview"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/moodone_imageview"
+        android:layout_above="@id/moodfive_imageview"
+        android:background="#80000000" />
+
+    <ImageView
+        android:id="@+id/moodfive_imageview"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/moodone_imageview"
+        android:layout_above="@id/moodfour_imageview"
+        android:background="#80000000" />
+
+    <ImageView
+        android:id="@+id/moodfour_imageview"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/moodone_imageview"
+        android:layout_above="@id/bottom_navigation"
+        android:background="#80000000" />
+
+
+    <ImageView
+        android:id="@+id/moodthree_imageview"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/moodtwo_imageview"
+        android:background="#50000000" />
+
+    <ImageView
+        android:id="@+id/moodtwo_imageview"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/moodone_imageview"
+        android:background="#50000000" />
+
+    <ImageView
+        android:id="@+id/moodone_imageview"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/bottom_navigation"
+        android:background="#50000000" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
