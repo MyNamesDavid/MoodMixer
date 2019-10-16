@@ -63,6 +63,9 @@ public class PlaylistActivity extends AppCompatActivity {
                             openSongsListActivity();
                             //selectedFragment = new SongsListActivity();
                             break;
+                        case R.id.nav_mood:
+                            openUserProfileActivity();
+                            break;
                     }
 
                     //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -74,7 +77,11 @@ public class PlaylistActivity extends AppCompatActivity {
 
 
 
+    private void openUserProfileActivity() {
 
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
 
     public void openMusicPlayerActivity(){
         Intent intent = new Intent(this, MusicPlayerActivity.class);

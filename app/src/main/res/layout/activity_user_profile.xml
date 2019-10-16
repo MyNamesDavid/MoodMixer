@@ -7,11 +7,12 @@
     android:background="@drawable/background_purple_gradient_image"
     tools:context=".PlaylistActivity">
 
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation">
+        android:layout_above="@+id/bottom_navigation">
 
         <TextView
             android:layout_width="match_parent"
@@ -63,6 +64,14 @@
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="75dp"
+            android:layout_height="60dp"
+            android:text="Back"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginTop="10dp" />
 
         <ImageButton
             android:id="@+id/heart_favoritesimagebutton"
