@@ -84,6 +84,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
      * Set Up Bottom Tab Bar Navigation Item
      */
     private void setUpTabBarController() {
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_music_viewer);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -137,6 +138,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     private void setUpWeatherImageButton() {
+
         weatherImageButton = findViewById(R.id.weather_imagebutton);
         weatherImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,16 +164,19 @@ public class MusicPlayerActivity extends AppCompatActivity {
     // MARK: Navigation
 
     private void openPlaylistActivity() {
+
         Intent intent = new Intent(this, PlaylistActivity.class);
         startActivity(intent);
     }
 
     private void openMusicPlayerActivity() {
+
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
     }
 
     private void openSongsListActivity() {
+
         Intent intent = new Intent(this, SongsListActivity.class);
         startActivity(intent);
     }
@@ -184,7 +189,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void presentNextSong() {
         // cycle through albumCoverImages
-
 
         songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
 
