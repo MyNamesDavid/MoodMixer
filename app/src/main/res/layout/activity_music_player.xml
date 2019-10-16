@@ -25,32 +25,32 @@
             android:textSize="30sp" />
 
         <ImageButton
+            android:id="@+id/previous_song_imagebutton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="75dp"
             android:layout_marginTop="485dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/previous_song_image"
-            android:id="@+id/previous_song_imagebutton"/>
+            android:background="@drawable/previous_song_image" />
 
         <ImageButton
+            android:id="@+id/play_imagebutton"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_marginHorizontal="150dp"
             android:layout_marginTop="475dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/play_button_image"
-            android:id="@+id/play_imagebutton" />
+            android:background="@drawable/play_button_image" />
 
 
         <ImageButton
+            android:id="@+id/next_song_imagebutton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="250dp"
             android:layout_marginTop="485dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/next_song_image"
-            android:id="@+id/next_song_imagebutton" />
+            android:background="@drawable/next_song_image" />
 
         <ImageView
             android:layout_width="300dp"
@@ -66,7 +66,8 @@
             android:layout_marginTop="175dp"
             android:background="@drawable/album_cover_image" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/weather_imagebutton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="275dp"
@@ -74,12 +75,12 @@
             android:background="@drawable/weather_icon_image" />
 
         <ImageButton
+            android:id="@+id/charts_imagebutton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="100dp"
-            android:background="@drawable/charts_icon_image"
-            android:id="@+id/charts_imagebutton"/>
+            android:background="@drawable/charts_icon_image" />
 
     </FrameLayout>
 
