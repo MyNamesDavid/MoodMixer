@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,6 +27,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageButton nextSongImageButton;
     private ImageButton previousSongImageButton;
     private ImageButton chartsImageButton;
+    private ImageButton weatherImageButton;
     private List<ImageView> albumCoverImages;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -68,6 +71,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpNextSongImageButton();
         setUpPreviousSongImageButton();
         setUpChartsImageButton();
+        setUpWeatherImageButton();
         setUpAlbumCoverImagesCollection();
         setUpTabBarController();
     }
@@ -127,6 +131,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
         });
     }
 
+    private void setUpWeatherImageButton() {
+        weatherImageButton = findViewById(R.id.weather_imagebutton);
+        weatherImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: weatherImageButton Tapped");
+                toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
+            }
+        });
+    }
+
     /**
      * Create A collection of album covers to cycle through
      */
@@ -172,5 +187,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void chartsButtonTapped() {
 
+    }
+
+    // MARK: Messages
+
+    private void toastMessage(String message) {
+
+        Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP,0,120);
+        toast.show();
     }
 }
