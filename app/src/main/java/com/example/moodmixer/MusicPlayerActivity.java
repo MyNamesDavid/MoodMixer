@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,13 +25,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String TAG = "MusicPlayerActivity";
 
-    private TextView moodOneImageView;
-    private TextView moodTwoImageView;
-    private TextView moodThreeImageView;
-    private TextView moodFourImageView;
-    private TextView moodFiveImageView;
-    private TextView moodSixImageView;
-
+    private RelativeLayout moodView;
+    private ImageButton currentMoodOneImageButton;
+    private ImageButton currentMoodTwoImageButton;
+    private ImageButton currentMoodThreeImageButton;
+    private ImageButton desiredMoodOneImageButton;
+    private ImageButton desiredMoodTwoImageButton;
+    private ImageButton desiredMoodThreeImageButton;
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
     private ImageButton previousSongImageButton;
@@ -59,6 +60,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         case R.id.nav_songlist:
                             openSongsListActivity();
                             //selectedFragment = new SongsListActivity();
+                            break;
+
+                        case R.id.nav_mood:
+                            toggleMoodViews();
                             break;
                     }
 
@@ -90,39 +95,20 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     private void setUpMoodViews() {
-        moodOneImageView = findViewById(R.id.moodone_imageview);
-        moodTwoImageView = findViewById(R.id.moodtwo_imageview);
-        moodThreeImageView = findViewById(R.id.moodthree_imageview);
-        moodFourImageView = findViewById(R.id.moodfour_imageview);
-        moodFiveImageView = findViewById(R.id.moodfive_imageview);
-        moodSixImageView = findViewById(R.id.moodsix_imageview);
 
-        moodOneImageView.setVisibility(View.INVISIBLE);
-        moodTwoImageView.setVisibility(View.INVISIBLE);
-        moodThreeImageView.setVisibility(View.INVISIBLE);
-        moodFourImageView.setVisibility(View.INVISIBLE);
-        moodFiveImageView.setVisibility(View.INVISIBLE);
-        moodSixImageView.setVisibility(View.INVISIBLE);
+        moodView = findViewById(R.id.moodmixer_playlist_options);
+        moodView.setVisibility(View.INVISIBLE);
     }
 
     private void toggleMoodViews() {
 
-        switch (moodOneImageView.getVisibility()) {
+        switch (moodView.getVisibility()) {
             case View.VISIBLE:
-                moodOneImageView.setVisibility(View.INVISIBLE);
-                moodTwoImageView.setVisibility(View.INVISIBLE);
-                moodThreeImageView.setVisibility(View.INVISIBLE);
-                moodFourImageView.setVisibility(View.INVISIBLE);
-                moodFiveImageView.setVisibility(View.INVISIBLE);
-                moodSixImageView.setVisibility(View.INVISIBLE);
+                moodView.setVisibility(View.INVISIBLE);
                 break;
+
             case View.INVISIBLE:
-                moodOneImageView.setVisibility(View.VISIBLE);
-                moodTwoImageView.setVisibility(View.VISIBLE);
-                moodThreeImageView.setVisibility(View.VISIBLE);
-                moodFourImageView.setVisibility(View.VISIBLE);
-                moodFiveImageView.setVisibility(View.VISIBLE);
-                moodSixImageView.setVisibility(View.VISIBLE);
+                moodView.setVisibility(View.VISIBLE);
                 break;
         }
     }
