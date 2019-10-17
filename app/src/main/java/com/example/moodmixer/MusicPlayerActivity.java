@@ -27,7 +27,6 @@ import java.util.ArrayList;
 public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String TAG = "MusicPlayerActivity";
-
     private RelativeLayout moodView;
     private ImageButton currentMoodOneImageButton;
     private ImageButton currentMoodTwoImageButton;
@@ -43,6 +42,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageView albumCoverImageView;
     private int[] albumCoverImages;
     private int songIndex = 0;
+    private TabBarController tabBarController;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,28 +51,26 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     //Fragment selectedFragment = null;
 
                     switch (menuItem.getItemId()) {
-                        case R.id.nav_music_viewer:
-                            //selectedFragment = new MusicPlayerActivity();
-                            break;
-
-                        case R.id.nav_playlist:
-                            openPlaylistActivity();
-                            //selectedFragment = new PlaylistActivity();
-                            break;
-
-                        case R.id.nav_songlist:
-                            openSongsListActivity();
-                            //selectedFragment = new SongsListActivity();
-                            break;
 
                         case R.id.nav_mood:
                             toggleMoodViews();
                             break;
-                    }
 
-                    //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    //      selectedFragment).commit();
-                    //Want to select clicked item
+                        case R.id.nav_playlist:
+                            tabBarController.openPlaylistActivity();
+                            break;
+
+                        case R.id.nav_music_viewer:
+                            break; // Current View - do nothing
+
+                        case R.id.nav_songlist:
+                            tabBarController.openSongsListActivity();
+                            break;
+
+                        case R.id.nav_library:
+                            tabBarController.openLibraryActivity();
+                            break;
+                    }
                     return true;
                 }
             };
@@ -87,33 +85,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_music_player);
 
+        setUpTabBarController();
         setUpPlayImageButton();
         setUpNextSongImageButton();
         setUpPreviousSongImageButton();
         setUpChartsImageButton();
         setUpWeatherImageButton();
         setUpAlbumCoverCollection();
-        setUpTabBarController();
         setUpMoodViews();
-    }
-
-    private void setUpMoodViews() {
-
-        moodView = findViewById(R.id.moodmixer_playlist_options);
-        moodView.setVisibility(View.INVISIBLE);
-    }
-
-    private void toggleMoodViews() {
-
-        switch (moodView.getVisibility()) {
-            case View.VISIBLE:
-                moodView.setVisibility(View.INVISIBLE);
-                break;
-
-            case View.INVISIBLE:
-                moodView.setVisibility(View.VISIBLE);
-                break;
-        }
     }
 
     // MARK: Setup
@@ -127,6 +106,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_music_viewer);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        tabBarController = new TabBarController(this);
     }
 
     private void setUpPlayImageButton() {
@@ -206,36 +187,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
         albumCoverImageView = findViewById(R.id.album_cover_imageview);
     }
 
-    // MARK: Navigation
+    private void setUpMoodViews() {
 
-    private void openPlaylistActivity() {
-
-        Intent intent = new Intent(this, PlaylistActivity.class);
-        startActivity(intent);
-    }
-
-    private void openMusicPlayerActivity() {
-
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
-    }
-
-    public void openLibraryActivity() {
-        Intent intent = new Intent(this, LibraryActivity.class);
-        startActivity(intent);
-    }
-
-    private void openUserProfileActivity() {
-
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
-
-
-    private void openSongsListActivity() {
-
-        Intent intent = new Intent(this, SongsListActivity.class);
-        startActivity(intent);
+        moodView = findViewById(R.id.moodmixer_playlist_options);
+        moodView.setVisibility(View.INVISIBLE);
     }
 
     // MARK: Actions
@@ -265,6 +220,19 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void presentChartsActivity() {
 
+    }
+
+    private void toggleMoodViews() {
+
+        switch (moodView.getVisibility()) {
+            case View.VISIBLE:
+                moodView.setVisibility(View.INVISIBLE);
+                break;
+
+            case View.INVISIBLE:
+                moodView.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     // MARK: Messages
@@ -299,5 +267,3 @@ public class MusicPlayerActivity extends AppCompatActivity {
         });
     }
 }
-
-
