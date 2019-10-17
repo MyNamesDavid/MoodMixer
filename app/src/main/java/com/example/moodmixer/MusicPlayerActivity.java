@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.MotionEvent;
 
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.sql.Array;
@@ -39,6 +38,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageButton previousSongImageButton;
     private ImageButton chartsImageButton;
     private ImageButton weatherImageButton;
+    private ImageButton userProfileImageButton;
     private ImageView albumCoverImageView;
     private int[] albumCoverImages;
     private int songIndex = 0;
@@ -70,6 +70,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         case R.id.nav_library:
                             tabBarController.openLibraryActivity();
                             break;
+
                     }
                     return true;
                 }
@@ -93,6 +94,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpWeatherImageButton();
         setUpAlbumCoverCollection();
         setUpMoodViews();
+        setUserProfileImageButton();
     }
 
     // MARK: Setup
@@ -131,7 +133,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: nextSongImageButton Tapped");
                 presentNextSong();
                 buttonEffect(nextSongImageButton);
-
             }
         });
     }
@@ -185,6 +186,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
         };
 
         albumCoverImageView = findViewById(R.id.album_cover_imageview);
+    }
+
+    private void setUserProfileImageButton() {
+
+        userProfileImageButton = findViewById(R.id.userprofile_imagebutton);
+        userProfileImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: userProfileImageButton Tapped");
+                tabBarController.openUserProfileActivity();
+            }
+        });
     }
 
     private void setUpMoodViews() {
