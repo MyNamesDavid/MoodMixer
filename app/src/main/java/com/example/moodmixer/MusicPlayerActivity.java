@@ -40,6 +40,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageButton previousSongImageButton;
     private ImageButton chartsImageButton;
     private ImageButton weatherImageButton;
+    private ImageButton userProfileImageButton;
     private ImageView albumCoverImageView;
     private int[] albumCoverImages;
     private int songIndex = 0;
@@ -68,6 +69,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         case R.id.nav_mood:
                             toggleMoodViews();
                             break;
+
                     }
 
                     //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -95,6 +97,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpAlbumCoverCollection();
         setUpTabBarController();
         setUpMoodViews();
+        setUserProfileImageButton();
     }
 
     private void setUpMoodViews() {
@@ -206,6 +209,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
         albumCoverImageView = findViewById(R.id.album_cover_imageview);
     }
 
+    private void setUserProfileImageButton() {
+
+        nextSongImageButton = findViewById(R.id.userprofile_imagebutton);
+        nextSongImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: userProfileImageButton Tapped");
+                openUserProfileActivity();
+            }
+        });
+    }
+
     // MARK: Navigation
 
     private void openPlaylistActivity() {
@@ -237,6 +252,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SongsListActivity.class);
         startActivity(intent);
     }
+
 
     // MARK: Actions
 
