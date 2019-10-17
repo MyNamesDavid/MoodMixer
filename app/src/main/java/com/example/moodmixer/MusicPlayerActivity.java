@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.MotionEvent;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -119,7 +122,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
      * Set Up Bottom Tab Bar Navigation Item
      */
 
-
     private void setUpTabBarController() {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -134,6 +136,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: playImageButton Tapped");
+                buttonEffect(playImageButton);
             }
         });
     }
@@ -146,6 +149,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: nextSongImageButton Tapped");
                 presentNextSong();
+                buttonEffect(nextSongImageButton);
+
             }
         });
     }
@@ -158,6 +163,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: previousSongImageButton Tapped");
                 presentPreviousSong();
+                buttonEffect(previousSongImageButton);
             }
         });
     }
@@ -170,6 +176,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: chartsImageButton Tapped");
                 toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
+                buttonEffect(chartsImageButton);
             }
         });
     }
@@ -182,6 +189,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
                 toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
+                buttonEffect(weatherImageButton);
             }
         });
     }
@@ -211,6 +219,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MusicPlayerActivity.class);
         startActivity(intent);
     }
+
     public void openLibraryActivity() {
         Intent intent = new Intent(this, LibraryActivity.class);
         startActivity(intent);
@@ -266,4 +275,29 @@ public class MusicPlayerActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP, 0, 120);
         toast.show();
     }
+
+    // MARK: Static Functions
+
+    public static void buttonEffect(View button) {
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 }
+
+
