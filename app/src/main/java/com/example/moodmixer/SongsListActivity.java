@@ -6,17 +6,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class SongsListActivity extends AppCompatActivity {
+public class SongsListActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
 
+    ImageButton popupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +39,40 @@ public class SongsListActivity extends AppCompatActivity {
 
         //listview
         populateSongsList();
+
+
     }
 
+
+    //Handles the popup menu and brings it into view
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.song_option_menu);
+        popup.show();
+    }
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_add_to_playlist:
+                Toast.makeText(this, "Item 1 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.option_play_next:
+                Toast.makeText(this, "Item 2 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.option_play_previous:
+                Toast.makeText(this, "Item 3 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.option_song_play:
+                Toast.makeText(this, "Item 4 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
 
 
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -61,6 +102,8 @@ public class SongsListActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+
 
     private void openUserProfileActivity() {
 
