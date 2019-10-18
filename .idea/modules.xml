@@ -5,9 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Desktop-MoodMixer.iml" filepath="$PROJECT_DIR$/Desktop-MoodMixer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/Desktop-MoodMixer-app.iml" filepath="$PROJECT_DIR$/app/Desktop-MoodMixer-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/MoodMixApp-MoodMixer.iml" filepath="$PROJECT_DIR$/MoodMixApp-MoodMixer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MoodMixer.iml" filepath="$PROJECT_DIR$/MoodMixer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/MoodMixer-app.iml" filepath="$PROJECT_DIR$/app/MoodMixer-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
