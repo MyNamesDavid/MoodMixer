@@ -3,7 +3,6 @@ package com.example.moodmixer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.view.MotionEvent;
 
@@ -23,7 +21,7 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
-import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
@@ -31,7 +29,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
-    private SpotifyAppRemote mSpotifyAppRemote;
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
 
     private static final String TAG = "MusicPlayerActivity";
     private RelativeLayout moodView;
@@ -93,7 +91,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate - start");
 
         setContentView(R.layout.activity_music_player);
-
         setUpTabBarController();
         setUpPlayImageButton();
         setUpNextSongImageButton();
@@ -120,11 +117,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
                     @Override
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
+                        musicPlayer = spotifyAppRemote;
                         Log.d(TAG, "Connected! Yay!");
 
                         // Now you can start interacting with App Remote
-                        connected();
                     }
 
                     @Override
@@ -136,11 +132,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 });
     }
 
-    private void connected() {}
-
     @Override
     protected void onStop() {
         super.onStop();
+
+        SpotifyAppRemote.disconnect(musicPlayer);
     }
 
     // MARK: Setup
@@ -166,6 +162,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: playImageButton Tapped");
                 buttonEffect(playImageButton);
+                playSong();
             }
         });
     }
@@ -256,6 +253,32 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void playSong() {
         // increment a progress bar
+
+        musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+
+            if (playerState.isPaused) {
+//                musicPlayer.getPlayerApi().resume();
+                musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+
+            } else {
+                musicPlayer.getPlayerApi().pause();
+            }
+        });
+
+        // Subscribe to PlayerState
+        musicPlayer.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                    }
+                });
+    }
+
+    private void pauseSong() {
+
+        musicPlayer.getPlayerApi().pause();
     }
 
     private void presentNextSong() {
