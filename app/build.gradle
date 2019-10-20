@@ -24,6 +24,13 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
 
 
@@ -39,4 +46,11 @@ dependencies {
 
     implementation project(':spotify-app-remote-release-0.6.3')
     implementation "com.google.code.gson:gson:2.8.5"
+}
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }

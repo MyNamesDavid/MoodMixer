@@ -108,6 +108,32 @@ public class MusicPlayerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(this, connectionParams,
+                new Connector.ConnectionListener() {
+
+                    @Override
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        Log.d(TAG, "Connected! Yay!");
+
+                        // Now you can start interacting with App Remote
+                        connected();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Log.e(TAG, throwable.getMessage(), throwable);
+
+                        // Something went wrong when attempting to connect! Handle errors here
+                    }
+                });
     }
 
     private void connected() {}
