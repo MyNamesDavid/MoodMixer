@@ -19,11 +19,19 @@ import android.view.MotionEvent;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.sql.Array;
-import java.util.List;
-import java.util.ArrayList;
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
 
 public class MusicPlayerActivity extends AppCompatActivity {
+
+    private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
+    private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
+    private SpotifyAppRemote mSpotifyAppRemote;
 
     private static final String TAG = "MusicPlayerActivity";
     private RelativeLayout moodView;
@@ -95,6 +103,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpAlbumCoverCollection();
         setUpMoodViews();
         setUserProfileImageButton();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    private void connected() {}
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     // MARK: Setup
