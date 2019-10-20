@@ -1,11 +1,19 @@
 package com.example.moodmixer;
 
+import android.content.Context;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Songs {
     String songName;
     String songGenre;
     String songArtistName;
+
+    private static Songs sSongs;
+
+    private List<Songs> mSong;
 
     public Songs(String song, String genre){
         this.songName = song;
@@ -31,4 +39,15 @@ public class Songs {
         }
         return songs;
     }
+
+    public void setSongName(String song) {
+        songName = song;
+    }
+
+    public void setSongGenre(String song) {
+        songGenre = song;
+    }
+
+
+
 }

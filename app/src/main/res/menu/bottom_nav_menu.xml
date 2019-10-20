@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/moodFragment"
+        android:id="@+id/nav_mood"
         android:icon="@drawable/mood_vector"
         android:title="@string/mood_viewer" />
     <item
-        android:id="@+id/playlistFragment"
+        android:id="@+id/nav_playlist"
         android:icon="@drawable/playlist_vector"
         android:title="@string/playlist_viewer" />
     <item
-        android:id="@+id/musicPlayerFragment"
+        android:id="@+id/nav_music_viewer"
         android:icon="@drawable/music_viewer_vector"
         android:title="@string/music_viewer" />
     <item
-        android:id="@+id/songFragment"
+        android:id="@+id/nav_songlist"
         android:icon="@drawable/songlist_vector"
         android:title="@string/songlist_viewer" />
     <item
-        android:id="@+id/libraryFragment"
+        android:id="@+id/nav_library"
         android:icon="@drawable/library_vector"
         android:title="@string/library_viewer" />
-
-
 
 </menu>

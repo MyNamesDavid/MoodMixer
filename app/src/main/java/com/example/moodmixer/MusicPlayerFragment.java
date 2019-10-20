@@ -1,30 +1,30 @@
 package com.example.moodmixer;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
+import android.graphics.PorterDuff;
+import android.net.Uri;
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.view.MotionEvent;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.sql.Array;
-import java.util.List;
-import java.util.ArrayList;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class MusicPlayerActivity extends AppCompatActivity {
+
+public class MusicPlayerFragment extends Fragment {
+
 
     private static final String TAG = "MusicPlayerActivity";
     private RelativeLayout moodView;
@@ -45,54 +45,20 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private int songIndex = 0;
     private TabBarController tabBarController;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFragment = null;
+    public MusicPlayerFragment() {
+        // Required empty public constructor
+    }
 
-                    switch (menuItem.getItemId()) {
-
-                        case R.id.nav_mood:
-                            toggleMoodViews();
-                            break;
-
-                        case R.id.nav_playlist:
-                            tabBarController.openPlaylistActivity();
-                            break;
-
-                        case R.id.nav_music_viewer:
-                            break; // Current View - do nothing
-
-                        case R.id.nav_songlist:
-                            //tabBarController.openSongsListActivity();
-                            //selectedFragment = new SongListFragment();
-
-                            break;
-
-                        case R.id.nav_library:
-                            tabBarController.openLibraryActivity();
-                            break;
-
-                    }
-
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment).commit();
-                    return true;
-                }
-            };
-
-    // MARK: Lifecycle
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_music_player, container, false);
 
-        Log.d(TAG, "onCreate - start");
 
-        setContentView(R.layout.activity_music_player);
 
-        setUpTabBarController();
+        //setUpTabBarController();
         setUpPlayImageButton();
         setUpNextSongImageButton();
         setUpPreviousSongImageButton();
@@ -103,24 +69,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUserProfileImageButton();
     }
 
-    // MARK: Setup
 
-    /**
-     * Set Up Bottom Tab Bar Navigation Item
-     */
-
-    private void setUpTabBarController() {
-
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.nav_music_viewer);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-        tabBarController = new TabBarController(this);
-    }
 
     private void setUpPlayImageButton() {
 
-        playImageButton = findViewById(R.id.play_imagebutton);
+        playImageButton = (ImageButton) getView().findViewById(R.id.play_imagebutton);
         playImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +85,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpNextSongImageButton() {
 
-        nextSongImageButton = findViewById(R.id.next_song_imagebutton);
+        nextSongImageButton = (ImageButton) getView().findViewById(R.id.next_song_imagebutton);
         nextSongImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +98,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpPreviousSongImageButton() {
 
-        previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
+        previousSongImageButton = (ImageButton) getView().findViewById(R.id.previous_song_imagebutton);
         previousSongImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,12 +111,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpChartsImageButton() {
 
-        chartsImageButton = findViewById(R.id.charts_imagebutton);
+        chartsImageButton = (ImageButton) getView().findViewById(R.id.charts_imagebutton);
         chartsImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: chartsImageButton Tapped");
-                toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
+                //toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
                 buttonEffect(chartsImageButton);
             }
         });
@@ -171,12 +124,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpWeatherImageButton() {
 
-        weatherImageButton = findViewById(R.id.weather_imagebutton);
+        weatherImageButton = (ImageButton) getView().findViewById(R.id.weather_imagebutton);
         weatherImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
-                toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
+                //toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
                 buttonEffect(weatherImageButton);
             }
         });
@@ -191,12 +144,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 R.drawable.beatles_albumcover
         };
 
-        albumCoverImageView = findViewById(R.id.album_cover_imageview);
+        albumCoverImageView = (ImageView) getView().findViewById(R.id.album_cover_imageview);
     }
 
     private void setUserProfileImageButton() {
 
-        userProfileImageButton = findViewById(R.id.userprofile_imagebutton);
+        userProfileImageButton = (ImageButton) getView().findViewById(R.id.userprofile_imagebutton);
         userProfileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,7 +161,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpMoodViews() {
 
-        moodView = findViewById(R.id.moodmixer_playlist_options);
+        moodView = (RelativeLayout) getView().findViewById(R.id.moodmixer_playlist_options);
         moodView.setVisibility(View.INVISIBLE);
     }
 
@@ -258,9 +211,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void toastMessage(String message) {
 
-        Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP, 0, 120);
-        toast.show();
+        Toast toast = Toast.makeText(MusicPlayerFragment.this, message, Toast.LENGTH_LONG);
+        //toast.setGravity(Gravity.TOP, 0, 120);
+        //toast.show();
     }
 
     // MARK: Static Functions
@@ -285,4 +238,5 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         });
     }
+
 }
