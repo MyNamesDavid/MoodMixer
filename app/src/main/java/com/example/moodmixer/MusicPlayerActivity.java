@@ -21,8 +21,6 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
-import com.spotify.protocol.client.CallResult;
-import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
 public class MusicPlayerActivity extends AppCompatActivity {
@@ -162,7 +160,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: playImageButton Tapped");
                 buttonEffect(playImageButton);
-                playSong();
+                onPlayPauseButtonTapped();
             }
         });
     }
@@ -251,7 +249,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     // MARK: Actions
 
-    private void playSong() {
+    private void onPlayPauseButtonTapped() {
         // increment a progress bar
 
         musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
