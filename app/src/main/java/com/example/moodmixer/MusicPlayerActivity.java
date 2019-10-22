@@ -2,6 +2,7 @@ package com.example.moodmixer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    //Fragment selectedFragment = null;
+                    Fragment selectedFragment = null;
 
                     switch (menuItem.getItemId()) {
 
@@ -68,7 +69,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
                             break; // Current View - do nothing
 
                         case R.id.nav_songlist:
-                            tabBarController.openSongsListActivity();
+                            //tabBarController.openSongsListActivity();
+                            //selectedFragment = new SongListFragment();
+
                             break;
 
                         case R.id.nav_library:
@@ -76,6 +79,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
                             break;
 
                     }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
                     return true;
                 }
             };

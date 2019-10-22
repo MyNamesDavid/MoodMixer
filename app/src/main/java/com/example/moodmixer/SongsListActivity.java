@@ -129,8 +129,8 @@ public class SongsListActivity extends AppCompatActivity implements PopupMenu.On
         //Create adapter
         SongListAdapter songAdapter = new SongListAdapter(this,songsArray);
         //attatch Data to listView
-        ListView songListView = (ListView) findViewById(R.id.list_of_songs);
-        songListView.setAdapter(songAdapter);
+        //ListView songListView = (ListView) findViewById(R.id.songs_list);
+        //songListView.setAdapter(songAdapter);
 
     }
 

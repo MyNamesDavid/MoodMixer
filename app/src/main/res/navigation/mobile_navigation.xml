@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/moodFragment">
+
+    <fragment
+        android:id="@+id/moodFragment"
+        android:name="com.example.moodmixer.MoodFragment"
+        android:label="fragment_mood"
+        tools:layout="@layout/fragment_mood" />
+    <fragment
+        android:id="@+id/musicPlayerFragment"
+        android:name="com.example.moodmixer.MusicPlayerFragment"
+        android:label="fragment_music_player"
+        tools:layout="@layout/fragment_music_player" >
+        <action
+            android:id="@+id/action_musicPlayerFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.example.moodmixer.PlaylistFragment"
+        android:label="fragment_playlist_list"
+        tools:layout="@layout/fragment_playlist_list" />
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.example.moodmixer.LibraryFragment"
+        android:label="fragment_library"
+        tools:layout="@layout/fragment_library" />
+    <fragment
+        android:id="@+id/songFragment"
+        android:name="com.example.moodmixer.SongFragment"
+        android:label="fragment_song_list"
+        tools:layout="@layout/fragment_song_list" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.moodmixer.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
+</navigation>
