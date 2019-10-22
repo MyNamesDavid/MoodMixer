@@ -8,21 +8,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.moodmixer.PlaylistFragment.OnListFragmentInteractionListener;
-import com.example.moodmixer.dummy.DummyContent.DummyItem;
+import com.example.moodmixer.dummy.DummyContent.Songs;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Songs} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Songs> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyPlaylistRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyPlaylistRecyclerViewAdapter(List<Songs> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -61,7 +61,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Songs mItem;
 
         public ViewHolder(View view) {
             super(view);

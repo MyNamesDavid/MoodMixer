@@ -10,6 +10,7 @@ public class Songs {
     String songName;
     String songGenre;
     String songArtistName;
+    int id;
 
     private static Songs sSongs;
 

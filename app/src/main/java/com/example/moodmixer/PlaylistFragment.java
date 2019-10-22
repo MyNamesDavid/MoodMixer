@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moodmixer.dummy.DummyContent;
-import com.example.moodmixer.dummy.DummyContent.DummyItem;
+import com.example.moodmixer.dummy.DummyContent.Songs;
 
 import java.util.List;
 
@@ -106,6 +106,6 @@ public class PlaylistFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Songs item);
     }
 }

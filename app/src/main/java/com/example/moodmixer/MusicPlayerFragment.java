@@ -1,81 +1,66 @@
 package com.example.moodmixer;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.graphics.PorterDuff;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-import android.view.MotionEvent;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-
-import com.spotify.protocol.types.Track;
 
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link MusicPlayerFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link MusicPlayerFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
 public class MusicPlayerFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
-    private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
-    private static final String TAG = "MusicPlayerActivity";
-    private RelativeLayout moodView;
-    private ImageButton currentMoodOneImageButton;
-    private ImageButton currentMoodTwoImageButton;
-    private ImageButton currentMoodThreeImageButton;
-    private ImageButton desiredMoodOneImageButton;
-    private ImageButton desiredMoodTwoImageButton;
-    private ImageButton desiredMoodThreeImageButton;
-    private ImageButton playImageButton;
-    private ImageButton nextSongImageButton;
-    private ImageButton previousSongImageButton;
-    private ImageButton chartsImageButton;
-    private ImageButton weatherImageButton;
-    private ImageButton userProfileImageButton;
-    private ImageView albumCoverImageView;
-    private int[] albumCoverImages;
-    private int songIndex = 0;
-    private TabBarController tabBarController;
-
+    private OnFragmentInteractionListener mListener;
 
     public MusicPlayerFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment MusicPlayerFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static MusicPlayerFragment newInstance(String param1, String param2) {
+        MusicPlayerFragment fragment = new MusicPlayerFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,255 +69,42 @@ public class MusicPlayerFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_music_player, container, false);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            setUpPlayImageButton();
-            setUpNextSongImageButton();
-            setUpPreviousSongImageButton();
-            setUpChartsImageButton();
-            setUpWeatherImageButton();
-            setUpAlbumCoverCollection();
-            setUpMoodViews();
-            setUserProfileImageButton();
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
         }
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(getContext(), connectionParams,
-                new Connector.ConnectionListener() {
-
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        musicPlayer = spotifyAppRemote;
-                        Log.d(TAG, "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        SpotifyAppRemote.disconnect(musicPlayer);
-    }
-
-    private void setUpPlayImageButton() {
-
-        playImageButton = (ImageButton) getView().findViewById(R.id.play_imagebutton);
-        playImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: playImageButton Tapped");
-                buttonEffect(playImageButton);
-                onPlayPauseButtonTapped();
-            }
-        });
-    }
-
-    private void setUpNextSongImageButton() {
-
-        nextSongImageButton = (ImageButton) getView().findViewById(R.id.next_song_imagebutton);
-        nextSongImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: nextSongImageButton Tapped");
-                presentNextSong();
-                buttonEffect(nextSongImageButton);
-            }
-        });
-    }
-
-    private void setUpPreviousSongImageButton() {
-
-        previousSongImageButton = (ImageButton) getView().findViewById(R.id.previous_song_imagebutton);
-        previousSongImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: previousSongImageButton Tapped");
-                presentPreviousSong();
-                buttonEffect(previousSongImageButton);
-            }
-        });
-    }
-
-    private void setUpChartsImageButton() {
-
-        chartsImageButton = (ImageButton) getView().findViewById(R.id.charts_imagebutton);
-        chartsImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: chartsImageButton Tapped");
-                toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
-                buttonEffect(chartsImageButton);
-            }
-        });
-    }
-
-    private void setUpWeatherImageButton() {
-
-        weatherImageButton = (ImageButton) getView().findViewById(R.id.weather_imagebutton);
-        weatherImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: weatherImageButton Tapped");
-                toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
-                buttonEffect(weatherImageButton);
-            }
-        });
-    }
-
-    private void setUpAlbumCoverCollection() {
-
-        albumCoverImages = new int[]{
-                R.drawable.album_cover_image,
-                R.drawable.zeppelin_albumcover,
-                R.drawable.pinkfloyd_albumcover,
-                R.drawable.beatles_albumcover
-        };
-
-        albumCoverImageView = (ImageView) getView().findViewById(R.id.album_cover_imageview);
-    }
-
-    private void setUserProfileImageButton() {
-
-        userProfileImageButton = (ImageButton) getView().findViewById(R.id.userprofile_imagebutton);
-        userProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: userProfileImageButton Tapped");
-                tabBarController.openUserProfileActivity();
-            }
-        });
-    }
-
-    private void setUpMoodViews() {
-
-        moodView = (RelativeLayout) getView().findViewById(R.id.moodmixer_playlist_options);
-        moodView.setVisibility(View.INVISIBLE);
-    }
-
-    // MARK: Actions
-
-    private void onPlayPauseButtonTapped() {
-        // increment a progress bar
-
-        musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-
-            if (playerState.isPaused) {
-//                musicPlayer.getPlayerApi().resume();
-                musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-
-            } else {
-                musicPlayer.getPlayerApi().pause();
-            }
-        });
-
-        // Subscribe to PlayerState
-        musicPlayer.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                    }
-                });
-    }
-
-    private void pauseSong() {
-
-        musicPlayer.getPlayerApi().pause();
-    }
-
-    private void presentNextSong() {
-        // cycle through albumCoverImages
-
-        songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
-
-        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
-    }
-
-    private void presentPreviousSong() {
-        // cycle through albumCoverImages
-
-        // reset current song on single tap
-        // play previous song on double tap
-
-        songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
-
-        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
-    }
-
-    private void presentChartsActivity() {
-
-    }
-
-    private void toggleMoodViews() {
-
-        switch (moodView.getVisibility()) {
-            case View.VISIBLE:
-                moodView.setVisibility(View.INVISIBLE);
-                break;
-
-            case View.INVISIBLE:
-                moodView.setVisibility(View.VISIBLE);
-                break;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
-    // MARK: Messages
-
-    private void toastMessage(String message) {
-
-        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP, 0, 120);
-        toast.show();
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
-    // MARK: Static Functions
-
-    public static void buttonEffect(View button) {
-        button.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        v.getBackground().clearColorFilter();
-                        v.invalidate();
-                        break;
-                    }
-                }
-                return false;
-            }
-        });
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
-
-
-
-
-
 }
