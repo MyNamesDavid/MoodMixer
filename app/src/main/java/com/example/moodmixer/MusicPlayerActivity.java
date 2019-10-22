@@ -257,9 +257,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
             if (playerState.isPaused) {
 //                musicPlayer.getPlayerApi().resume();
                 musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+                playImageButton.setBackgroundResource(R.drawable.pause_button_clouds);
+
 
             } else {
                 musicPlayer.getPlayerApi().pause();
+                playImageButton.setBackgroundResource(R.drawable.play_button_clouds);
+
             }
         });
 
