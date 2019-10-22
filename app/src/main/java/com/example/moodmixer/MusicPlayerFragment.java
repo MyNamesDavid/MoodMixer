@@ -21,10 +21,36 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import android.graphics.PorterDuff;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import android.view.MotionEvent;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.types.Track;
 
 
 public class MusicPlayerFragment extends Fragment {
 
+    private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
+    private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
 
     private static final String TAG = "MusicPlayerActivity";
     private RelativeLayout moodView;
@@ -45,6 +71,7 @@ public class MusicPlayerFragment extends Fragment {
     private int songIndex = 0;
     private TabBarController tabBarController;
 
+
     public MusicPlayerFragment() {
         // Required empty public constructor
     }
@@ -55,21 +82,59 @@ public class MusicPlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_music_player, container, false);
-
-
-
-        //setUpTabBarController();
-        setUpPlayImageButton();
-        setUpNextSongImageButton();
-        setUpPreviousSongImageButton();
-        setUpChartsImageButton();
-        setUpWeatherImageButton();
-        setUpAlbumCoverCollection();
-        setUpMoodViews();
-        setUserProfileImageButton();
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            setUpPlayImageButton();
+            setUpNextSongImageButton();
+            setUpPreviousSongImageButton();
+            setUpChartsImageButton();
+            setUpWeatherImageButton();
+            setUpAlbumCoverCollection();
+            setUpMoodViews();
+            setUserProfileImageButton();
+        }
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(getContext(), connectionParams,
+                new Connector.ConnectionListener() {
+
+                    @Override
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        musicPlayer = spotifyAppRemote;
+                        Log.d(TAG, "Connected! Yay!");
+
+                        // Now you can start interacting with App Remote
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Log.e(TAG, throwable.getMessage(), throwable);
+
+                        // Something went wrong when attempting to connect! Handle errors here
+                    }
+                });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        SpotifyAppRemote.disconnect(musicPlayer);
+    }
 
     private void setUpPlayImageButton() {
 
@@ -79,6 +144,7 @@ public class MusicPlayerFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: playImageButton Tapped");
                 buttonEffect(playImageButton);
+                onPlayPauseButtonTapped();
             }
         });
     }
@@ -116,7 +182,7 @@ public class MusicPlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: chartsImageButton Tapped");
-                //toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
+                toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
                 buttonEffect(chartsImageButton);
             }
         });
@@ -129,7 +195,7 @@ public class MusicPlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
-                //toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
+                toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
                 buttonEffect(weatherImageButton);
             }
         });
@@ -167,8 +233,34 @@ public class MusicPlayerFragment extends Fragment {
 
     // MARK: Actions
 
-    private void playSong() {
+    private void onPlayPauseButtonTapped() {
         // increment a progress bar
+
+        musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+
+            if (playerState.isPaused) {
+//                musicPlayer.getPlayerApi().resume();
+                musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+
+            } else {
+                musicPlayer.getPlayerApi().pause();
+            }
+        });
+
+        // Subscribe to PlayerState
+        musicPlayer.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                    }
+                });
+    }
+
+    private void pauseSong() {
+
+        musicPlayer.getPlayerApi().pause();
     }
 
     private void presentNextSong() {
@@ -211,9 +303,9 @@ public class MusicPlayerFragment extends Fragment {
 
     private void toastMessage(String message) {
 
-        Toast toast = Toast.makeText(MusicPlayerFragment.this, message, Toast.LENGTH_LONG);
-        //toast.setGravity(Gravity.TOP, 0, 120);
-        //toast.show();
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP, 0, 120);
+        toast.show();
     }
 
     // MARK: Static Functions
@@ -238,5 +330,9 @@ public class MusicPlayerFragment extends Fragment {
             }
         });
     }
+
+
+
+
 
 }

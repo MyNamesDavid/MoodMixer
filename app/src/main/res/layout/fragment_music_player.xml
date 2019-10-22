@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".MusicPlayerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
+        android:id="@+id/music_player_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -201,6 +201,32 @@
                 android:background="@drawable/play_button_image" />
 
         </RelativeLayout>
+
+
+        <!-- End - Playlist Curator Options View-->
+        <RelativeLayout
+            android:id="@+id/music_details_layout"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="550dp" />
+
+        <TextView
+            android:id="@+id/songtitle_textview"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/music_details_layout"
+            android:background="@color/white"
+            android:text="Song Title"/>
+
+        <TextView
+            android:id="@+id/albumname_textview"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/songtitle_textview"
+            android:background="@color/black"
+            android:text="Album Cover Name"
+            android:textColor="@color/white"/>
+
 
 
     </RelativeLayout>
