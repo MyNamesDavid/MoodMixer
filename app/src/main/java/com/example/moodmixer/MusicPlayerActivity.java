@@ -279,18 +279,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
             return;
         }
 
+//        musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
 
         musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+
             if (playerState.isPaused) {
-//                musicPlayer.getPlayerApi().resume();
-                musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+                musicPlayer.getPlayerApi().resume();
                 playImageButton.setBackgroundResource(R.drawable.pause_button_clouds);
                 subscribeToPlayerState();
 
             } else {
                 musicPlayer.getPlayerApi().pause();
                 playImageButton.setBackgroundResource(R.drawable.play_button_clouds);
-
             }
         });
     }
@@ -306,7 +306,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         trackName = track.name;
                         trackArtist = track.artist.name;
 
-
                         // Get image from track
                         musicPlayer.getImagesApi()
                                 .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
@@ -319,41 +318,31 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 });
     }
 
-    private void pauseSong() {
-
-        musicPlayer.getPlayerApi().pause();
-    }
-
     private void onNextSongButtonTapped() {
         // cycle through albumCoverImages
 
         // GUARD
         if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
             return;
+        } else {
+            songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
         }
 
-        musicPlayer.getPlayerApi().skipNext();
-
-        songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
-
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
+        musicPlayer.getPlayerApi().skipNext();
     }
 
     private void onPreviousSongButtonTapped() {
 
-        // reset current song on single tap
-        // play previous song on double tap
-
         // GUARD
         if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
             return;
+        } else {
+            songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
         }
 
-        musicPlayer.getPlayerApi().skipPrevious();
-
-        songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
-
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
+        musicPlayer.getPlayerApi().skipPrevious();
     }
 
     private void presentChartsActivity() {
