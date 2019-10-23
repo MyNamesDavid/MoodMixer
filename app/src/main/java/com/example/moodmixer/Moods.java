@@ -1,6 +1,7 @@
 package com.example.moodmixer;
 
 
+import java.util.Arrays;
 
 public class Moods {
 
@@ -17,9 +18,11 @@ public class Moods {
             for (int i = 0; i < WEEK_MOODS - 1; i++) {
                 mood[i] = mood[i + 1];
             }
+            this.mood[counter] = currentMood;
+        } else {
+            this.mood[counter] = currentMood;
+            counter++;
         }
-        this.mood[counter] = currentMood;
-        counter++;
     }
 
     public char getCurrentEmoji(){
@@ -37,6 +40,6 @@ public class Moods {
 
 
     public String showMoods(){
-        return "";
+        return Arrays.toString(mood);
     }
 }

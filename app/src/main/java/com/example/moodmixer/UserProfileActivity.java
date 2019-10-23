@@ -65,6 +65,12 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
+    private void openPastMoodActivity() {
+
+        Intent intent = new Intent(this, PastMoodsActivity.class);
+        startActivity(intent);
+    }
+
     private void openPlaylistActivity() {
 
         Intent intent = new Intent(this, PlaylistActivity.class);
@@ -102,7 +108,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
-                toastMessage("Currently Happy - Joyful music");
+
             }
         });
     }
