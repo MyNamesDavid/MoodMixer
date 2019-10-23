@@ -60,6 +60,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_user_profile);
 
+        setUpWeatherImageButton();
+
 
     }
 
@@ -104,6 +106,8 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void openUserProfileActivity() {
 
