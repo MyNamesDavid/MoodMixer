@@ -3,8 +3,12 @@ package com.example.moodmixer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -21,7 +25,16 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
+import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.ImageUri;
 import com.spotify.protocol.types.Track;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
@@ -106,6 +119,23 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        setUpConnectionToSpotify();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SpotifyAppRemote.disconnect(musicPlayer);
+    }
+
+    // MARK: Setup
+
+    /**
+     * Set Up Bottom Tab Bar Navigation Item
+     */
+
+    private void setUpConnectionToSpotify() {
         if (SpotifyAppRemote.isSpotifyInstalled(this)) {
 
             ConnectionParams connectionParams =
@@ -134,19 +164,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
             Log.d(TAG, "Requirement: Spotify must be installed on device with a premium membership");
         }
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        SpotifyAppRemote.disconnect(musicPlayer);
-    }
-
-    // MARK: Setup
-
-    /**
-     * Set Up Bottom Tab Bar Navigation Item
-     */
 
     private void setUpTabBarController() {
 
@@ -288,7 +305,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         trackName = track.name;
                         trackArtist = track.artist.name;
+
+
+                        // Get image from track
+                        musicPlayer.getImagesApi()
+                                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
+                                .setResultCallback(bitmap -> {
+                                    albumCoverImageView.setImageBitmap(bitmap);
+//                                    mImageLabel.setText(String.format(Locale.ENGLISH, "%d x %d", bitmap.getWidth(), bitmap.getHeight()));
+                                });
                     }
+
                 });
     }
 
