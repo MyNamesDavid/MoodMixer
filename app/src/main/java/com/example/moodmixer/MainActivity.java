@@ -2,8 +2,11 @@ package com.example.moodmixer;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.PopupMenu;
 
-import com.example.moodmixer.dummy.DummyContent;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,13 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     }
 
+
+
     @Override
-    public void onListFragmentInteraction(DummyContent.Songs item) {
+    public void onSongListFragmentInteraction(Songs item) {
+
 
     }
+
+
 }

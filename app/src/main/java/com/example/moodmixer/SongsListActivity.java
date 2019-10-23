@@ -125,9 +125,9 @@ public class SongsListActivity extends AppCompatActivity implements PopupMenu.On
 
     private void populateSongsList(){
         //Construct data source
-        ArrayList<Songs> songsArray = Songs.getSongs();
+        //ArrayList<Songs> songsArray = Songs.getSongs();
         //Create adapter
-        SongListAdapter songAdapter = new SongListAdapter(this,songsArray);
+        //SongListAdapter songAdapter = new SongListAdapter(this,songsArray);
         //attatch Data to listView
         //ListView songListView = (ListView) findViewById(R.id.songs_list);
         //songListView.setAdapter(songAdapter);
