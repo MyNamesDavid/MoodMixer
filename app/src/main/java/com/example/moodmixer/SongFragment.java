@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnSongListFragmentInteractionListener}
  * interface.
  */
 public class SongFragment extends Fragment {
@@ -29,7 +29,7 @@ public class SongFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnSongListFragmentInteractionListener mSongListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -71,7 +71,7 @@ public class SongFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySongRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MySongRecyclerViewAdapter(DummyContent.ITEMS, mSongListener));
         }
         return view;
     }
@@ -80,18 +80,18 @@ public class SongFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnSongListFragmentInteractionListener) {
+            mSongListener = (OnSongListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnSongListFragmentInteractionListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mSongListener = null;
     }
 
     /**
@@ -104,7 +104,7 @@ public class SongFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnSongListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Songs item);
     }
