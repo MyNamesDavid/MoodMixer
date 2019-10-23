@@ -27,7 +27,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
 
     private static final String TAG = "MusicPlayerActivity";
     private RelativeLayout moodView;
@@ -47,6 +47,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private int[] albumCoverImages;
     private int songIndex = 0;
     private TabBarController tabBarController;
+    private String trackName;
+    private String trackArtist;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -104,30 +106,33 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
+        if (SpotifyAppRemote.isSpotifyInstalled(this)) {
 
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
+            ConnectionParams connectionParams =
+                    new ConnectionParams.Builder(CLIENT_ID)
+                            .setRedirectUri(REDIRECT_URI)
+                            .showAuthView(true)
+                            .build();
 
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        musicPlayer = spotifyAppRemote;
-                        Log.d(TAG, "Connected! Yay!");
+            SpotifyAppRemote.connect(this, connectionParams,
+                    new Connector.ConnectionListener() {
 
-                        // Now you can start interacting with App Remote
-                    }
+                        @Override
+                        public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                            musicPlayer = spotifyAppRemote;
+                            Log.d(TAG, "Connected! Yay!");
 
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
+                        }
 
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Log.e(TAG, throwable.getMessage(), throwable);
+                            // Default to Local Library If app cannot connect to spotify
+                        }
+                    });
+        } else {
+            Log.d(TAG, "Requirement: Spotify must be installed on device with a premium membership");
+        }
     }
 
     @Override
@@ -172,7 +177,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: nextSongImageButton Tapped");
-                presentNextSong();
+                onNextSongButtonTapped();
                 buttonEffect(nextSongImageButton);
             }
         });
@@ -185,7 +190,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: previousSongImageButton Tapped");
-                presentPreviousSong();
+                onPreviousSongButtonTapped();
                 buttonEffect(previousSongImageButton);
             }
         });
@@ -252,13 +257,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void onPlayPauseButtonTapped() {
         // increment a progress bar
 
-        musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+        // GUARD
+        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+            return;
+        }
 
+
+        musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
             if (playerState.isPaused) {
 //                musicPlayer.getPlayerApi().resume();
                 musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
                 playImageButton.setBackgroundResource(R.drawable.pause_button_clouds);
-
+                subscribeToPlayerState();
 
             } else {
                 musicPlayer.getPlayerApi().pause();
@@ -266,7 +276,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void subscribeToPlayerState() {
         // Subscribe to PlayerState
         musicPlayer.getPlayerApi()
                 .subscribeToPlayerState()
@@ -274,6 +286,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     final Track track = playerState.track;
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        trackName = track.name;
+                        trackArtist = track.artist.name;
                     }
                 });
     }
@@ -283,19 +297,32 @@ public class MusicPlayerActivity extends AppCompatActivity {
         musicPlayer.getPlayerApi().pause();
     }
 
-    private void presentNextSong() {
+    private void onNextSongButtonTapped() {
         // cycle through albumCoverImages
+
+        // GUARD
+        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+            return;
+        }
+
+        musicPlayer.getPlayerApi().skipNext();
 
         songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
 
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
     }
 
-    private void presentPreviousSong() {
-        // cycle through albumCoverImages
+    private void onPreviousSongButtonTapped() {
 
         // reset current song on single tap
         // play previous song on double tap
+
+        // GUARD
+        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+            return;
+        }
+
+        musicPlayer.getPlayerApi().skipPrevious();
 
         songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
 
