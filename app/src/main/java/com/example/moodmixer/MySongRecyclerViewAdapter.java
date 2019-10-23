@@ -7,24 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.moodmixer.SongFragment.OnListFragmentInteractionListener;
+import com.example.moodmixer.SongFragment.OnSongListFragmentInteractionListener;
 import com.example.moodmixer.dummy.DummyContent.Songs;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Songs} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link OnSongListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecyclerViewAdapter.ViewHolder> {
 
     private final List<Songs> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnSongListFragmentInteractionListener mSongListener;
 
-    public MySongRecyclerViewAdapter(List<Songs> items, OnListFragmentInteractionListener listener) {
+    public MySongRecyclerViewAdapter(List<Songs> items, OnSongListFragmentInteractionListener listener) {
         mValues = items;
-        mListener = listener;
+        mSongListener = listener;
     }
 
     @Override
@@ -43,10 +43,10 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
+                if (null != mSongListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mSongListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
