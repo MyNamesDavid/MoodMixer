@@ -32,6 +32,8 @@ public class SongsListActivity extends AppCompatActivity implements PopupMenu.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_songs_list);
 
+
+
         //Code for bottom navigation view
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_songlist);
