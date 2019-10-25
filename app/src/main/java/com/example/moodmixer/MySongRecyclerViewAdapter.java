@@ -3,11 +3,14 @@ package com.example.moodmixer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -15,10 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moodmixer.SongFragment.OnSongListFragmentInteractionListener;
+import com.example.moodmixer.dummy.DummyContent;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.Track;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.Metadata;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Songs} and makes a call to the
@@ -32,6 +41,14 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
     private final List<Songs> mValues;
     private final OnSongListFragmentInteractionListener mSongListener;
 
+    SharedPreferences sharedpreferences;
+    private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
+    private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+    private Songs tracks;
+    private String trackName;
+    private String trackArtist;
+
 
     public MySongRecyclerViewAdapter(List<Songs> items, OnSongListFragmentInteractionListener listener, Context mCtx) {
         mValues = items;
@@ -43,11 +60,30 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_song, parent, false);
+
+
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
+        // Subscribe to PlayerState
+        musicPlayer.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        trackName = track.name;
+                        trackArtist = track.artist.name;
+                    }
+
+                });
+
+        mValues.set(position, tracks).setSongName(trackName);
+        mValues.set(position, tracks).setSongArtist(trackArtist);
         holder.mItem = mValues.get(position);
         holder.mSongNameView.setText(mValues.get(position).songName);
         holder.mArtistNameView.setText(mValues.get(position).songArtistName);
@@ -109,6 +145,11 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         public final ImageButton mPopupView;
         public Songs mItem;
 
+        
+
+
+
+
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -116,14 +157,12 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
             mArtistNameView = (TextView) view.findViewById(R.id.artist_name);
             mAlbumView = (ImageView) view.findViewById(R.id.song_icon);
             mPopupView = (ImageButton) view.findViewById(R.id.song_popup);
-
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mSongNameView.getText() + "'";
+            
         }
     }
 
-
 }
+
+
+
+

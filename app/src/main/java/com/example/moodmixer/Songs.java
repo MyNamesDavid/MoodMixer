@@ -2,6 +2,7 @@ package com.example.moodmixer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,28 +14,28 @@ public class Songs {
     String songName;
     String songGenre;
     String songArtistName;
-    Bitmap songAlbumCover;
-    int id;
+    ImageView songAlbumCover;
+    int songId;
 
 
     private static Songs sSongs;
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist){
+    public Songs(String song, String artist, ImageView albumCover){
         this.songName = song;
         this.songArtistName = artist;
+        this.songAlbumCover = albumCover;
+
     }
 
-
+    public long getID(){return songId;}
     public String getSongName(){
         return songName;
     }
-
     public String getGenre(){
         return songGenre;
     }
-
     public String getSongArtistName(){
         return songArtistName;
     }
@@ -43,9 +44,11 @@ public class Songs {
     public void setSongName(String song) {
         songName = song;
     }
-
     public void setSongGenre(String song) {
         songGenre = song;
+    }
+    public void setSongArtist(String song) {
+        songArtistName = song;
     }
 
 
@@ -53,32 +56,29 @@ public class Songs {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<Songs> ITEMS = new ArrayList<Songs>();
+    public static final List<Songs> SONGS = new ArrayList<Songs>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, Songs> ITEM_MAP = new HashMap<String, Songs>();
+    public static final Map<String, Songs> SONGS_MAP = new HashMap<String, Songs>();
 
     private static final int COUNT = 25;
 
-    static {
-        // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(createSongs(i));
-        }
-    }
+
 
     private static void addItem(Songs item) {
-        ITEMS.add(item);
-        ITEM_MAP.put(item.songName, item);
-        ITEM_MAP.put(item.songArtistName, item);
+        SONGS.add(item);
+        SONGS_MAP.put(item.songName, item);
+        SONGS_MAP.put(item.songArtistName, item);
     }
 
-    private static Songs createSongs(int position) {
-        Songs songs = new Songs("Song" + String.valueOf(position), "Artist " + position);
+    private static Songs createSongs(String trackName, String artistName, ImageView album, int id) {
+        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, album);
         return songs;
     }
+
+
 
 
 }

@@ -34,8 +34,6 @@ import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 public class SongFragment extends Fragment {
 
 
-
-
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
@@ -63,7 +61,6 @@ public class SongFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -88,7 +85,7 @@ public class SongFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySongRecyclerViewAdapter(Songs.ITEMS, mSongListener, context));
+            recyclerView.setAdapter(new MySongRecyclerViewAdapter(Songs.SONGS, mSongListener, context));
         }
         return view;
     }
@@ -125,30 +122,6 @@ public class SongFragment extends Fragment {
         // TODO: Update argument type and name
         void onSongListFragmentInteraction(Songs item);
     }
-
-
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.option_add_to_playlist:
-                return true;
-            case R.id.option_play_next:
-                return true;
-            case R.id.option_play_previous:
-                return true;
-            case R.id.option_song_play:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-
-
 
 
 }
