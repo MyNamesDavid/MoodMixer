@@ -3,6 +3,7 @@ package com.example.moodmixer;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.spotify.protocol.types.Uri;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -10,7 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity /*implements UserProfileFragment.OnFragmentInteractionListener*/ {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    public void onHomepageInteractionListener(Uri uri) {
+
     }
 
 }
