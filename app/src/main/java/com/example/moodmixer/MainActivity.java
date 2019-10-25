@@ -13,7 +13,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+<<<<<<< HEAD
+=======
 
+>>>>>>> dd5084f546009c231049a5a7255731626829e42b
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -50,7 +53,10 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         return super.onSupportNavigateUp();
     }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> dd5084f546009c231049a5a7255731626829e42b
     @Override
     protected void onStart() {
         super.onStart();
@@ -102,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
 
     }
+<<<<<<< HEAD
+    
+=======
 
 
+>>>>>>> dd5084f546009c231049a5a7255731626829e42b
 }
