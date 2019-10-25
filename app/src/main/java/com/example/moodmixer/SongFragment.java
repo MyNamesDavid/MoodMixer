@@ -1,6 +1,7 @@
 package com.example.moodmixer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,14 +9,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
-import com.example.moodmixer.dummy.DummyContent;
-import com.example.moodmixer.dummy.DummyContent.Songs;
 
 import java.util.List;
+
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 /**
  * A fragment representing a list of Items.
@@ -24,6 +32,9 @@ import java.util.List;
  * interface.
  */
 public class SongFragment extends Fragment {
+
+
+
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -52,15 +63,21 @@ public class SongFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_song_list, container, false);
+
+        setHasOptionsMenu(true);
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -71,7 +88,7 @@ public class SongFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySongRecyclerViewAdapter(DummyContent.ITEMS, mSongListener));
+            recyclerView.setAdapter(new MySongRecyclerViewAdapter(Songs.ITEMS, mSongListener, context));
         }
         return view;
     }
@@ -106,8 +123,32 @@ public class SongFragment extends Fragment {
      */
     public interface OnSongListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Songs item);
+        void onSongListFragmentInteraction(Songs item);
     }
+
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_add_to_playlist:
+                return true;
+            case R.id.option_play_next:
+                return true;
+            case R.id.option_play_previous:
+                return true;
+            case R.id.option_song_play:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+
 
 
 }
