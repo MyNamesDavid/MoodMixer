@@ -352,4 +352,5 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         });
     }
+
 }
