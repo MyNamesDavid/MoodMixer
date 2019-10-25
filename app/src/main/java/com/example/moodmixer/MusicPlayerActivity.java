@@ -278,6 +278,5 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 120);
-        toast.show();
-    }
+        toast.show(git
 }
