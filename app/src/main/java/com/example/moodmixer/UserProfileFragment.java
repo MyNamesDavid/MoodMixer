@@ -49,8 +49,8 @@ public class UserProfileFragment extends Fragment {
      * @return A new instance of fragment MusicPlayerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MusicPlayerFragment newInstance(String param1, String param2) {
-        MusicPlayerFragment fragment = new MusicPlayerFragment();
+    public static UserProfileFragment newInstance(String param1, String param2) {
+        UserProfileFragment fragment = new UserProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
