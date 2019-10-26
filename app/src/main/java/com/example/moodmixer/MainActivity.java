@@ -27,6 +27,15 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
 
+
+    private static final String TRACK_URI = "spotify:track:4IWZsfEkaK49itBwCTFDXQ";
+    private static final String ALBUM_URI = "spotify:album:4nZ5wPL5XxSY2OuDgbnYdc";
+    private static final String ARTIST_URI = "spotify:artist:3WrFJ7ztbogyGnTHbHJFl2";
+    private static final String PLAYLIST_URI = "spotify:playlist:37i9dQZEVXbMDoHDwVN2tF";
+    private static final String PODCAST_URI = "spotify:show:2tgPYIeGErjk6irHRhk9kj";
+
+    private static SpotifyAppRemote mSpotifyAppRemote;
+
     private static final String TAG = "MusicPlayerActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,32 +59,39 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     @Override
     protected void onStart() {
         super.onStart();
-
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
-
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        musicPlayer = spotifyAppRemote;
-                        Log.d(TAG, "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
+        setUpConnectionToSpotify();
     }
+
+    private void setUpConnectionToSpotify() {
+        if (SpotifyAppRemote.isSpotifyInstalled(this)) {
+
+            ConnectionParams connectionParams =
+                    new ConnectionParams.Builder(CLIENT_ID)
+                            .setRedirectUri(REDIRECT_URI)
+                            .showAuthView(true)
+                            .build();
+
+            SpotifyAppRemote.connect(this, connectionParams,
+                    new Connector.ConnectionListener() {
+
+                        @Override
+                        public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                            musicPlayer = spotifyAppRemote;
+                            Log.d(TAG, "Connected! Yay!");
+                            connected();
+                        }
+
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Log.e(TAG, throwable.getMessage(), throwable);
+                            // Default to Local Library If app cannot connect to spotify
+                        }
+                    });
+        } else {
+            Log.d(TAG, "Requirement: Spotify must be installed on device with a premium membership");
+        }
+    }
+
 
     @Override
     protected void onStop() {
