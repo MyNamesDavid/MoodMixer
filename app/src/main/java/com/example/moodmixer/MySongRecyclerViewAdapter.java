@@ -114,11 +114,11 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
                             case R.id.option_play_next:
                                 return true;
                             case R.id.option_play_previous:
-                                musicPlayer.getPlayerApi().play
+                               // musicPlayer.getPlayerApi().play
                                 return true;
                             case R.id.option_song_play:
                                 musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-                                    musicPlayer.getPlayerApi().play(SONG_ID);
+                                   // musicPlayer.getPlayerApi().play(SONG_ID);
                                     subscribeToPlayerState();
                                 });
                                 return true;
