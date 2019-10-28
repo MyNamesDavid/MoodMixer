@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.MotionEvent;
 
@@ -86,8 +87,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private int[] albumCoverImages;
     private int songIndex = 0;
     private TabBarController tabBarController;
-    private String trackName;
-    private String trackArtist;
+
+    private TextView songNameTextView;
+    private TextView songArtistTextView;
+    private String songName;
+    private String songArtist;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -139,6 +143,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUpAlbumCoverCollection();
         setUpMoodViews();
         setUserProfileImageButton();
+        setUpSongNameTextView();
+        setUpSongArtistTextView();
     }
 
     @Override
@@ -327,6 +333,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
         moodView.setVisibility(View.INVISIBLE);
     }
 
+    private void setUpSongNameTextView() {
+        songNameTextView = findViewById(R.id.songname_textview);
+    }
+
+    private void setUpSongArtistTextView() {
+        songNameTextView = findViewById(R.id.songartist_textview);
+    }
+
     // MARK: Actions
 
     private void onPlayPauseButtonTapped() {
@@ -361,15 +375,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     final Track track = playerState.track;
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        trackName = track.name;
-                        trackArtist = track.artist.name;
+                        songName = track.name;
+                        songArtist = track.artist.name;
+
+                        songNameTextView.setText(songName);
+                        songArtistTextView.setText(songArtist);
 
                         // Get image from track
                         musicPlayer.getImagesApi()
                                 .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
                                 .setResultCallback(bitmap -> {
                                     albumCoverImageView.setImageBitmap(bitmap);
-//                                    mImageLabel.setText(String.format(Locale.ENGLISH, "%d x %d", bitmap.getWidth(), bitmap.getHeight()));
                                 });
                     }
 
