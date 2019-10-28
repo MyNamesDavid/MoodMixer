@@ -21,5 +21,19 @@
         android:layout_height="50dp"
         app:srcCompat="@drawable/default_song_image_view" />
 
+    <ImageButton
+        android:id="@+id/song_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
+        android:background="?android:selectableItemBackground"
+        app:srcCompat="@drawable/song_popup_icon"
+        android:onClick="showPopupPlease"/>
+
 
 </RelativeLayout>

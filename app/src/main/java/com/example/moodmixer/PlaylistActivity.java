@@ -30,7 +30,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
 
         //Code for populating the playlist
-        populatePlaylist();
+        //populatePlaylist();
 
         //Code for Floating action button
         floatingActionButtonPlaylist =
@@ -93,14 +93,5 @@ public class PlaylistActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void populatePlaylist(){
-        //Construct data source
-        ArrayList<Playlists> playlistsArray = Playlists.getPlaylists();
-        //Create adapter
-        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this,playlistsArray);
-        //attatch Data to listView
-        ListView playlistListView = (ListView) findViewById(R.id.list_of_playlists);
-        playlistListView.setAdapter(playlistAdapter);
 
-    }
 }

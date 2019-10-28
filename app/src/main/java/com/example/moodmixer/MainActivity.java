@@ -2,16 +2,28 @@ package com.example.moodmixer;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.PopupMenu;
 
 
+import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.android.appremote.api.error.AuthenticationFailedException;
+import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
+import com.spotify.android.appremote.api.error.LoggedOutException;
+import com.spotify.android.appremote.api.error.NotLoggedInException;
+import com.spotify.android.appremote.api.error.OfflineModeException;
+import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
+import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
+import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
+import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
+import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
 import com.spotify.protocol.types.Track;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,22 +33,80 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener {
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import android.view.MotionEvent;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.ImageUri;
+import com.spotify.protocol.types.Track;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.ContentApi;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.android.appremote.api.error.AuthenticationFailedException;
+import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
+import com.spotify.android.appremote.api.error.LoggedOutException;
+import com.spotify.android.appremote.api.error.NotLoggedInException;
+import com.spotify.android.appremote.api.error.OfflineModeException;
+import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
+import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
+import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
+import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
+import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
+import com.spotify.protocol.client.ErrorCallback;
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.Capabilities;
+import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.ListItem;
+import com.spotify.protocol.types.PlaybackSpeed;
+import com.spotify.protocol.types.PlayerContext;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Repeat;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+
+
+public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener
+        , PlaylistFragment.OnPlaylistFragmentInteractionListener
+{
+
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
-    private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer/callback";
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+    private static final String REDIRECT_URI = "com.example.moodmixer://callback";
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
 
+    private static final String TAG = "MainActivity";
 
-    private static final String TRACK_URI = "spotify:track:4IWZsfEkaK49itBwCTFDXQ";
-    private static final String ALBUM_URI = "spotify:album:4nZ5wPL5XxSY2OuDgbnYdc";
-    private static final String ARTIST_URI = "spotify:artist:3WrFJ7ztbogyGnTHbHJFl2";
-    private static final String PLAYLIST_URI = "spotify:playlist:37i9dQZEVXbMDoHDwVN2tF";
-    private static final String PODCAST_URI = "spotify:show:2tgPYIeGErjk6irHRhk9kj";
-
-    private static SpotifyAppRemote mSpotifyAppRemote;
-
-    private static final String TAG = "MusicPlayerActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +129,20 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     @Override
     protected void onStart() {
         super.onStart();
+
+        String message = String.format("Package Name: %s\n ", this.getPackageName());
+        Log.d(TAG, message );
+
         setUpConnectionToSpotify();
     }
 
+    private void logError(Throwable throwable, String msg) {
+        Toast.makeText(this, "Error: " + msg, Toast.LENGTH_SHORT).show();
+        Log.e(TAG, msg, throwable);
+    }
+
     private void setUpConnectionToSpotify() {
+
         if (SpotifyAppRemote.isSpotifyInstalled(this)) {
 
             ConnectionParams connectionParams =
@@ -78,13 +158,36 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
                             Log.d(TAG, "Connected! Yay!");
-                            connected();
                         }
 
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Log.e(TAG, throwable.getMessage(), throwable);
-                            // Default to Local Library If app cannot connect to spotify
+                        public void onFailure(Throwable error) {
+                            if (error instanceof SpotifyRemoteServiceException) {
+                                if (error.getCause() instanceof SecurityException) {
+                                    logError(error, "SecurityException");
+                                } else if (error.getCause() instanceof IllegalStateException) {
+                                    logError(error, "IllegalStateException");
+                                }
+                            } else if (error instanceof NotLoggedInException) {
+                                logError(error, "NotLoggedInException");
+                            } else if (error instanceof AuthenticationFailedException) {
+                                logError(error, "AuthenticationFailedException");
+                            } else if (error instanceof CouldNotFindSpotifyApp) {
+                                logError(error, "CouldNotFindSpotifyApp");
+                            } else if (error instanceof LoggedOutException) {
+                                logError(error, "LoggedOutException");
+                            } else if (error instanceof OfflineModeException) {
+                                logError(error, "OfflineModeException");
+                            } else if (error instanceof UserNotAuthorizedException) {
+                                logError(error, "UserNotAuthorizedException");
+                            } else if (error instanceof UnsupportedFeatureVersionException) {
+                                logError(error, "UnsupportedFeatureVersionException");
+                            } else if (error instanceof SpotifyDisconnectedException) {
+                                logError(error, "SpotifyDisconnectedException");
+                            } else if (error instanceof SpotifyConnectionTerminatedException) {
+                                logError(error, "SpotifyConnectionTerminatedException");
+                            } else {
+                                logError(error, String.format("Connection failed: %s", error));
+                            }
                         }
                     });
         } else {
@@ -92,27 +195,11 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         }
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
 
         SpotifyAppRemote.disconnect(musicPlayer);
-    }
-
-    private void connected() {
-        // Play a playlist
-        musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-
-        // Subscribe to PlayerState
-        musicPlayer.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                    }
-                });
     }
 
 
@@ -131,5 +218,8 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     }
 
 
+    @Override
+    public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
 
+    }
 }

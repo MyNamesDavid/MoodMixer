@@ -2,29 +2,35 @@ package com.example.moodmixer;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.example.moodmixer.PlaylistFragment.OnListFragmentInteractionListener;
+import com.example.moodmixer.PlaylistFragment.OnPlaylistFragmentInteractionListener;
 import com.example.moodmixer.dummy.DummyContent.Songs;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Songs} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link PlaylistFragment.OnPlaylistFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
     private final List<Songs> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final PlaylistFragment.OnPlaylistFragmentInteractionListener mListener;
+    private Context mCtx;
 
-    public MyPlaylistRecyclerViewAdapter(List<Songs> items, OnListFragmentInteractionListener listener) {
+    public MyPlaylistRecyclerViewAdapter(List<Songs> items, PlaylistFragment.OnPlaylistFragmentInteractionListener listener, Context mCtx) {
         mValues = items;
         mListener = listener;
+        this.mCtx = mCtx;
     }
 
     @Override
@@ -37,7 +43,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
+        //holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -46,8 +52,34 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onPlaylistFragmentInteraction(holder.mItem);
                 }
+            }
+        });
+
+        holder.mPopupView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(mCtx, holder.mPopupView);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.playlist_option_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.option_song_play_playlist:
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
             }
         });
     }
@@ -59,15 +91,15 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
         public final TextView mContentView;
+        public final ImageButton mPopupView;
         public Songs mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.playlist_name);
+            mPopupView = (ImageButton) view.findViewById(R.id.playlist_popup);
         }
 
         @Override
