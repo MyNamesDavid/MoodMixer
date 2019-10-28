@@ -16,10 +16,11 @@
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <data android:scheme="com.example.spotifyauth" />
+                <data android:scheme="com.example.moodmixer" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LibraryActivity" />
         <activity android:name=".SongsListActivity" />
         <activity android:name=".PlaylistActivity" />
         <activity android:name=".UserProfileActivity" />

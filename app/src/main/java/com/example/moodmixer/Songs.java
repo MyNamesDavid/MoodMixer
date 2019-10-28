@@ -14,7 +14,9 @@ public class Songs {
     String songName;
     String songGenre;
     String songArtistName;
+    String SongUrl;
     ImageView songAlbumCover;
+
     int songId;
 
 
@@ -22,10 +24,10 @@ public class Songs {
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist, ImageView albumCover){
+    public Songs(String song, String artist, String url){
         this.songName = song;
         this.songArtistName = artist;
-        this.songAlbumCover = albumCover;
+        this.SongUrl = url;
 
     }
 
@@ -36,9 +38,8 @@ public class Songs {
     public String getGenre(){
         return songGenre;
     }
-    public String getSongArtistName(){
-        return songArtistName;
-    }
+    public String getSongArtistName(){ return songArtistName; }
+    public String getSongUrl() { return SongUrl; }
 
 
     public void setSongName(String song) {
@@ -50,6 +51,8 @@ public class Songs {
     public void setSongArtist(String song) {
         songArtistName = song;
     }
+    public void setSongUrl(String songUrl) { SongUrl = songUrl; }
+
 
 
 
@@ -73,10 +76,11 @@ public class Songs {
         SONGS_MAP.put(item.songArtistName, item);
     }
 
-    private static Songs createSongs(String trackName, String artistName, ImageView album, int id) {
-        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, album);
-        return songs;
-    }
+  //  private static Songs createSongs(String trackName, String artistName, ImageView album, int id) {
+        //Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, album);
+        //return songs;
+    //}
+
 
 
 

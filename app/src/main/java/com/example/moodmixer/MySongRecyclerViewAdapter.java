@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import com.example.moodmixer.SongFragment.OnSongListFragmentInteractionListener;
 import com.example.moodmixer.dummy.DummyContent;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.Item;
 import com.spotify.protocol.types.Track;
 
 
@@ -48,6 +50,9 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
     private Songs tracks;
     private String trackName;
     private String trackArtist;
+    private ImageView trackAlbumCover;
+    String songId;
+
 
 
     public MySongRecyclerViewAdapter(List<Songs> items, OnSongListFragmentInteractionListener listener, Context mCtx) {
@@ -56,12 +61,11 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         this.mCtx = mCtx;
     }
 
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_song, parent, false);
-
-
 
         return new ViewHolder(view);
     }
@@ -69,24 +73,10 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        // Subscribe to PlayerState
-        musicPlayer.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        trackName = track.name;
-                        trackArtist = track.artist.name;
-                    }
-
-                });
-
-        mValues.set(position, tracks).setSongName(trackName);
-        mValues.set(position, tracks).setSongArtist(trackArtist);
         holder.mItem = mValues.get(position);
         holder.mSongNameView.setText(mValues.get(position).songName);
         holder.mArtistNameView.setText(mValues.get(position).songArtistName);
+        //holder.mAlbumView.setId(mValues.get(position).songAlbumCover);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +94,7 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
             public void onClick(View view) {
 
                 //creating a popup menu
-                PopupMenu popup = new PopupMenu(mCtx, holder.mAlbumView);
+                PopupMenu popup = new PopupMenu(mCtx, holder.mPopupView);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.song_option_menu);
                 //adding click listener
@@ -115,10 +105,22 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
                             case R.id.option_add_to_playlist:
                                 return true;
                             case R.id.option_play_next:
+                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+                                    musicPlayer.getPlayerApi().skipNext();
+                                    subscribeToPlayerState();
+                                });
                                 return true;
                             case R.id.option_play_previous:
+                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+                                    musicPlayer.getPlayerApi().skipPrevious();
+                                    subscribeToPlayerState();
+                                });
                                 return true;
                             case R.id.option_song_play:
+                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+                                        musicPlayer.getPlayerApi().play(songId);
+                                        subscribeToPlayerState();
+                                });
                                 return true;
                             default:
                                 return false;
@@ -145,11 +147,6 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         public final ImageButton mPopupView;
         public Songs mItem;
 
-        
-
-
-
-
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -157,8 +154,30 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
             mArtistNameView = (TextView) view.findViewById(R.id.artist_name);
             mAlbumView = (ImageView) view.findViewById(R.id.song_icon);
             mPopupView = (ImageButton) view.findViewById(R.id.song_popup);
-            
         }
+    }
+
+    private void subscribeToPlayerState() {
+        // Subscribe to PlayerState
+        musicPlayer.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        trackName = track.name;
+                        trackArtist = track.artist.name;
+
+                        // Get image from track
+                        musicPlayer.getImagesApi()
+                                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
+                                .setResultCallback(bitmap -> {
+                                    trackAlbumCover.setImageBitmap(bitmap);
+//                                    mImageLabel.setText(String.format(Locale.ENGLISH, "%d x %d", bitmap.getWidth(), bitmap.getHeight()));
+                                });
+                    }
+
+                });
     }
 
 }

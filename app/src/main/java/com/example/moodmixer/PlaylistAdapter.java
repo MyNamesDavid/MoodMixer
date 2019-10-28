@@ -26,9 +26,9 @@ public class PlaylistAdapter extends ArrayAdapter<Playlists> {
         }
 
         //Lookup view for data population
-        TextView playlistName = (TextView) convertView.findViewById(R.id.list_item_playlist_name);
+        //TextView playlistName = (TextView) convertView.findViewById(R.id.list_item_playlist_name);
         //Populate the data
-        playlistName.setText(playlist.playlistName);
+        //playlistName.setText(playlist.playlistName);
         //Return view
         return  convertView;
     }
