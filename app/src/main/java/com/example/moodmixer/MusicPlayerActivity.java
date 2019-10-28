@@ -65,7 +65,7 @@ import java.net.URLConnection;
 public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
-    private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
+    private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
 
     private static final String TAG = "MusicPlayerActivity";

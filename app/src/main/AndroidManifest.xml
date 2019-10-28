@@ -10,15 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LibraryActivity"></activity>
-        <activity android:name=".ChooseLibraryActivity" />
         <activity android:name=".SongsListActivity" />
         <activity android:name=".PlaylistActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".MusicPlayerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="com.example.moodmixer" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
     </application>
