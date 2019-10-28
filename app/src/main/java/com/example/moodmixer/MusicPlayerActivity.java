@@ -29,6 +29,12 @@ import com.spotify.protocol.types.Image;
 import com.spotify.protocol.types.ImageUri;
 import com.spotify.protocol.types.Track;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.ContentApi;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.android.appremote.api.error.AuthenticationFailedException;
 import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
 import com.spotify.android.appremote.api.error.LoggedOutException;
@@ -39,6 +45,15 @@ import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
 import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
 import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
 import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
+import com.spotify.protocol.client.ErrorCallback;
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.Capabilities;
+import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.ListItem;
+import com.spotify.protocol.types.PlaybackSpeed;
+import com.spotify.protocol.types.PlayerContext;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Repeat;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -129,6 +144,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        String message = String.format("Package Name: %s\n ", this.getPackageName());
+        Log.d(TAG, message );
 
         setUpConnectionToSpotify();
     }
