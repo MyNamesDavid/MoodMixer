@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Desktop-MoodMixer.iml" filepath="$PROJECT_DIR$/Desktop-MoodMixer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MoodMixApp-MoodMixer.iml" filepath="$PROJECT_DIR$/MoodMixApp-MoodMixer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MoodMixer.iml" filepath="$PROJECT_DIR$/MoodMixer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MoodMixer.iml" filepath="$PROJECT_DIR$/.idea/MoodMixer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/spotify-app-remote-release-0.6.3/spotify-app-remote-release-0.6.3.iml" filepath="$PROJECT_DIR$/spotify-app-remote-release-0.6.3/spotify-app-remote-release-0.6.3.iml" />
     </modules>
