@@ -170,11 +170,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
      * Set Up Bottom Tab Bar Navigation Item
      */
 
-    private void logError(Throwable throwable, String msg) {
-        Toast.makeText(this, "Error: " + msg, Toast.LENGTH_SHORT).show();
-        Log.e(TAG, msg, throwable);
-    }
-
     private void setUpConnectionToSpotify() {
 
         if (SpotifyAppRemote.isSpotifyInstalled(this)) {
@@ -400,6 +395,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             return;
         } else {
             songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
+            toastMessage("error - Spotify Not Connected");
         }
 
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
@@ -413,6 +409,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             return;
         } else {
             songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
+            toastMessage("error - Spotify Not Connected");
         }
 
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
@@ -443,6 +440,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 120);
         toast.show();
+    }
+
+    private void logError(Throwable throwable, String msg) {
+        Toast.makeText(this, "Error: " + msg, Toast.LENGTH_SHORT).show();
+        Log.e(TAG, msg, throwable);
     }
 
     // MARK: Static Functions
