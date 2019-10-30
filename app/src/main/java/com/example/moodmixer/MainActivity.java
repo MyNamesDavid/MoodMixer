@@ -102,8 +102,9 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
-    private static final String REDIRECT_URI = "com.example.moodmixer://callback";
+    private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
+
 
     private static final String TAG = "MainActivity";
 
