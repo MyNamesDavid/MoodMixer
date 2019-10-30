@@ -9,10 +9,18 @@ import android.widget.PopupMenu;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+<<<<<<< HEAD
 import com.spotify.protocol.types.Track;
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> dd5084f546009c231049a5a7255731626829e42b
+>>>>>>> 9ebe17d452d09749385e0f8786bf4001754c22e4
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -21,11 +29,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+
 public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener {
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+
 
     private static final String TAG = "MusicPlayerActivity";
     @Override
@@ -47,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         return super.onSupportNavigateUp();
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dd5084f546009c231049a5a7255731626829e42b
     @Override
     protected void onStart() {
         super.onStart();
@@ -113,7 +127,5 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
 
     }
-
-
 
 }
