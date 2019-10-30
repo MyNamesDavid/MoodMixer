@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -22,13 +26,33 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
+import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.ImageUri;
 import com.spotify.protocol.types.Track;
+
+import com.spotify.android.appremote.api.error.AuthenticationFailedException;
+import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
+import com.spotify.android.appremote.api.error.LoggedOutException;
+import com.spotify.android.appremote.api.error.NotLoggedInException;
+import com.spotify.android.appremote.api.error.OfflineModeException;
+import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
+import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
+import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
+import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
+import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
 
     private static final String TAG = "MusicPlayerActivity";
     private RelativeLayout moodView;
@@ -48,6 +72,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private int[] albumCoverImages;
     private int songIndex = 0;
     private TabBarController tabBarController;
+    private String trackName;
+    private String trackArtist;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -110,30 +136,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
-
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        musicPlayer = spotifyAppRemote;
-                        Log.d(TAG, "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
+        setUpConnectionToSpotify();
     }
 
     @Override
@@ -148,6 +151,65 @@ public class MusicPlayerActivity extends AppCompatActivity {
     /**
      * Set Up Bottom Tab Bar Navigation Item
      */
+
+    private void logError(Throwable throwable, String msg) {
+        Toast.makeText(this, "Error: " + msg, Toast.LENGTH_SHORT).show();
+        Log.e(TAG, msg, throwable);
+    }
+
+    private void setUpConnectionToSpotify() {
+
+        if (SpotifyAppRemote.isSpotifyInstalled(this)) {
+
+            ConnectionParams connectionParams =
+                    new ConnectionParams.Builder(CLIENT_ID)
+                            .setRedirectUri(REDIRECT_URI)
+                            .showAuthView(true)
+                            .build();
+
+            SpotifyAppRemote.connect(this, connectionParams,
+                    new Connector.ConnectionListener() {
+
+                        @Override
+                        public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                            musicPlayer = spotifyAppRemote;
+                            Log.d(TAG, "Connected! Yay!");
+                        }
+
+                        public void onFailure(Throwable error) {
+                            if (error instanceof SpotifyRemoteServiceException) {
+                                if (error.getCause() instanceof SecurityException) {
+                                    logError(error, "SecurityException");
+                                } else if (error.getCause() instanceof IllegalStateException) {
+                                    logError(error, "IllegalStateException");
+                                }
+                            } else if (error instanceof NotLoggedInException) {
+                                logError(error, "NotLoggedInException");
+                            } else if (error instanceof AuthenticationFailedException) {
+                                logError(error, "AuthenticationFailedException");
+                            } else if (error instanceof CouldNotFindSpotifyApp) {
+                                logError(error, "CouldNotFindSpotifyApp");
+                            } else if (error instanceof LoggedOutException) {
+                                logError(error, "LoggedOutException");
+                            } else if (error instanceof OfflineModeException) {
+                                logError(error, "OfflineModeException");
+                            } else if (error instanceof UserNotAuthorizedException) {
+                                logError(error, "UserNotAuthorizedException");
+                            } else if (error instanceof UnsupportedFeatureVersionException) {
+                                logError(error, "UnsupportedFeatureVersionException");
+                            } else if (error instanceof SpotifyDisconnectedException) {
+                                logError(error, "SpotifyDisconnectedException");
+                            } else if (error instanceof SpotifyConnectionTerminatedException) {
+                                logError(error, "SpotifyConnectionTerminatedException");
+                            } else {
+                                logError(error, String.format("Connection failed: %s", error));
+                            }
+                        }
+                    });
+        } else {
+            Log.d(TAG, "Requirement: Spotify must be installed on device with a premium membership");
+        }
+    }
 
     private void setUpTabBarController() {
 
@@ -178,7 +240,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: nextSongImageButton Tapped");
-                presentNextSong();
+                onNextSongButtonTapped();
                 buttonEffect(nextSongImageButton);
             }
         });
@@ -191,7 +253,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: previousSongImageButton Tapped");
-                presentPreviousSong();
+                onPreviousSongButtonTapped();
                 buttonEffect(previousSongImageButton);
             }
         });
@@ -258,17 +320,28 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void onPlayPauseButtonTapped() {
         // increment a progress bar
 
+        // GUARD
+        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+            return;
+        }
+
+//        musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+
         musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
 
             if (playerState.isPaused) {
-//                musicPlayer.getPlayerApi().resume();
-                musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+                musicPlayer.getPlayerApi().resume();
+                playImageButton.setBackgroundResource(R.drawable.pause_button_clouds);
+                subscribeToPlayerState();
 
             } else {
                 musicPlayer.getPlayerApi().pause();
+                playImageButton.setBackgroundResource(R.drawable.play_button_clouds);
             }
         });
+    }
 
+    private void subscribeToPlayerState() {
         // Subscribe to PlayerState
         musicPlayer.getPlayerApi()
                 .subscribeToPlayerState()
@@ -276,32 +349,46 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     final Track track = playerState.track;
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        trackName = track.name;
+                        trackArtist = track.artist.name;
+
+                        // Get image from track
+                        musicPlayer.getImagesApi()
+                                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
+                                .setResultCallback(bitmap -> {
+                                    albumCoverImageView.setImageBitmap(bitmap);
+//                                    mImageLabel.setText(String.format(Locale.ENGLISH, "%d x %d", bitmap.getWidth(), bitmap.getHeight()));
+                                });
                     }
+
                 });
     }
 
-    private void pauseSong() {
-
-        musicPlayer.getPlayerApi().pause();
-    }
-
-    private void presentNextSong() {
+    private void onNextSongButtonTapped() {
         // cycle through albumCoverImages
 
-        songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
+        // GUARD
+        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+            return;
+        } else {
+            songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
+        }
 
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
+        musicPlayer.getPlayerApi().skipNext();
     }
 
-    private void presentPreviousSong() {
-        // cycle through albumCoverImages
+    private void onPreviousSongButtonTapped() {
 
-        // reset current song on single tap
-        // play previous song on double tap
-
-        songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
+        // GUARD
+        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+            return;
+        } else {
+            songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
+        }
 
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
+        musicPlayer.getPlayerApi().skipPrevious();
     }
 
     private void presentChartsActivity() {
