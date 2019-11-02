@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfileFragment">
 
-</LinearLayout>
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/song_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/song_icon"
+        android:padding="4dp"
+        android:textStyle="bold"
+        android:text="@string/song_name"
+        />
+
+        <com.weiwangc.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/genre_select_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Genre"
+            android:textColorHint="#05ab9a"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="38dp"
+
+
+            />
+
+</FrameLayout>

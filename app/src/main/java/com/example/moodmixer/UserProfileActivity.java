@@ -62,6 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         setUpWeatherImageButton();
 
+        setUpMoodImageButton();
 
     }
 
@@ -108,6 +109,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
+                openPastMoodActivity();
 
             }
         });
