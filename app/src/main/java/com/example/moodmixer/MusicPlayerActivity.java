@@ -330,10 +330,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpSongNameTextView() {
         songNameTextView = findViewById(R.id.songname_textview);
+        songNameTextView.setVisibility(View.VISIBLE);
     }
 
     private void setUpSongArtistTextView() {
-        songNameTextView = findViewById(R.id.songartist_textview);
+        songArtistTextView = findViewById(R.id.songartist_textview);
+        songArtistTextView.setVisibility(View.VISIBLE);
     }
 
     // MARK: Actions
@@ -395,7 +397,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             return;
         } else {
             songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
-            toastMessage("error - Spotify Not Connected");
+//            toastMessage("error - Spotify Not Connected");
         }
 
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
@@ -409,7 +411,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             return;
         } else {
             songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
-            toastMessage("error - Spotify Not Connected");
+//            toastMessage("error - Spotify Not Connected");
         }
 
         albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
