@@ -153,9 +153,6 @@ public class MusicPlayerFragment extends Fragment {
         setUpSongNameTextView(rootView);
         setUpSongArtistTextView(rootView);
 
-        backgroundView = rootView.findViewById(R.id.background_blueblackgradient);
-
-
         return rootView;
     }
 
@@ -416,13 +413,12 @@ public class MusicPlayerFragment extends Fragment {
 
         // GUARD
         if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
-            return;
-        } else {
             songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
+            albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
 //            toastMessage("error - Spotify Not Connected");
+            return;
         }
 
-        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
         musicPlayer.getPlayerApi().skipNext();
     }
 
@@ -430,13 +426,12 @@ public class MusicPlayerFragment extends Fragment {
 
         // GUARD
         if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
-            return;
-        } else {
             songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
-//            toastMessage("error - Spotify Not Connected");
+            albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
+            //            toastMessage("error - Spotify Not Connected");
+            return;
         }
 
-        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
         musicPlayer.getPlayerApi().skipPrevious();
     }
 
