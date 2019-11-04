@@ -94,6 +94,7 @@ public class MusicPlayerFragment extends Fragment {
     private ImageButton weatherImageButton;
     private ImageButton userProfileImageButton;
     private ImageView albumCoverImageView;
+    private ImageView backgroundView;
     private int[] albumCoverImages;
     private int songIndex = 0;
     private TabBarController tabBarController;
@@ -161,7 +162,7 @@ public class MusicPlayerFragment extends Fragment {
 
         String appPackageName = (getContext().getPackageName() == null) ? ("package is null") : (getContext().getPackageName());
         String message = String.format("Package Name: %s\n ", appPackageName);
-        Log.d(TAG, message );
+        Log.d(TAG, message);
 
         setUpConnectionToSpotify();
     }
@@ -412,13 +413,12 @@ public class MusicPlayerFragment extends Fragment {
 
         // GUARD
         if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
-            return;
-        } else {
             songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
+            albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
 //            toastMessage("error - Spotify Not Connected");
+            return;
         }
 
-        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
         musicPlayer.getPlayerApi().skipNext();
     }
 
@@ -426,13 +426,12 @@ public class MusicPlayerFragment extends Fragment {
 
         // GUARD
         if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
-            return;
-        } else {
             songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
-//            toastMessage("error - Spotify Not Connected");
+            albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
+            //            toastMessage("error - Spotify Not Connected");
+            return;
         }
 
-        albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
         musicPlayer.getPlayerApi().skipPrevious();
     }
 
@@ -456,7 +455,6 @@ public class MusicPlayerFragment extends Fragment {
     // MARK: Messages
 
     private void toastMessage(String message) {
-
 
 
         Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);

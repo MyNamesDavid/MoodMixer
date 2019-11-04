@@ -15,11 +15,4 @@ public class Playlists {
     }
 
 
-    public static ArrayList<Playlists> getPlaylists(){
-        ArrayList<Playlists> playlists = new ArrayList<Playlists>();
-        for(int i = 0; i < 20; i++){
-            playlists.add(new Playlists("Generic playlist name " + String.valueOf(i)));
-        }
-        return playlists;
-    }
 }

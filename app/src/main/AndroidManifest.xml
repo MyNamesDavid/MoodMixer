@@ -23,7 +23,6 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".LibraryActivity" />
         <activity android:name=".SongsListActivity" />
         <activity android:name=".PlaylistActivity" />
         <activity android:name=".UserProfileActivity" />
