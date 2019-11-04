@@ -16,6 +16,7 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -24,7 +25,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
-public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
+        SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener{
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "https://elliottdiaz1.wixsite.com/moodmixer";
@@ -118,5 +120,11 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
 
     }
+
+    @Override
+    public void onProfileFragmentInteraction(Profile button){
+
+    }
+
 
 }
