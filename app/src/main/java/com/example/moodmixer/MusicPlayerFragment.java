@@ -153,9 +153,6 @@ public class MusicPlayerFragment extends Fragment {
         setUpSongNameTextView(rootView);
         setUpSongArtistTextView(rootView);
 
-        backgroundView = rootView.findViewById(R.id.background_blueblackgradient);
-
-
         return rootView;
     }
 
