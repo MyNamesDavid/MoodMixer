@@ -65,10 +65,8 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     Toolbar toolbar;
 
-    private static final String TAG = "MusicPlayerActivity";
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
     private Songs tracks;
     private String trackName;
     private String trackArtist;
