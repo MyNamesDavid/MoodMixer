@@ -1,8 +1,10 @@
 package com.example.moodmixer;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+
 public class Settings extends AppCompatActivity {
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
@@ -30,8 +33,25 @@ public class Settings extends AppCompatActivity {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
                 (this,android.R.layout.simple_dropdown_item_1line,genre);
-        MaterialBetterSpinner betterSpinner = (MaterialBetterSpinner)findViewById(R.id.genre_select_one);
-        betterSpinner.setAdapter(arrayAdapter);
+        MaterialBetterSpinner betterSpinnerOne = (MaterialBetterSpinner)findViewById(R.id.genre_select_one);
+        MaterialBetterSpinner betterSpinnerTwo = (MaterialBetterSpinner)findViewById(R.id.genre_select_two);
+        MaterialBetterSpinner betterSpinnerThree = (MaterialBetterSpinner)findViewById(R.id.genre_select_three);
+        MaterialBetterSpinner betterSpinnerFour = (MaterialBetterSpinner)findViewById(R.id.genre_select_four);
+        betterSpinnerOne.setAdapter(arrayAdapter);
+        betterSpinnerTwo.setAdapter(arrayAdapter);
+        betterSpinnerThree.setAdapter(arrayAdapter);
+        betterSpinnerFour.setAdapter(arrayAdapter);
+        betterSpinnerOne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedServer = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     public void saveGenreSettings(View view) {
@@ -51,6 +71,10 @@ public class Settings extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void loadSavedGenreSettings(){
 
     }
 
