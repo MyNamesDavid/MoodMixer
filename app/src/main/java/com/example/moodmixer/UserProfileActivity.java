@@ -79,8 +79,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void openMusicPlayerActivity() {
 
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MusicPlayerActivity.class);
+//        startActivity(intent);
     }
 
     private void openSongsListActivity() {

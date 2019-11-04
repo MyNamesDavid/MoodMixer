@@ -117,8 +117,8 @@ public class SongsListActivity extends AppCompatActivity implements PopupMenu.On
         startActivity(intent);
     }
     public void openMusicPlayerActivity(){
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MusicPlayerActivity.class);
+//        startActivity(intent);
     }
     public void openLibraryActivity() {
         Intent intent = new Intent(this, LibraryActivity.class);

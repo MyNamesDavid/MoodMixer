@@ -77,6 +77,8 @@ dependencies {
 
     implementation project(':spotify-app-remote-release-0.6.3')
     implementation "com.google.code.gson:gson:2.8.5"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
 }
 
 android {
