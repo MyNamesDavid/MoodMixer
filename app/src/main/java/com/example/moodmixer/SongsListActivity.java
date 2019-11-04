@@ -6,22 +6,33 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class SongsListActivity extends AppCompatActivity {
+public class SongsListActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
 
+    ImageButton popupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_songs_list);
+
+
 
         //Code for bottom navigation view
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -30,8 +41,40 @@ public class SongsListActivity extends AppCompatActivity {
 
         //listview
         populateSongsList();
+
+
     }
 
+
+    //Handles the popup menu and brings it into view
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.song_option_menu);
+        popup.show();
+    }
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_add_to_playlist:
+                Toast.makeText(this, "Item 1 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.option_play_next:
+                Toast.makeText(this, "Item 2 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.option_play_previous:
+                Toast.makeText(this, "Item 3 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.option_song_play:
+                Toast.makeText(this, "Item 4 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
 
 
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -62,6 +105,8 @@ public class SongsListActivity extends AppCompatActivity {
                 }
             };
 
+
+
     private void openUserProfileActivity() {
 
         Intent intent = new Intent(this, UserProfileActivity.class);
@@ -72,8 +117,8 @@ public class SongsListActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void openMusicPlayerActivity(){
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MusicPlayerActivity.class);
+//        startActivity(intent);
     }
     public void openLibraryActivity() {
         Intent intent = new Intent(this, LibraryActivity.class);
@@ -82,12 +127,12 @@ public class SongsListActivity extends AppCompatActivity {
 
     private void populateSongsList(){
         //Construct data source
-        ArrayList<Songs> songsArray = Songs.getSongs();
+        //ArrayList<Songs> songsArray = Songs.getSongs();
         //Create adapter
-        SongListAdapter songAdapter = new SongListAdapter(this,songsArray);
+        //SongListAdapter songAdapter = new SongListAdapter(this,songsArray);
         //attatch Data to listView
-        ListView songListView = (ListView) findViewById(R.id.list_of_songs);
-        songListView.setAdapter(songAdapter);
+        //ListView songListView = (ListView) findViewById(R.id.songs_list);
+        //songListView.setAdapter(songAdapter);
 
     }
 

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        />
+
+    <TextView
+        android:id="@+id/happy_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Happy"
+        />
+
+    <TextView
+        android:id="@+id/mad_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:text="Mad"
+        />
+
+    <TextView
+        android:id="@+id/sad_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="230dp"
+        android:text="Sad"
+        />
+
+    <TextView
+        android:id="@+id/stressed_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:text="Stressed"
+        />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/genre_select_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Genre"
+        android:textColorHint="#05ab9a"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="38dp"
+
+        />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/genre_select_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Genre"
+        android:textColorHint="#05ab9a"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="138dp"
+
+        />
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/genre_select_three"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Genre"
+        android:textColorHint="#05ab9a"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="238dp"
+
+        />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/genre_select_four"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Genre"
+        android:textColorHint="#05ab9a"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="338dp"
+
+        />
+
+
+</FrameLayout>

@@ -3,36 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/nav_mood"
-        android:enabled="true"
+        android:id="@+id/moodFragment"
         android:icon="@drawable/mood_vector"
-        android:title="@string/mood_viewer"
-        app:showAsAction="ifRoom"
-        />
+        android:title="@string/mood_viewer" />
     <item
-        android:id="@+id/nav_playlist"
-        android:enabled="true"
+        android:id="@+id/playlistFragment"
         android:icon="@drawable/playlist_vector"
-        android:title="@string/playlist_viewer"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/playlist_viewer" />
     <item
-        android:id="@+id/nav_music_viewer"
-        android:enabled="true"
+        android:id="@+id/musicPlayerFragment"
         android:icon="@drawable/music_viewer_vector"
-        android:title="@string/music_viewer"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/music_viewer" />
     <item
-        android:id="@+id/nav_songlist"
-        android:enabled="true"
+        android:id="@+id/songFragment"
         android:icon="@drawable/songlist_vector"
-        android:title="@string/songlist_viewer"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/songlist_viewer" />
     <item
-        android:id="@+id/nav_library"
-        android:enabled="true"
+        android:id="@+id/libraryFragment"
         android:icon="@drawable/library_vector"
-        android:title="@string/library_viewer"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/library_viewer" />
 
 
 

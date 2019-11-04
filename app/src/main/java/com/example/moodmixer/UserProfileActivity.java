@@ -60,7 +60,16 @@ public class UserProfileActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_user_profile);
 
+        setUpWeatherImageButton();
 
+        setUpMoodImageButton();
+
+    }
+
+    private void openPastMoodActivity() {
+
+        Intent intent = new Intent(this, PastMoodsActivity.class);
+        startActivity(intent);
     }
 
     private void openPlaylistActivity() {
@@ -71,8 +80,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void openMusicPlayerActivity() {
 
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MusicPlayerActivity.class);
+//        startActivity(intent);
     }
 
     private void openSongsListActivity() {
@@ -100,10 +109,13 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
-                toastMessage("Currently Happy - Joyful music");
+                openPastMoodActivity();
+
             }
         });
     }
+
+
 
     private void openUserProfileActivity() {
 
