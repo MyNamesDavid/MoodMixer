@@ -94,6 +94,7 @@ public class MusicPlayerFragment extends Fragment {
     private ImageButton weatherImageButton;
     private ImageButton userProfileImageButton;
     private ImageView albumCoverImageView;
+    private ImageView backgroundView;
     private int[] albumCoverImages;
     private int songIndex = 0;
     private TabBarController tabBarController;
@@ -152,6 +153,9 @@ public class MusicPlayerFragment extends Fragment {
         setUpSongNameTextView(rootView);
         setUpSongArtistTextView(rootView);
 
+        backgroundView = rootView.findViewById(R.id.background_blueblackgradient);
+
+
         return rootView;
     }
 
@@ -161,7 +165,7 @@ public class MusicPlayerFragment extends Fragment {
 
         String appPackageName = (getContext().getPackageName() == null) ? ("package is null") : (getContext().getPackageName());
         String message = String.format("Package Name: %s\n ", appPackageName);
-        Log.d(TAG, message );
+        Log.d(TAG, message);
 
         setUpConnectionToSpotify();
     }
@@ -456,7 +460,6 @@ public class MusicPlayerFragment extends Fragment {
     // MARK: Messages
 
     private void toastMessage(String message) {
-
 
 
         Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
