@@ -1,7 +1,9 @@
 package com.example.moodmixer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,8 +13,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -63,7 +67,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class MusicPlayerActivity extends AppCompatActivity {
+public class MusicPlayerActivity extends Fragment {
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
@@ -119,7 +123,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
                         case R.id.nav_library:
                             tabBarController.openLibraryActivity();
                             break;
-
                     }
                     return true;
                 }
@@ -127,13 +130,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     // MARK: Lifecycle
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Log.d(TAG, "onCreate - start");
 
-        setContentView(R.layout.activity_music_player);
+        inflater.inflate(R.layout.activity_music_player, null);
         setUpTabBarController();
         setUpPlayImageButton();
         setUpNextSongImageButton();
@@ -145,20 +148,23 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setUserProfileImageButton();
         setUpSongNameTextView();
         setUpSongArtistTextView();
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
 
-        String message = String.format("Package Name: %s\n ", this.getPackageName());
+        String appPackageName = (getContext().getPackageName() == null) ? ("package is null") : (getContext().getPackageName());
+        String message = String.format("Package Name: %s\n ", appPackageName);
         Log.d(TAG, message );
 
         setUpConnectionToSpotify();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
 
         SpotifyAppRemote.disconnect(musicPlayer);
@@ -172,7 +178,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpConnectionToSpotify() {
 
-        if (SpotifyAppRemote.isSpotifyInstalled(this)) {
+        if (SpotifyAppRemote.isSpotifyInstalled(getContext())) {
 
             ConnectionParams connectionParams =
                     new ConnectionParams.Builder(CLIENT_ID)
@@ -180,7 +186,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
                             .showAuthView(true)
                             .build();
 
-            SpotifyAppRemote.connect(this, connectionParams,
+            SpotifyAppRemote.connect(getContext(), connectionParams,
                     new Connector.ConnectionListener() {
 
                         @Override
@@ -226,16 +232,16 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpTabBarController() {
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNav = getView().findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_music_viewer);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        tabBarController = new TabBarController(this);
+        tabBarController = new TabBarController(getContext());
     }
 
     private void setUpPlayImageButton() {
 
-        playImageButton = findViewById(R.id.play_imagebutton);
+        playImageButton = getView().findViewById(R.id.play_imagebutton);
         playImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,7 +254,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpNextSongImageButton() {
 
-        nextSongImageButton = findViewById(R.id.next_song_imagebutton);
+        nextSongImageButton = getView().findViewById(R.id.next_song_imagebutton);
         nextSongImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,7 +267,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpPreviousSongImageButton() {
 
-        previousSongImageButton = findViewById(R.id.previous_song_imagebutton);
+        previousSongImageButton = getView().findViewById(R.id.previous_song_imagebutton);
         previousSongImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,7 +280,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpChartsImageButton() {
 
-        chartsImageButton = findViewById(R.id.charts_imagebutton);
+        chartsImageButton = getView().findViewById(R.id.charts_imagebutton);
         chartsImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,7 +293,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpWeatherImageButton() {
 
-        weatherImageButton = findViewById(R.id.weather_imagebutton);
+        weatherImageButton = getView().findViewById(R.id.weather_imagebutton);
         weatherImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -307,12 +313,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 R.drawable.beatles_albumcover
         };
 
-        albumCoverImageView = findViewById(R.id.album_cover_imageview);
+        albumCoverImageView = getView().findViewById(R.id.album_cover_imageview);
     }
 
     private void setUserProfileImageButton() {
 
-        userProfileImageButton = findViewById(R.id.userprofile_imagebutton);
+        userProfileImageButton = getView().findViewById(R.id.userprofile_imagebutton);
         userProfileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,17 +330,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void setUpMoodViews() {
 
-        moodView = findViewById(R.id.moodmixer_playlist_options);
+        moodView = getView().findViewById(R.id.moodmixer_playlist_options);
         moodView.setVisibility(View.INVISIBLE);
     }
 
     private void setUpSongNameTextView() {
-        songNameTextView = findViewById(R.id.songname_textview);
+        songNameTextView = getView().findViewById(R.id.songname_textview);
         songNameTextView.setVisibility(View.VISIBLE);
     }
 
     private void setUpSongArtistTextView() {
-        songArtistTextView = findViewById(R.id.songartist_textview);
+        songArtistTextView = getView().findViewById(R.id.songartist_textview);
         songArtistTextView.setVisibility(View.VISIBLE);
     }
 
@@ -344,7 +350,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         // increment a progress bar
 
         // GUARD
-        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+        if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
             return;
         }
 
@@ -393,7 +399,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         // cycle through albumCoverImages
 
         // GUARD
-        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+        if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
             return;
         } else {
             songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
@@ -407,7 +413,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void onPreviousSongButtonTapped() {
 
         // GUARD
-        if (!SpotifyAppRemote.isSpotifyInstalled(this) || musicPlayer == null || !musicPlayer.isConnected()) {
+        if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
             return;
         } else {
             songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
@@ -439,13 +445,15 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void toastMessage(String message) {
 
-        Toast toast = Toast.makeText(MusicPlayerActivity.this, message, Toast.LENGTH_LONG);
+
+
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 120);
         toast.show();
     }
 
     private void logError(Throwable throwable, String msg) {
-        Toast.makeText(this, "Error: " + msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Error: " + msg, Toast.LENGTH_SHORT).show();
         Log.e(TAG, msg, throwable);
     }
 
