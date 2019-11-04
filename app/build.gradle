@@ -84,7 +84,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:29.0.0'
     implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
+
+
+    implementation 'com.android.volley:volley:1.1.1'
+
 }
+
 
 android {
     compileOptions {

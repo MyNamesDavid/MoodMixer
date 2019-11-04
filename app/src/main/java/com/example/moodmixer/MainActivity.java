@@ -3,37 +3,59 @@ package com.example.moodmixer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.PopupMenu;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 
+import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.android.appremote.api.error.AuthenticationFailedException;
+import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
+import com.spotify.android.appremote.api.error.LoggedOutException;
+import com.spotify.android.appremote.api.error.NotLoggedInException;
+import com.spotify.android.appremote.api.error.OfflineModeException;
+import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
+import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
+import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
+import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
+import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.types.ListItems;
 import com.spotify.protocol.types.Track;
 
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
+
+
 public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
-        SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener{
+            SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener,
+        PlaylistFragment.OnPlaylistFragmentInteractionListener
+{
+
+    private MyPlaylistRecyclerViewAdapter mAdapter;
+
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
+    private Songs tracks;
+    private String trackName;
+    private String trackArtist;
+    private ImageView trackAlbumCover;
 
 
-    private static final String TAG = "MusicPlayerActivity";
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +67,12 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
+
     }
+
+
+
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -58,30 +85,70 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     protected void onStart() {
         super.onStart();
 
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
+        String message = String.format("Package Name: %s\n ", this.getPackageName());
+        Log.d(TAG, message );
 
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
+        setUpConnectionToSpotify();
+    }
 
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        musicPlayer = spotifyAppRemote;
-                        Log.d(TAG, "Connected! Yay!");
+    private void logError(Throwable throwable, String msg) {
+        Toast.makeText(this, "Error: " + msg, Toast.LENGTH_SHORT).show();
+        Log.e(TAG, msg, throwable);
+    }
 
-                        // Now you can start interacting with App Remote
-                    }
+    private void setUpConnectionToSpotify() {
 
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
+        if (SpotifyAppRemote.isSpotifyInstalled(this)) {
 
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
+            ConnectionParams connectionParams =
+                    new ConnectionParams.Builder(CLIENT_ID)
+                            .setRedirectUri(REDIRECT_URI)
+                            .showAuthView(true)
+                            .build();
+
+            SpotifyAppRemote.connect(this, connectionParams,
+                    new Connector.ConnectionListener() {
+
+                        @Override
+                        public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                            musicPlayer = spotifyAppRemote;
+                            Log.d(TAG, "Connected! Yay!");
+
+                        }
+
+                        public void onFailure(Throwable error) {
+                            if (error instanceof SpotifyRemoteServiceException) {
+                                if (error.getCause() instanceof SecurityException) {
+                                    logError(error, "SecurityException");
+                                } else if (error.getCause() instanceof IllegalStateException) {
+                                    logError(error, "IllegalStateException");
+                                }
+                            } else if (error instanceof NotLoggedInException) {
+                                logError(error, "NotLoggedInException");
+                            } else if (error instanceof AuthenticationFailedException) {
+                                logError(error, "AuthenticationFailedException");
+                            } else if (error instanceof CouldNotFindSpotifyApp) {
+                                logError(error, "CouldNotFindSpotifyApp");
+                            } else if (error instanceof LoggedOutException) {
+                                logError(error, "LoggedOutException");
+                            } else if (error instanceof OfflineModeException) {
+                                logError(error, "OfflineModeException");
+                            } else if (error instanceof UserNotAuthorizedException) {
+                                logError(error, "UserNotAuthorizedException");
+                            } else if (error instanceof UnsupportedFeatureVersionException) {
+                                logError(error, "UnsupportedFeatureVersionException");
+                            } else if (error instanceof SpotifyDisconnectedException) {
+                                logError(error, "SpotifyDisconnectedException");
+                            } else if (error instanceof SpotifyConnectionTerminatedException) {
+                                logError(error, "SpotifyConnectionTerminatedException");
+                            } else {
+                                logError(error, String.format("Connection failed: %s", error));
+                            }
+                        }
+                    });
+        } else {
+            Log.d(TAG, "Requirement: Spotify must be installed on device with a premium membership");
+        }
     }
 
     @Override
@@ -89,21 +156,6 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         super.onStop();
 
         SpotifyAppRemote.disconnect(musicPlayer);
-    }
-
-    private void connected() {
-        // Play a playlist
-        musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-
-        // Subscribe to PlayerState
-        musicPlayer.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                    }
-                });
     }
 
 
@@ -119,12 +171,19 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     public void onSongListFragmentInteraction(Songs item) {
 
 
+
     }
+
 
     @Override
-    public void onProfileFragmentInteraction(Profile button){
+    public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
 
     }
 
 
+    @Override
+    public void onProfileFragmentInteraction(Profile button) {
+    }
 }
+
+
