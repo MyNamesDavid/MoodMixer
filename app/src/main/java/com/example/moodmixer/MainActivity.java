@@ -2,11 +2,7 @@ package com.example.moodmixer;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.PopupMenu;
 
 
 import com.example.moodmixer.dummy.DummyContent;
@@ -24,86 +20,45 @@ import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
 import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
 import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
 import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.types.ListItems;
 import com.spotify.protocol.types.Track;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
-import android.view.MotionEvent;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import com.spotify.protocol.types.Image;
-import com.spotify.protocol.types.ImageUri;
-import com.spotify.protocol.types.Track;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.ContentApi;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.android.appremote.api.error.AuthenticationFailedException;
-import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
-import com.spotify.android.appremote.api.error.LoggedOutException;
-import com.spotify.android.appremote.api.error.NotLoggedInException;
-import com.spotify.android.appremote.api.error.OfflineModeException;
-import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
-import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
-import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
-import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
-import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
-import com.spotify.protocol.client.ErrorCallback;
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.Capabilities;
-import com.spotify.protocol.types.Image;
 import com.spotify.protocol.types.ListItem;
-import com.spotify.protocol.types.PlaybackSpeed;
-import com.spotify.protocol.types.PlayerContext;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Repeat;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener
         , PlaylistFragment.OnPlaylistFragmentInteractionListener
 {
 
+    private ArrayList<ListItems> mListItems;
+    private CallResult<ListItems> newListItem;
+    private MyPlaylistRecyclerViewAdapter mAdapter;
+
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
+    private Songs tracks;
+    private String trackName;
+    private String trackArtist;
+    private ImageView trackAlbumCover;
 
 
     private static final String TAG = "MainActivity";
@@ -119,7 +74,17 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
+
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
+    }
+
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -159,6 +124,13 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
                             Log.d(TAG, "Connected! Yay!");
+                            subscribeToPlayerState();
+                            musicPlayer.getContentApi().
+                                    getRecommendedContentItems(ContentApi.ContentType.FITNESS).setResultCallback(listItems -> {
+                                        loadTracks(listItems);
+                                    });
+
+
                         }
 
                         public void onFailure(Throwable error) {
@@ -216,11 +188,41 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     public void onSongListFragmentInteraction(Songs item) {
 
 
+
     }
 
 
     @Override
     public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
 
+    }
+
+    private void loadTracks(ListItems tracks) {
+        mListItems.clear();
+        mListItems.addAll((Collection<? extends ListItems>) tracks);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void subscribeToPlayerState() {
+        // Subscribe to PlayerState
+        musicPlayer.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        trackName = track.name;
+                        trackArtist = track.artist.name;
+
+                        // Get image from track
+                        musicPlayer.getImagesApi()
+                                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
+                                .setResultCallback(bitmap -> {
+                                    trackAlbumCover.setImageBitmap(bitmap);
+//                                    mImageLabel.setText(String.format(Locale.ENGLISH, "%d x %d", bitmap.getWidth(), bitmap.getHeight()));
+                                });
+                    }
+
+                });
     }
 }

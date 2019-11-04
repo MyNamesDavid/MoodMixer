@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Songs {
+    public int title;
     String songName;
     String songGenre;
     String songArtistName;
@@ -24,10 +25,10 @@ public class Songs {
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist, String url){
+    public Songs(String song, String artist){
         this.songName = song;
         this.songArtistName = artist;
-        this.SongUrl = url;
+
 
     }
 
@@ -68,6 +69,13 @@ public class Songs {
 
     private static final int COUNT = 25;
 
+    static {
+        // Add some sample items.
+        for (int i = 1; i <= COUNT; i++) {
+            addItem(createSongs("Song Name " + i, "Artist Name " + i));
+        }
+    }
+
 
 
     private static void addItem(Songs item) {
@@ -76,10 +84,10 @@ public class Songs {
         SONGS_MAP.put(item.songArtistName, item);
     }
 
-  //  private static Songs createSongs(String trackName, String artistName, ImageView album, int id) {
-        //Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, album);
-        //return songs;
-    //}
+   private static Songs createSongs(String trackName, String artistName) {
+        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName);
+        return songs;
+    }
 
 
 
