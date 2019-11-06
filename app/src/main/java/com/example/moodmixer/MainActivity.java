@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.userProfileFragment){
+        if(item.getItemId() == R.id.settings){
             return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);

@@ -5,6 +5,6 @@
     <item
         android:id="@+id/userProfileFragment"
         android:icon="@drawable/genderless_user_icon"
-        android:title="@string/mood_viewer" />
+        android:title="Mood Settings" />
 
 </menu>
