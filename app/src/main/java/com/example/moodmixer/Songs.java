@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Songs {
+    public int title;
     String songName;
     String songGenre;
     String songArtistName;
@@ -24,10 +25,10 @@ public class Songs {
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist, String url){
+    public Songs(String song, String artist){
         this.songName = song;
         this.songArtistName = artist;
-        this.SongUrl = url;
+
 
     }
 
@@ -71,7 +72,8 @@ public class Songs {
     static {
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
-            addItem(createSongs("fuck", "me", "hi"));
+            addItem(createSongs("Song Name " + i, "Artist Name " + i));
+
         }
     }
 
@@ -84,9 +86,8 @@ public class Songs {
     }
 
 
-
-      private static Songs createSongs(String trackName, String artistName, String url) {
-        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, "Fuck");
+   private static Songs createSongs(String trackName, String artistName) {
+        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName);
         return songs;
     }
 
