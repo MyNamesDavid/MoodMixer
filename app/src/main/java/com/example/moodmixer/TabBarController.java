@@ -21,8 +21,8 @@ final public class TabBarController {
 
     public void openMusicPlayerActivity() {
 
-        Intent intent = new Intent(context, MusicPlayerActivity.class);
-        context.startActivity(intent);
+//        Intent intent = new Intent(context, MusicPlayerActivity.class);
+//        context.startActivity(intent);
     }
 
     public void openLibraryActivity() {

@@ -58,8 +58,8 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     public void openMusicPlayerActivity() {
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MusicPlayerActivity.class);
+//        startActivity(intent);
     }
 
     public void openSongsListActivity() {

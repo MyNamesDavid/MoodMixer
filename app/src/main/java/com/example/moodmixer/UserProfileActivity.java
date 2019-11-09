@@ -62,6 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         setUpWeatherImageButton();
 
+        setUpMoodImageButton();
 
     }
 
@@ -79,8 +80,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void openMusicPlayerActivity() {
 
-        Intent intent = new Intent(this, MusicPlayerActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MusicPlayerActivity.class);
+//        startActivity(intent);
     }
 
     private void openSongsListActivity() {
@@ -108,6 +109,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
+                openPastMoodActivity();
 
             }
         });

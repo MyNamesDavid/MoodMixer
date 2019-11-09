@@ -1,8 +1,20 @@
+
 package com.example.moodmixer;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
+
+import android.widget.ImageView;
+import android.widget.Toast;
+
 
 
 import com.example.moodmixer.dummy.DummyContent;
@@ -26,69 +38,44 @@ import com.spotify.protocol.types.ListItems;
 import com.spotify.protocol.types.Track;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavArgument;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 
-import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.spotify.protocol.types.Image;
-
-import com.spotify.android.appremote.api.ContentApi;
-import com.spotify.protocol.types.ListItem;
 
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-
-public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener
-        , PlaylistFragment.OnPlaylistFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
+        SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener,
+        PlaylistFragment.OnPlaylistFragmentInteractionListener
 {
 
-    private ArrayList<ListItems> mListItems;
-    private CallResult<ListItems> newListItem;
     private MyPlaylistRecyclerViewAdapter mAdapter;
-
-public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener {
 
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
+
+    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
+    Toolbar toolbar;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     private Songs tracks;
     private String trackName;
     private String trackArtist;
     private ImageView trackAlbumCover;
 
-    ArrayList<Songs> country;
-
-    Songs testSongNow;
-
-
-
 
     private static final String TAG = "MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +89,28 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
 
-
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Mood Mixer");
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_menu,menu);
+        return true;
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
+        if(item.getItemId() == R.id.userProfileFragment){
+            return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
 
     }
+
+
 
 
 
@@ -154,12 +153,6 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
                             Log.d(TAG, "Connected! Yay!");
-                            subscribeToPlayerState();
-                            musicPlayer.getContentApi().
-                                    getRecommendedContentItems(ContentApi.ContentType.FITNESS).setResultCallback(listItems -> {
-                                        loadTracks(listItems);
-                                    });
-
 
                         }
 
@@ -222,36 +215,13 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     }
 
 
-  
+    @Override
+    public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
 
-    private void loadTracks(ListItems tracks) {
-        mListItems.clear();
-        mListItems.addAll((Collection<? extends ListItems>) tracks);
-        mAdapter.notifyDataSetChanged();
     }
 
 
-    private void subscribeToPlayerState() {
-        // Subscribe to PlayerState
-        musicPlayer.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        trackName = track.name;
-                        trackArtist = track.artist.name;
-
-                        // Get image from track
-                        musicPlayer.getImagesApi()
-                                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
-                                .setResultCallback(bitmap -> {
-                                    trackAlbumCover.setImageBitmap(bitmap);
-//                                    mImageLabel.setText(String.format(Locale.ENGLISH, "%d x %d", bitmap.getWidth(), bitmap.getHeight()));
-                                });
-                    }
-
-                });
-
+    @Override
+    public void onProfileFragmentInteraction(Profile button) {
     }
 }

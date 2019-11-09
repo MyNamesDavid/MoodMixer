@@ -2,15 +2,24 @@ package com.example.moodmixer;
 
 
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 
 /**
@@ -37,7 +46,7 @@ public class UserProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private UserProfileFragment.OnFragmentInteractionListener mListener;
+    private onProfileFragmentInteractionListener mListener;
 
 
     /**
@@ -68,9 +77,9 @@ public class UserProfileFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Profile button) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onProfileFragmentInteraction(button);
         }
     }
 
@@ -78,7 +87,7 @@ public class UserProfileFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof MusicPlayerFragment.OnFragmentInteractionListener) {
-            mListener = (UserProfileFragment.OnFragmentInteractionListener) context;
+            mListener = (UserProfileFragment.onProfileFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -101,9 +110,9 @@ public class UserProfileFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface onProfileFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onProfileFragmentInteraction(Profile button);
     }
 
 }

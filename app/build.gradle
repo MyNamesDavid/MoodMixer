@@ -77,8 +77,19 @@ dependencies {
 
     implementation project(':spotify-app-remote-release-0.6.3')
     implementation "com.google.code.gson:gson:2.8.5"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:29.0.0'
+    implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
+
+
 
     implementation 'com.android.volley:volley:1.1.1'
+
+
 }
 
 
@@ -86,5 +97,11 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+android {
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
     }
 }

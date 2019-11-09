@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/black"
     android:orientation="horizontal">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,6 +16,7 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/default_playlist_icon"
             android:padding="4dp"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20sp"
             android:text="@string/playlist_name"
