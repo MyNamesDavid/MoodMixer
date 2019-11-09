@@ -68,6 +68,13 @@ public class Songs {
 
     private static final int COUNT = 25;
 
+    static {
+        // Add some sample items.
+        for (int i = 1; i <= COUNT; i++) {
+            addItem(createSongs("fuck", "me", "hi"));
+        }
+    }
+
 
 
     private static void addItem(Songs item) {
@@ -76,10 +83,12 @@ public class Songs {
         SONGS_MAP.put(item.songArtistName, item);
     }
 
-  //  private static Songs createSongs(String trackName, String artistName, ImageView album, int id) {
-        //Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, album);
-        //return songs;
-    //}
+
+
+      private static Songs createSongs(String trackName, String artistName, String url) {
+        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, "Fuck");
+        return songs;
+    }
 
 
 

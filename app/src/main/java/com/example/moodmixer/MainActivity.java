@@ -28,6 +28,7 @@ import com.spotify.protocol.types.Track;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavArgument;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -94,6 +95,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener
@@ -104,6 +109,15 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
+
+    ArrayList<Songs> country;
+
+    public static final List<Songs> SONGS = new ArrayList<Songs>();
+    public static final Map<String, Songs> SONGS_MAP = new HashMap<String, Songs>();
+
+    Songs testSongNow;
+
+
 
 
     private static final String TAG = "MainActivity";
@@ -119,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
+
     }
 
     @Override
@@ -158,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
                         @Override
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
+                            addItem(createSongs("hello", "there", "fuck"));
                             Log.d(TAG, "Connected! Yay!");
                         }
 
@@ -222,5 +238,16 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     @Override
     public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
 
+    }
+
+    private static Songs createSongs(String trackName, String artistName, String url) {
+        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, "Fuck");
+        return songs;
+    }
+
+    private static void addItem(Songs item) {
+        SONGS.add(item);
+        SONGS_MAP.put(item.songName, item);
+        SONGS_MAP.put(item.songArtistName, item);
     }
 }
