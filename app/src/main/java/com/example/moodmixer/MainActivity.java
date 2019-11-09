@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -24,6 +25,7 @@ import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.ListItems;
 import com.spotify.protocol.types.Track;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.Fragment;
@@ -32,6 +34,7 @@ import androidx.navigation.NavArgument;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+
 
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -67,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     private CallResult<ListItems> newListItem;
     private MyPlaylistRecyclerViewAdapter mAdapter;
 
+public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener, SongFragment.OnSongListFragmentInteractionListener {
+
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
@@ -77,9 +82,6 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     private ImageView trackAlbumCover;
 
     ArrayList<Songs> country;
-
-    public static final List<Songs> SONGS = new ArrayList<Songs>();
-    public static final Map<String, Songs> SONGS_MAP = new HashMap<String, Songs>();
 
     Songs testSongNow;
 
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         onBackPressed();
         return super.onSupportNavigateUp();
     }
+
 
     @Override
     protected void onStart() {
@@ -219,17 +222,14 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     }
 
 
-    @Override
-    public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
-
-    }
-
+  
 
     private void loadTracks(ListItems tracks) {
         mListItems.clear();
         mListItems.addAll((Collection<? extends ListItems>) tracks);
         mAdapter.notifyDataSetChanged();
     }
+
 
     private void subscribeToPlayerState() {
         // Subscribe to PlayerState
