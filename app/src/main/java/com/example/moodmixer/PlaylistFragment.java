@@ -121,5 +121,16 @@ public class PlaylistFragment extends Fragment {
         void onPlaylistFragmentInteraction(Songs item);
     }
 
+    //Code for Floating action button
+   /* floatingActionButtonPlaylist =
+            (FloatingActionButton) findViewById(R.id.floating_action_button_playlist);
+        floatingActionButtonPlaylist.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            //Handles the click
+
+        }
+    });*/
+
 
 }

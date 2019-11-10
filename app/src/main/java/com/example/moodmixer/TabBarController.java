@@ -13,11 +13,6 @@ final public class TabBarController {
         this.context = context;
     }
 
-    public void openPlaylistActivity() {
-
-        Intent intent = new Intent(context, PlaylistActivity.class);
-        context.startActivity(intent);
-    }
 
     public void openMusicPlayerActivity() {
 
@@ -25,10 +20,7 @@ final public class TabBarController {
 //        context.startActivity(intent);
     }
 
-    public void openLibraryActivity() {
-        Intent intent = new Intent(context, LibraryActivity.class);
-        context.startActivity(intent);
-    }
+
 
     public void openUserProfileActivity() {
 
@@ -36,9 +28,5 @@ final public class TabBarController {
         context.startActivity(intent);
     }
 
-    public void openSongsListActivity() {
 
-        Intent intent = new Intent(context, SongsListActivity.class);
-        context.startActivity(intent);
-    }
 }

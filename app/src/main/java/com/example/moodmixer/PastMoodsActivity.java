@@ -19,11 +19,11 @@ public class PastMoodsActivity extends AppCompatActivity {
                             //selectedFragment = new MusicPlayerActivity();
                             break;
                         case R.id.nav_playlist:
-                            openPlaylistActivity();
+
                             //selectedFragment = new PlaylistActivity();
                             break;
                         case R.id.nav_songlist:
-                            openSongsListActivity();
+
                             //selectedFragment = new SongsListActivity();
                             break;
                     }
@@ -34,11 +34,6 @@ public class PastMoodsActivity extends AppCompatActivity {
                     return true;
                 }
             };
-    private void openPlaylistActivity() {
-
-        Intent intent = new Intent(this, PlaylistActivity.class);
-        startActivity(intent);
-    }
 
     private void openMusicPlayerActivity() {
 
@@ -46,9 +41,5 @@ public class PastMoodsActivity extends AppCompatActivity {
 //        startActivity(intent);
     }
 
-    private void openSongsListActivity() {
 
-        Intent intent = new Intent(this, SongsListActivity.class);
-        startActivity(intent);
-    }
 }

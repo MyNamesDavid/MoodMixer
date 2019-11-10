@@ -23,10 +23,10 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".SongsListActivity" />
-        <activity android:name=".PlaylistActivity" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".MusicPlayerActivity" />
+        <activity
+            android:name="com.spotify.sdk.android.authentication.LoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

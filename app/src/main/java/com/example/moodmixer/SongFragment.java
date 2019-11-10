@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,7 @@ import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
  * interface.
  */
 public class SongFragment extends Fragment {
+
 
 
     // TODO: Customize parameter argument names
@@ -93,6 +95,7 @@ public class SongFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -135,6 +138,7 @@ public class SongFragment extends Fragment {
         // TODO: Update argument type and name
         void onSongListFragmentInteraction(Songs item);
     }
+
 
 
 

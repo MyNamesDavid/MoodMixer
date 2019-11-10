@@ -55,6 +55,8 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
 
 
 
+
+
     public MySongRecyclerViewAdapter(List<Songs> items, OnSongListFragmentInteractionListener listener, Context mCtx) {
         mValues = items;
         mSongListener = listener;

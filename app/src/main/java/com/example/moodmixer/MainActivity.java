@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import com.google.android.material.internal.NavigationMenuView;
+import com.google.android.material.navigation.NavigationView;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -36,6 +38,9 @@ import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.ListItems;
 import com.spotify.protocol.types.Track;
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 
 import androidx.annotation.NonNull;
@@ -48,8 +53,22 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.SortedList;
 
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyCallback;
+import kaaes.spotify.webapi.android.SpotifyError;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Album;
+import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.SavedTrack;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.client.Response;
 
+import static androidx.test.InstrumentationRegistry.getContext;
 
 
 public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
@@ -65,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     Toolbar toolbar;
+
+
+    final String accessToken = "a6d6003f62b54f1c9a3ea665f4ded656";
+
+    RestAdapter restAdapter = new RestAdapter.Builder()
+            .setEndpoint(SpotifyApi.SPOTIFY_WEB_API_ENDPOINT)
+            .setRequestInterceptor(new RequestInterceptor() {
+                @Override
+                public void intercept(RequestInterceptor.RequestFacade request) {
+                    request.addHeader("Authorization", "Bearer " + accessToken);
+                }
+            })
+            .build();
+
+    SpotifyService spotify = restAdapter.create(SpotifyService.class);
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
@@ -127,8 +161,19 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
         String message = String.format("Package Name: %s\n ", this.getPackageName());
         Log.d(TAG, message );
+        spotify.getMySavedTracks(new SpotifyCallback<Pager<SavedTrack>>() {
+            @Override
+            public void success(Pager<SavedTrack> savedTrackPager, Response response) {
+                // handle successful response
+            }
 
-        setUpConnectionToSpotify();
+            @Override
+            public void failure(SpotifyError error) {
+                // handle error
+            }
+        });
+
+        //setUpConnectionToSpotify();
     }
 
     private void logError(Throwable throwable, String msg) {

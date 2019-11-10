@@ -33,11 +33,11 @@ public class UserProfileActivity extends AppCompatActivity {
                             //selectedFragment = new MusicPlayerActivity();
                             break;
                         case R.id.nav_playlist:
-                            openPlaylistActivity();
+
                             //selectedFragment = new PlaylistActivity();
                             break;
                         case R.id.nav_songlist:
-                            openSongsListActivity();
+
                             //selectedFragment = new SongsListActivity();
                             break;
                         case R.id.nav_mood:
@@ -72,11 +72,7 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openPlaylistActivity() {
 
-        Intent intent = new Intent(this, PlaylistActivity.class);
-        startActivity(intent);
-    }
 
     private void openMusicPlayerActivity() {
 
@@ -84,11 +80,7 @@ public class UserProfileActivity extends AppCompatActivity {
 //        startActivity(intent);
     }
 
-    private void openSongsListActivity() {
 
-        Intent intent = new Intent(this, SongsListActivity.class);
-        startActivity(intent);
-    }
 
     private void setUpWeatherImageButton() {
 
