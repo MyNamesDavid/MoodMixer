@@ -18,19 +18,20 @@ public class Songs {
     String SongUrl;
     ImageView songAlbumCover;
 
-    int songId;
+    String songId;
 
 
     private static Songs sSongs;
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist){
+    public Songs(String song, String artist, String id){
         this.songName = song;
         this.songArtistName = artist;
+        this.songId = id;
     }
 
-    public long getID(){return songId;}
+    public String getID(){return songId;}
     public String getSongName(){
         return songName;
     }
@@ -47,10 +48,9 @@ public class Songs {
     public void setSongGenre(String song) {
         songGenre = song;
     }
-    public void setSongArtist(String song) {
-        songArtistName = song;
-    }
+    public void setSongArtist(String song) { songArtistName = song; }
     public void setSongUrl(String songUrl) { SongUrl = songUrl; }
+    public void setSongId(String songid) { songId = songid; }
 
 
 
@@ -67,13 +67,13 @@ public class Songs {
 
     private static final int COUNT = 25;
 
-    static {
+   // static {
         // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(createSongs("Song Name " + i, "Artist Name " + i));
+    //    for (int i = 1; i <= COUNT; i++) {
+      //      addItem(createSongs("Song Name " + i, "Artist Name " + i, i));
 
-        }
-    }
+     //   }
+   // }
 
 
 
@@ -84,8 +84,8 @@ public class Songs {
     }
 
 
-   public static Songs createSongs(String trackName, String artistName) {
-        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName);
+   public static Songs createSongs(String trackName, String artistName, String id) {
+        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, id);
         return songs;
     }
 
