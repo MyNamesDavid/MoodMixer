@@ -28,8 +28,6 @@ public class Songs {
     public Songs(String song, String artist){
         this.songName = song;
         this.songArtistName = artist;
-
-
     }
 
     public long getID(){return songId;}
@@ -79,20 +77,17 @@ public class Songs {
 
 
 
-    private static void addItem(Songs item) {
+    public static void addItem(Songs item) {
         SONGS.add(item);
         SONGS_MAP.put(item.songName, item);
         SONGS_MAP.put(item.songArtistName, item);
     }
 
 
-   private static Songs createSongs(String trackName, String artistName) {
+   public static Songs createSongs(String trackName, String artistName) {
         Songs songs = new Songs("Song:" + trackName, "Artist" + artistName);
         return songs;
     }
-
-
-
 
 
 }

@@ -57,6 +57,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.SortedList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyCallback;
 import kaaes.spotify.webapi.android.SpotifyError;
@@ -64,8 +67,11 @@ import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Album;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.SavedTrack;
+import kaaes.spotify.webapi.android.models.Tracks;
+import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 import static androidx.test.InstrumentationRegistry.getContext;
@@ -76,29 +82,23 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         PlaylistFragment.OnPlaylistFragmentInteractionListener
 {
 
-    private MyPlaylistRecyclerViewAdapter mAdapter;
+    private MyPlaylistRecyclerViewAdapter mPlaylistAdapter;
+
+    private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
+
 
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
+    private static final String AUTH_TOKEN = "BQDB1AYvCrqvWjj_OJ8yj5HgaW5zftZwhB2L-bT7JsdsUwP9DI6kc64JPrCbnOuPdM2wNkG9ovQK5XZJHyt0wlj2_vf0GHI0_GuzsiIiOAfdKYN4wVVLOIrV-bng05_Vqve6ujHC7TzB7o6-ciieTxjcqH5Fg6JSpb4SFYLF2joLuD8RjRIGjzRo4491Ca1EUeVKktUnmj_MiurCtNLyvvy4JNm5fm467Lt0NQIxQIXtXcYMyhYlDYVgPFVYh7JKCqVHGs2TgwiWHRG-PXJJ2GSoVK0EfqBlCw";
 
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     Toolbar toolbar;
 
+    List<Tracks> tracksList = new ArrayList<>();
+    
+    SpotifyApi api = new SpotifyApi();
 
-    final String accessToken = "a6d6003f62b54f1c9a3ea665f4ded656";
-
-    RestAdapter restAdapter = new RestAdapter.Builder()
-            .setEndpoint(SpotifyApi.SPOTIFY_WEB_API_ENDPOINT)
-            .setRequestInterceptor(new RequestInterceptor() {
-                @Override
-                public void intercept(RequestInterceptor.RequestFacade request) {
-                    request.addHeader("Authorization", "Bearer " + accessToken);
-                }
-            })
-            .build();
-
-    SpotifyService spotify = restAdapter.create(SpotifyService.class);
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
@@ -159,21 +159,31 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     protected void onStart() {
         super.onStart();
 
-        String message = String.format("Package Name: %s\n ", this.getPackageName());
-        Log.d(TAG, message );
-        spotify.getMySavedTracks(new SpotifyCallback<Pager<SavedTrack>>() {
+        setUpConnectionToSpotify();
+
+        // Most (but not all) of the Spotify Web API endpoints require authorisation.
+        // If you know you'll only use the ones that don't require authorisation you can skip this step
+        api.setAccessToken(AUTH_TOKEN);
+
+        SpotifyService spotify = api.getService();
+
+
+
+        spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
             @Override
-            public void success(Pager<SavedTrack> savedTrackPager, Response response) {
-                // handle successful response
+            public void success(Album album, Response response) {
+                Log.d("Album success", album.name);
+
             }
 
             @Override
-            public void failure(SpotifyError error) {
-                // handle error
+            public void failure(RetrofitError error) {
+                Log.d("Album failure", error.toString());
             }
         });
 
-        //setUpConnectionToSpotify();
+
+
     }
 
     private void logError(Throwable throwable, String msg) {
