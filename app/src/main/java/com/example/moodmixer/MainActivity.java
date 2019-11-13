@@ -1,4 +1,3 @@
-
 package com.example.moodmixer;
 
 import android.content.Intent;

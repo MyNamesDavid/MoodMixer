@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoodMixer</string>
+    <string name="app_name">Mood Mixer</string>
     <string name="music_viewer">Music</string>
     <string name="playlist_viewer">Playlist</string>
     <string name="songlist_viewer">Songlist</string>
