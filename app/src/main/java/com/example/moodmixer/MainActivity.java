@@ -25,8 +25,13 @@ import androidx.navigation.ui.NavigationUI;
 import java.util.ArrayList;
 import java.util.List;
 import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyCallback;
+import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.SavedTrack;
 import kaaes.spotify.webapi.android.models.TrackSimple;
+import retrofit.client.Response;
 
 public class MainActivity
         extends AppCompatActivity
@@ -39,7 +44,7 @@ public class MainActivity
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private static final int REQUEST_CODE = 1337;
-    public static String AUTH_TOKEN;
+    public static String token;
     private MyPlaylistRecyclerViewAdapter mPlaylistAdapter;
     private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
@@ -72,6 +77,8 @@ public class MainActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Mood Mixer");
+
+        setUpLogin();
     }
 
     @Override
@@ -85,8 +92,8 @@ public class MainActivity
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
-                    api.setAccessToken(response.getAccessToken());
-                    AUTH_TOKEN = response.getAccessToken();
+                    token = response.getAccessToken();
+                    startSpotifyService();
                     // Handle successful response
                     break;
 
@@ -103,11 +110,37 @@ public class MainActivity
         }
     }
 
+    private void startSpotifyService(){
+        api.setAccessToken(token);
+        spotify = api.getService();
+        initSpotifyInfo(spotify);
+        
+    }
+
+    private void initSpotifyInfo(final SpotifyService spotify){
+
+        spotify.getMySavedTracks(new SpotifyCallback<Pager<SavedTrack>>() {
+            @Override
+            public void success(Pager<SavedTrack> savedTrackPager, Response response) {
+                // handle successful response
+            }
+
+            @Override
+            public void failure(SpotifyError error) {
+                // handle error
+            }
+        });
+    }
+
     public void setUpLogin() {
         AuthenticationRequest.Builder builder =
                 new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
 
-        builder.setScopes(new String[]{"streaming"});
+        builder.setScopes(new String[]{"streaming", "user-read-private", "playlist-read-private", "user-library-modify",
+        "playlist-read-collaborative", "playlist-modify-private", "user-follow-modify", "user-read-currently-playing",
+        "user-read-recently-played", "user-read-email", "user-library-read", "user-top-read", "playlist-modify-public"
+        ,"user-follow-read", "user-read-playback-state", "user-modify-playback-state"});
+        builder.setShowDialog(true);
         AuthenticationRequest request = builder.build();
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
@@ -136,7 +169,6 @@ public class MainActivity
     protected void onStart() {
         super.onStart();
         setUpConnectionToSpotify();
-        setUpLogin();
     }
 
     private void setUpConnectionToSpotify() {
