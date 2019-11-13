@@ -456,7 +456,6 @@ public class MusicPlayerFragment extends Fragment {
 
     private void toastMessage(String message) {
 
-
         Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 120);
         toast.show();

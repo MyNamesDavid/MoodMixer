@@ -100,8 +100,8 @@ public class MainActivity
     private ImageView trackAlbumCover;
     SpotifyApi api = new SpotifyApi();
     SpotifyService spotify = api.getService();
-    Toolbar toolbar;
     List<TrackSimple> tracksList = new ArrayList<>();
+    Toolbar toolbar;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
@@ -123,6 +123,8 @@ public class MainActivity
 
                 // Auth flow returned an error
                 case ERROR:
+                    MessageModel message = new MessageModel();
+                    message.toast("ERROR: AuthenticationResponse - protected void onActivityResult", this);
                     // Handle error response
                     break;
 
