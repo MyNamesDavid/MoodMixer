@@ -86,35 +86,24 @@ public class MainActivity
         UserProfileFragment.onProfileFragmentInteractionListener,
         PlaylistFragment.OnPlaylistFragmentInteractionListener {
 
+    private static final String TAG = "MainActivity";
     private MyPlaylistRecyclerViewAdapter mPlaylistAdapter;
-
     private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
-
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
-    public static String AUTH_TOKEN;
     private static final int REQUEST_CODE = 1337;
-
+    public static String AUTH_TOKEN;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
-    Toolbar toolbar;
-
-    List<TrackSimple> tracksList = new ArrayList<>();
-
-
-    SpotifyApi api = new SpotifyApi();
-
-    SpotifyService spotify = api.getService();
-
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-
     private Songs tracks;
     private String trackName;
     private String trackArtist;
     private ImageView trackAlbumCover;
+    SpotifyApi api = new SpotifyApi();
+    SpotifyService spotify = api.getService();
+    Toolbar toolbar;
+    List<TrackSimple> tracksList = new ArrayList<>();
 
-
-    private static final String TAG = "MainActivity";
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -143,7 +132,6 @@ public class MainActivity
             }
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,23 +166,19 @@ public class MainActivity
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.userProfileFragment) {
             return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
-
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
-
 
     @Override
     protected void onStart() {
@@ -270,27 +254,23 @@ public class MainActivity
         SpotifyAppRemote.disconnect(musicPlayer);
     }
 
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
 
-
     @Override
     public void onSongListFragmentInteraction(Songs item) {
 
-
     }
-
 
     @Override
     public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
 
     }
 
-
     @Override
     public void onProfileFragmentInteraction(Profile button) {
+
     }
 }
