@@ -192,7 +192,7 @@ public class MainActivity
     }
 
     private void logError(Throwable throwable, String msg) {
-        Toast.makeText(this, "Error: " + msg, Toast.LENGTH_SHORT).show();
+        message.toast("ERROR: " + msg, this);
         Log.e(TAG, msg, throwable);
     }
 
