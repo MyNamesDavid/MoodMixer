@@ -102,8 +102,28 @@ public class MainActivity
     SpotifyService spotify = api.getService();
     List<TrackSimple> tracksList = new ArrayList<>();
     Toolbar toolbar;
+    private MessageModel message;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "onCreate - start");
+
+        this.message = new MessageModel();
+
+        setTitle("Mood Mixer");
+        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(navView, navController);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Mood Mixer");
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -123,7 +143,6 @@ public class MainActivity
 
                 // Auth flow returned an error
                 case ERROR:
-                    MessageModel message = new MessageModel();
                     message.toast("ERROR: AuthenticationResponse - protected void onActivityResult", this);
                     // Handle error response
                     break;
@@ -133,23 +152,6 @@ public class MainActivity
                     // Handle other cases
             }
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Log.d(TAG, "onCreate - start");
-
-        setTitle("Mood Mixer");
-        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(navView, navController);
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Mood Mixer");
     }
 
     public void setUpLogin() {
