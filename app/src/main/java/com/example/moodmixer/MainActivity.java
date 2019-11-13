@@ -8,75 +8,37 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.PopupMenu;
 
 import android.widget.ImageView;
-import android.widget.Toast;
 
 
 import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import com.google.android.material.internal.NavigationMenuView;
-import com.google.android.material.navigation.NavigationView;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.android.appremote.api.error.AuthenticationFailedException;
-import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
-import com.spotify.android.appremote.api.error.LoggedOutException;
-import com.spotify.android.appremote.api.error.NotLoggedInException;
-import com.spotify.android.appremote.api.error.OfflineModeException;
-import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
-import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
-import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
-import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
-import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
-import com.spotify.protocol.client.CallResult;
-import com.spotify.protocol.types.ListItems;
-import com.spotify.protocol.types.Track;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.SortedList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyCallback;
-import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Album;
-import kaaes.spotify.webapi.android.models.Pager;
-import kaaes.spotify.webapi.android.models.PlaylistTrack;
-import kaaes.spotify.webapi.android.models.SavedTrack;
 import kaaes.spotify.webapi.android.models.TrackSimple;
-import kaaes.spotify.webapi.android.models.Tracks;
-import retrofit.Callback;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
-import static androidx.test.InstrumentationRegistry.getContext;
 
 
 public class MainActivity
@@ -113,7 +75,7 @@ public class MainActivity
 
         Log.d(TAG, "onCreate - start");
 
-        this.message = new MessageModel();
+        this.message = new MessageModel(MainActivity.TAG);
 
         setTitle("Mood Mixer");
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
@@ -160,7 +122,6 @@ public class MainActivity
 
         builder.setScopes(new String[]{"streaming"});
         AuthenticationRequest request = builder.build();
-
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
@@ -191,11 +152,6 @@ public class MainActivity
         setUpLogin();
     }
 
-    private void logError(Throwable throwable, String msg) {
-        message.toast("ERROR: " + msg, this);
-        Log.e(TAG, msg, throwable);
-    }
-
     private void setUpConnectionToSpotify() {
 
         if (SpotifyAppRemote.isSpotifyInstalled(this)) {
@@ -212,38 +168,11 @@ public class MainActivity
                         @Override
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
-                            Log.d(TAG, "Connected! Yay!");
-
+                            message.logDebug(TAG, "Connected! Yay!");
                         }
 
                         public void onFailure(Throwable error) {
-                            if (error instanceof SpotifyRemoteServiceException) {
-                                if (error.getCause() instanceof SecurityException) {
-                                    logError(error, "SecurityException");
-                                } else if (error.getCause() instanceof IllegalStateException) {
-                                    logError(error, "IllegalStateException");
-                                }
-                            } else if (error instanceof NotLoggedInException) {
-                                logError(error, "NotLoggedInException");
-                            } else if (error instanceof AuthenticationFailedException) {
-                                logError(error, "AuthenticationFailedException");
-                            } else if (error instanceof CouldNotFindSpotifyApp) {
-                                logError(error, "CouldNotFindSpotifyApp");
-                            } else if (error instanceof LoggedOutException) {
-                                logError(error, "LoggedOutException");
-                            } else if (error instanceof OfflineModeException) {
-                                logError(error, "OfflineModeException");
-                            } else if (error instanceof UserNotAuthorizedException) {
-                                logError(error, "UserNotAuthorizedException");
-                            } else if (error instanceof UnsupportedFeatureVersionException) {
-                                logError(error, "UnsupportedFeatureVersionException");
-                            } else if (error instanceof SpotifyDisconnectedException) {
-                                logError(error, "SpotifyDisconnectedException");
-                            } else if (error instanceof SpotifyConnectionTerminatedException) {
-                                logError(error, "SpotifyConnectionTerminatedException");
-                            } else {
-                                logError(error, String.format("Connection failed: %s", error));
-                            }
+                            message.handleSpotifyOnFailureError(error);
                         }
                     });
         } else {
