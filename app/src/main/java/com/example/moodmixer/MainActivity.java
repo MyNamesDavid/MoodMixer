@@ -224,5 +224,3 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     public void onProfileFragmentInteraction(Profile button) {
     }
 }
-
-
