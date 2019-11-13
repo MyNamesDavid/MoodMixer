@@ -229,7 +229,7 @@
             android:layout_alignEnd="@+id/curator_options_header"
             android:layout_alignRight="@id/curator_options_header"
             android:layout_alignBottom="@id/moodmixer_playlist_options_background_imageview"
-            android:background="@drawable/play_button_clouds" />
+            android:background="@drawable/play_button_white" />
 
     </RelativeLayout>
 

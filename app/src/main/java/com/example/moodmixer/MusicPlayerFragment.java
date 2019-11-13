@@ -373,12 +373,12 @@ public class MusicPlayerFragment extends Fragment {
 
             if (playerState.isPaused) {
                 musicPlayer.getPlayerApi().resume();
-                playImageButton.setBackgroundResource(R.drawable.pause_button_clouds);
+                playImageButton.setBackgroundResource(R.drawable.pause_button_white);
                 subscribeToPlayerState();
 
             } else {
                 musicPlayer.getPlayerApi().pause();
-                playImageButton.setBackgroundResource(R.drawable.play_button_clouds);
+                playImageButton.setBackgroundResource(R.drawable.play_button_white);
             }
         });
     }

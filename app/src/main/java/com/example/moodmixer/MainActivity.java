@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-
 import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -80,16 +79,16 @@ import retrofit.client.Response;
 import static androidx.test.InstrumentationRegistry.getContext;
 
 
-public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
-        SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener,
-        PlaylistFragment.OnPlaylistFragmentInteractionListener
-{
+public class MainActivity
+        extends AppCompatActivity
+        implements MusicPlayerFragment.OnFragmentInteractionListener,
+        SongFragment.OnSongListFragmentInteractionListener,
+        UserProfileFragment.onProfileFragmentInteractionListener,
+        PlaylistFragment.OnPlaylistFragmentInteractionListener {
 
     private MyPlaylistRecyclerViewAdapter mPlaylistAdapter;
 
     private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
-
-
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         getSupportActionBar().setTitle("Mood Mixer");
     }
 
-    public void setUpLogin(){
+    public void setUpLogin() {
         AuthenticationRequest.Builder builder =
                 new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
 
@@ -175,14 +174,14 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_menu,menu);
+        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
         return true;
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.userProfileFragment){
+        if (item.getItemId() == R.id.userProfileFragment) {
             return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
@@ -195,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         onBackPressed();
         return super.onSupportNavigateUp();
     }
-
 
 
     @Override
@@ -273,17 +271,14 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     }
 
 
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
 
 
-
     @Override
     public void onSongListFragmentInteraction(Songs item) {
-
 
 
     }
