@@ -87,12 +87,12 @@ public class MainActivity
         PlaylistFragment.OnPlaylistFragmentInteractionListener {
 
     private static final String TAG = "MainActivity";
-    private MyPlaylistRecyclerViewAdapter mPlaylistAdapter;
-    private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private static final int REQUEST_CODE = 1337;
     public static String AUTH_TOKEN;
+    private MyPlaylistRecyclerViewAdapter mPlaylistAdapter;
+    private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     private Songs tracks;
     private String trackName;
