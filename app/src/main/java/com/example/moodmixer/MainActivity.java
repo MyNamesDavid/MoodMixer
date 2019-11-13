@@ -93,8 +93,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
-    private static String AUTH_TOKEN = "BQCKR8oSdN25vZkL2GxIsc8IB2tucH2SZsgqnmIXTaDfCx8dtRVUU4P-jbDl4DYaJQsoayKvAXsdPpQzBcT5UNPP1PgI450F_O4X0tzI7eduLqBdNQ-sYw5w0jeymU75CXcrvx8-R3VyuQ8RTzyNYg7kZ8agEzmVP1FR0Gbghlcv_1H6vxDrA7iExBAciAuMIM4bRtYC3Rc3BgwAmcd1x5m0mDOzkUeZ1kiS4xLx1AebMOf4QqYWeFSk8S-7llgNHMqC4gGu9QgLaIieLXsXM6HiZZO3ftcuKQ";
-
+    public static String AUTH_TOKEN;
     private static final int REQUEST_CODE = 1337;
 
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
@@ -104,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
 
     SpotifyApi api = new SpotifyApi();
+
+    SpotifyService spotify = api.getService();
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -115,6 +116,34 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
 
     private static final String TAG = "MainActivity";
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    api.setAccessToken(response.getAccessToken());
+                    AUTH_TOKEN = response.getAccessToken();
+                    // Handle successful response
+                    break;
+
+                // Auth flow returned an error
+                case ERROR:
+                    // Handle error response
+                    break;
+
+                // Most likely auth flow was cancelled
+                default:
+                    // Handle other cases
+            }
+        }
+    }
 
 
     @Override
@@ -132,6 +161,16 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Mood Mixer");
+    }
+
+    public void setUpLogin(){
+        AuthenticationRequest.Builder builder =
+                new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+
+        builder.setScopes(new String[]{"streaming"});
+        AuthenticationRequest request = builder.build();
+
+        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
     @Override
@@ -158,92 +197,12 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     }
 
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-
-            switch (response.getType()) {
-                // Response was successful and contains auth token
-                case TOKEN:
-                    // Handle successful response
-                    AUTH_TOKEN = response.getAccessToken();
-                    break;
-
-                // Auth flow returned an error
-                case ERROR:
-                    // Handle error response
-                    break;
-
-                // Most likely auth flow was cancelled
-                default:
-                    // Handle other cases
-            }
-        }
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        AuthenticationRequest.Builder builder =
-                new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-
-        builder.setScopes(new String[]{"streaming"});
-        AuthenticationRequest request = builder.build();
-
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-
-
         setUpConnectionToSpotify();
-
-        // Most (but not all) of the Spotify Web API endpoints require authorisation.
-        // If you know you'll only use the ones that don't require authorisation you can skip this step
-        api.setAccessToken(AUTH_TOKEN);
-
-        SpotifyService spotify = api.getService();
-
-        spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
-            @Override
-            public void success(Album album, Response response) {
-                Log.d("Album success", album.name);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("Album failure", error.toString());
-            }
-        });
-
-        spotify.getMySavedTracks(new SpotifyCallback<Pager<SavedTrack>>() {
-            @Override
-            public void success(Pager<SavedTrack> savedTrackPager, Response response) {
-                // handle successful response
-            }
-
-            @Override
-            public void failure(SpotifyError error) {
-                // handle error
-            }
-        });
-
-
-
-        spotify.getPlaylistTracks("1121798449", "10WUZITIe8MCurCTYMuzQf", new SpotifyCallback<Pager<PlaylistTrack>>() {
-            @Override
-            public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
-                Log.d(TAG, String.valueOf(playlistTrackPager.total));
-            }
-
-            @Override
-            public void failure(SpotifyError error) {
-                Log.e(TAG, error.getMessage());
-            }
-        });
-
-
+        setUpLogin();
     }
 
     private void logError(Throwable throwable, String msg) {
