@@ -75,7 +75,7 @@ public class MainActivity
 
         Log.d(TAG, "onCreate - start");
 
-        this.message = new MessageModel(MainActivity.TAG);
+        this.message = new MessageModel(MainActivity.TAG, this);
 
         setTitle("Mood Mixer");
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
@@ -105,7 +105,7 @@ public class MainActivity
 
                 // Auth flow returned an error
                 case ERROR:
-                    message.toast("ERROR: AuthenticationResponse - protected void onActivityResult", this);
+                    message.toast("ERROR: AuthenticationResponse - protected void onActivityResult");
                     // Handle error response
                     break;
 
@@ -168,7 +168,7 @@ public class MainActivity
                         @Override
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
-                            message.logDebug(TAG, "Connected! Yay!");
+                            message.logDebug("Connected! Yay!");
                         }
 
                         public void onFailure(Throwable error) {

@@ -17,22 +17,24 @@ import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
 import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
 import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
 
-public class MessageModel {
+class MessageModel {
 
     private final String TAG;
+    private final Context context;
 
-    public MessageModel(String tag) {
+    MessageModel(String tag, Context context) {
         this.TAG = tag;
+        this.context = context;
     }
 
-    void toast(String message, Context context) {
+    void toast(String message) {
 
-        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(this.context, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 120);
         toast.show();
     }
 
-    public void handleSpotifyOnFailureError(Throwable error) {
+    void handleSpotifyOnFailureError(Throwable error) {
         if (error instanceof SpotifyRemoteServiceException) {
             if (error.getCause() instanceof SecurityException) {
                 logError(error, "SecurityException");
@@ -66,7 +68,7 @@ public class MessageModel {
         Log.e(TAG, msg, throwable);
     }
 
-    public void logDebug(String tag, String message) {
-        Log.d(tag, message);
+    void logDebug(String message) {
+        Log.d(TAG, message);
     }
 }
