@@ -17,21 +17,22 @@ import com.example.moodmixer.dummy.DummyContent.Songs;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Songs} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Playlists} and makes a call to the
  * specified {@link PlaylistFragment.OnPlaylistFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Songs> mValues;
+    private final List<Playlists> mValues;
     private final PlaylistFragment.OnPlaylistFragmentInteractionListener mListener;
     private Context mCtx;
 
-    public MyPlaylistRecyclerViewAdapter(List<Songs> items, PlaylistFragment.OnPlaylistFragmentInteractionListener listener, Context mCtx) {
+    public MyPlaylistRecyclerViewAdapter(List<Playlists> items, PlaylistFragment.OnPlaylistFragmentInteractionListener listener, Context mCtx) {
         mValues = items;
         mListener = listener;
         this.mCtx = mCtx;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,7 +45,8 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         //holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mPlaylistNameView.setText(mValues.get(position).playlistName);
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,20 +93,20 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mContentView;
+        public final TextView mPlaylistNameView;
         public final ImageButton mPopupView;
-        public Songs mItem;
+        public Playlists mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContentView = (TextView) view.findViewById(R.id.playlist_name);
+            mPlaylistNameView = (TextView) view.findViewById(R.id.playlist_name);
             mPopupView = (ImageButton) view.findViewById(R.id.playlist_popup);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mPlaylistNameView.getText() + "'";
         }
     }
 }

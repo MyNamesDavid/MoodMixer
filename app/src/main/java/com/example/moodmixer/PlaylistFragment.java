@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import com.example.moodmixer.dummy.DummyContent;
-import com.example.moodmixer.dummy.DummyContent.Songs;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -85,7 +85,8 @@ public class PlaylistFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(DummyContent.ITEMS, mListener, context));
+            //recyclerView.setAdapter(MyPlaylistRecyclerViewAdapter);
+            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(Playlists.PLAYLISTS, mListener, context));
         }
         return view;
     }
@@ -120,7 +121,7 @@ public class PlaylistFragment extends Fragment {
      */
     public interface OnPlaylistFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onPlaylistFragmentInteraction(Songs item);
+        void onPlaylistFragmentInteraction(Playlists item);
     }
 
     //Code for Floating action button

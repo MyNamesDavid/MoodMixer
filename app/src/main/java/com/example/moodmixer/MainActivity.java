@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 
 import android.view.Menu;
@@ -40,8 +41,13 @@ import kaaes.spotify.webapi.android.SpotifyCallback;
 import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.Playlist;
+import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.SavedTrack;
 import kaaes.spotify.webapi.android.models.TrackSimple;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
@@ -57,8 +63,10 @@ public class MainActivity
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private static final int REQUEST_CODE = 1337;
     public static String token;
-    private MyPlaylistRecyclerViewAdapter mPlaylistAdapter;
+    private ArrayList<Playlists> playlists = new ArrayList<>();
+
     private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
+    private MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     private Songs tracks;
     private String trackName;
@@ -131,18 +139,48 @@ public class MainActivity
 
     private void initSpotifyInfo(final SpotifyService spotify){
 
-        spotify.getMySavedTracks(new SpotifyCallback<Pager<SavedTrack>>() {
+
+        spotify.getMyPlaylists(new Callback<Pager<PlaylistSimple>>(){
             @Override
-            public void success(Pager<SavedTrack> savedTrackPager, Response response) {
-                // handle successful response
+            public void success(Pager<PlaylistSimple> playlistSimplePager, Response response) {
+                if(playlistSimplePager.items.size() > 0){
+                    for(int i = 0; i < playlistSimplePager.items.size(); i++){
+                        if(playlistSimplePager.items.get(i).tracks.total != 0 && playlistSimplePager.items.get(i).tracks.total != 1)
+                        {
+                           // playlists.add(playlistSimplePager.items.get(i).name);
+                            Playlists playlistItem = new Playlists(playlistSimplePager.items.get(i).name);
+                            playlists.add(playlistItem);
+                            myPlaylistRecyclerViewAdapter.notifyItemInserted(playlists.size() - 1);
+                            myPlaylistRecyclerViewAdapter.notifyItemRangeChanged(i-1, playlists.size());
+                           // myPlaylistRecyclerViewAdapter.notifyItemInserted(playlists.size() - 1);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("failure", error.toString());
             }
 
+        });
+
+        spotify.getPlaylistTracks("USERID","PLAYLISTID", new Callback<Pager<PlaylistTrack>>() {
             @Override
-            public void failure(SpotifyError error) {
-                // handle error
+            public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
+                Log.e("TEST", "GOT the tracks in playlist");
+                List<PlaylistTrack> items = playlistTrackPager.items;
+                for( PlaylistTrack pt : items){
+                    Log.e("TEST", pt.track.name + " - " + pt.track.id);
+                }
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("TEST", "Could not get playlist tracks");
             }
         });
     }
+
+
 
     public void setUpLogin() {
         AuthenticationRequest.Builder builder =
@@ -229,7 +267,7 @@ public class MainActivity
     }
 
     @Override
-    public void onPlaylistFragmentInteraction(DummyContent.Songs item) {
+    public void onPlaylistFragmentInteraction(Playlists item) {
 
     }
 

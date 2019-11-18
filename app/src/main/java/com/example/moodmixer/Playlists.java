@@ -1,6 +1,7 @@
 package com.example.moodmixer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Playlists {
 
@@ -13,6 +14,10 @@ public class Playlists {
     public String getPlaylistName(){
         return playlistName;
     }
+
+    public static final List<Playlists> PLAYLISTS = new ArrayList<Playlists>();
+
+
 
 
 }
