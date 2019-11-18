@@ -19,7 +19,7 @@
             android:id="@+id/action_musicPlayerFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
         <action
-            android:id="@+id/action_musicPlayerFragment_to_settings2"
+            android:id="@+id/action_musicPlayerFragment_to_settings"
             app:destination="@id/settings" />
     </fragment>
     <fragment
@@ -44,6 +44,6 @@
         tools:layout="@layout/fragment_user_profile" />
     <fragment
         android:id="@+id/settings"
-        android:name="com.example.moodmixer.Settings"
+        android:name="com.example.moodmixer.SettingsFragment"
         android:label="Settings" />
 </navigation>

@@ -1,5 +1,6 @@
 package com.example.moodmixer;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -53,8 +56,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
             SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener,
-        PlaylistFragment.OnPlaylistFragmentInteractionListener
-{
+        PlaylistFragment.OnPlaylistFragmentInteractionListener, SettingsFragment.onFragmentInteractionSetting {
 
     private MyPlaylistRecyclerViewAdapter mAdapter;
 
@@ -95,22 +97,25 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_menu,menu);
+        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
         return true;
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.settings){
-            return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.settings) {
+            // TODO open activity
+            Fragment newFragment = new Fragment();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+            return true;
         }
-        return super.onOptionsItemSelected(item);
-
+        return false;
     }
-
-
-
 
 
     @Override
@@ -125,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
         super.onStart();
 
         String message = String.format("Package Name: %s\n ", this.getPackageName());
-        Log.d(TAG, message );
+        Log.d(TAG, message);
 
         setUpConnectionToSpotify();
     }
@@ -198,17 +203,14 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
     }
 
 
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
 
 
-
     @Override
     public void onSongListFragmentInteraction(Songs item) {
-
 
 
     }
@@ -222,7 +224,9 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     @Override
     public void onProfileFragmentInteraction(Profile button) {
+
     }
+
 }
 
 
