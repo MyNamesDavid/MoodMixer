@@ -36,7 +36,8 @@ public class SettingsFragment extends Fragment {
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
     String SelectedServer;
-    String [] genre = {"Alternative","Country","Rap","R&B","Pop","Rock","Jazz"};
+    String [] genre = {"Alternative","Blues","Classical","Dance",
+            "Country","Gospel","Jazz","K-Pop","Pop","Rap","R&B","Rock"};
 
     public interface onFragmentInteractionSetting {
         void onFragmentInteraction(Uri uri);
@@ -85,7 +86,7 @@ public class SettingsFragment extends Fragment {
         });
         return rootView;
     }
-/*
+
     public void saveGenreSettings(View view) {
         File txtFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/MyFolder/");
         if (!txtFolder.exists()) {
@@ -97,14 +98,13 @@ public class SettingsFragment extends Fragment {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(SelectedServer.getBytes());
             fos.close();
-            Toast.makeText(getApplicationContext(),"Setting Saved", Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-    }*/
+    }
 
     public void loadSavedGenreSettings(){
 

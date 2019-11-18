@@ -43,7 +43,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_musicPlayerFragment_to_settings2">
+                            <entry key="action_musicPlayerFragment_to_settings">
                               <value>
                                 <LayoutPositions />
                               </value>
