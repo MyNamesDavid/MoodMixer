@@ -3,17 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black" />
+
+    <view
+        android:id="@+id/genres_container_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
     <Button
         android:id="@+id/authorize_spotify_imagebutton"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
         android:background="#1DB954"
-        android:contentDescription="@null"
+        android:scaleType="centerCrop"
         android:text="@string/authorize_spotify"
-        android:textSize="14pt"
-        android:scaleType="centerCrop" />
+        android:textSize="14pt" />
+
+    <Button
+        android:id="@+id/genre1_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignTop="@id/genres_container_view"
+        android:layout_alignLeft="@id/genres_container_view"
+        android:adjustViewBounds="true"
+        android:background="#1DB954"
+        android:text="G1"
+        android:textSize="14pt" />
+
+    <Button
+        android:id="@+id/genre2_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignTop="@id/genres_container_view"
+        android:layout_alignRight="@id/genres_container_view"
+        android:adjustViewBounds="true"
+        android:background="#1DB954"
+        android:text="G2"
+        android:textSize="14pt" />
+
+    <Button
+        android:id="@+id/genre3_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignBottom="@id/genres_container_view"
+        android:layout_alignLeft="@id/genres_container_view"
+        android:adjustViewBounds="true"
+        android:background="#1DB954"
+        android:text="G3"
+        android:textSize="14pt" />
+
+    <Button
+        android:id="@+id/genre4_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignBottom="@id/genres_container_view"
+        android:layout_alignRight="@id/genres_container_view"
+        android:adjustViewBounds="true"
+        android:background="#1DB954"
+        android:text="G4"
+        android:textSize="14pt" />
+
 
 </RelativeLayout>
