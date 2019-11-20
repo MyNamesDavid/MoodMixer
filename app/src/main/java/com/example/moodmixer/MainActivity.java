@@ -30,7 +30,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
 
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import androidx.fragment.app.Fragment;
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -56,7 +61,6 @@ import kaaes.spotify.webapi.android.models.UserPublic;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
 
 public class MainActivity
         extends AppCompatActivity
@@ -152,7 +156,7 @@ public class MainActivity
         api.setAccessToken(token);
         spotify = api.getService();
         initSpotifyInfo(spotify);
-        
+
     }
 
     private void initSpotifyInfo(final SpotifyService spotify){
@@ -291,7 +295,6 @@ public class MainActivity
 
     @Override
     public void onProfileFragmentInteraction(Profile button) {
-
     }
 
     @Override

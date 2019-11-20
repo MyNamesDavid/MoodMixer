@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileFragment">
+    tools:context=".MainActivity"
+    >
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -25,18 +26,10 @@
         />
 
     <TextView
-        android:id="@+id/mad_mood"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
-        android:text="Mad"
-        />
-
-    <TextView
         android:id="@+id/sad_mood"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="130dp"
         android:text="Sad"
         />
 
@@ -44,8 +37,24 @@
         android:id="@+id/stressed_mood"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="330dp"
+        android:layout_marginTop="230dp"
         android:text="Stressed"
+        />
+
+    <TextView
+        android:id="@+id/angry_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:text="Angry"
+        />
+
+    <TextView
+        android:id="@+id/calm_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:text="Calm"
         />
 
     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner

@@ -8,9 +8,11 @@ public class Moods {
     private static final int WEEK_MOODS = 10;
     private static int counter;
     private Mood[] mood;
+    private Mood desiredMood;
 
-    public Moods (){
+    public Moods(){
         mood = new Mood[WEEK_MOODS];
+        this.desiredMood = Mood.HAPPY;
     }
 
     public void putMoodToCollection(Mood currentMood){
@@ -25,7 +27,13 @@ public class Moods {
         }
     }
 
-    public char getCurrentEmoji(){
+    public void setDesiredMood(Mood desiredMood){
+        this.desiredMood = desiredMood;
+    }
+
+    public String getDesiredMood(){return desiredMood.name;}
+
+    public String getCurrentEmoji(){
         return mood[counter].emoji;
     }
 

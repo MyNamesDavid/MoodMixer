@@ -3,8 +3,8 @@
 
 
     <item
-        android:id="@+id/userProfileFragment"
+        android:id="@+id/settings"
         android:icon="@drawable/genderless_user_icon"
-        android:title="@string/mood_viewer" />
+        android:title="@string/profile_and_settings" />
 
 </menu>
