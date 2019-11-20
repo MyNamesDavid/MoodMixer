@@ -1,5 +1,6 @@
 package com.example.moodmixer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -29,9 +30,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,10 @@ import kaaes.spotify.webapi.android.models.Playlist;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.SavedTrack;
+import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TrackSimple;
+import kaaes.spotify.webapi.android.models.UserPrivate;
+import kaaes.spotify.webapi.android.models.UserPublic;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -66,7 +73,7 @@ public class MainActivity
     private ArrayList<Playlists> playlists = new ArrayList<>();
 
     private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
-    private MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter;
+    public MyPlaylistRecyclerViewAdapter myPlaylistAdapter;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     private Songs tracks;
     private String trackName;
@@ -77,6 +84,15 @@ public class MainActivity
     List<TrackSimple> tracksList = new ArrayList<>();
     Toolbar toolbar;
     private MessageModel message;
+
+    public String userId;
+    public String playlistId;
+
+
+    @Override
+    public Context getBaseContext() {
+        return super.getBaseContext();
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
@@ -89,6 +105,7 @@ public class MainActivity
 
         this.message = new MessageModel(MainActivity.TAG, this);
 
+
         setTitle("Mood Mixer");
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -97,6 +114,7 @@ public class MainActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Mood Mixer");
+
 
         setUpLogin();
     }
@@ -147,12 +165,9 @@ public class MainActivity
                     for(int i = 0; i < playlistSimplePager.items.size(); i++){
                         if(playlistSimplePager.items.get(i).tracks.total != 0 && playlistSimplePager.items.get(i).tracks.total != 1)
                         {
-                           // playlists.add(playlistSimplePager.items.get(i).name);
                             Playlists playlistItem = new Playlists(playlistSimplePager.items.get(i).name);
-                            playlists.add(playlistItem);
-                            myPlaylistRecyclerViewAdapter.notifyItemInserted(playlists.size() - 1);
-                            myPlaylistRecyclerViewAdapter.notifyItemRangeChanged(i-1, playlists.size());
-                           // myPlaylistRecyclerViewAdapter.notifyItemInserted(playlists.size() - 1);
+                            PlaylistSingleton.get(getBaseContext()).addPlaylist(playlistItem);
+                            playlistId = playlistSimplePager.items.get(i).id;
                         }
                     }
                 }
@@ -164,20 +179,23 @@ public class MainActivity
 
         });
 
-        spotify.getPlaylistTracks("USERID","PLAYLISTID", new Callback<Pager<PlaylistTrack>>() {
+        spotify.getTopTracks(new Callback<Pager<Track>>() {
             @Override
-            public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
-                Log.e("TEST", "GOT the tracks in playlist");
-                List<PlaylistTrack> items = playlistTrackPager.items;
-                for( PlaylistTrack pt : items){
-                    Log.e("TEST", pt.track.name + " - " + pt.track.id);
+            public void success(Pager<Track> trackPager, Response response) {
+                List<Track> items = trackPager.items;
+                for( Track pt : items){
+                    Log.e("TEST", pt.name + " - " + pt.id);
+                    Songs songlistItem = new Songs(pt.name, pt.type, pt.uri);
+                    SonglistSingleton.get(getBaseContext()).addSonglist(songlistItem);
                 }
             }
+
             @Override
             public void failure(RetrofitError error) {
-                Log.e("TEST", "Could not get playlist tracks");
+
             }
         });
+
     }
 
 
@@ -263,7 +281,7 @@ public class MainActivity
 
     @Override
     public void onSongListFragmentInteraction(Songs item) {
-
+        musicPlayer.getPlayerApi().play(item.getSongUri());
     }
 
     @Override
@@ -275,4 +293,43 @@ public class MainActivity
     public void onProfileFragmentInteraction(Profile button) {
 
     }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment instanceof PlaylistFragment) {
+            PlaylistFragment playlistFragment = (PlaylistFragment) fragment;
+            playlistFragment.setOnPlaylistFragmentInteractionListener(this);
+        }
+    }
+
+    public void initPlaylistRecyclerview(){
+
+    }
+
+    public void initUserId(final SpotifyService spotify) {
+        spotify.getMe(new Callback<UserPrivate>() {
+            @Override
+            public void success(UserPrivate userPrivate, Response response) {
+                spotify.getUser(userPrivate.id, new Callback<UserPublic>() {
+
+                    @Override
+                    public void success(UserPublic userPublic, Response response) {
+                        userId = userPublic.id;
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d(TAG, "failure: " + error.toString());
+                    }
+                });
+                userId = userPrivate.id;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "Failure: " + error.toString());
+            }
+        });
+    }
+
 }
