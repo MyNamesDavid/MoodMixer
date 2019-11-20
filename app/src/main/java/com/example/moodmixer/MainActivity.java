@@ -28,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -44,6 +46,9 @@ import kaaes.spotify.webapi.android.models.SavedTrack;
 import kaaes.spotify.webapi.android.models.TrackSimple;
 import retrofit.client.Response;
 
+public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
+            SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener,
+        PlaylistFragment.OnPlaylistFragmentInteractionListener, SettingsFragment.onFragmentInteractionSetting {
 
 public class MainActivity
         extends AppCompatActivity
@@ -126,7 +131,7 @@ public class MainActivity
         api.setAccessToken(token);
         spotify = api.getService();
         initSpotifyInfo(spotify);
-        
+
     }
 
     private void initSpotifyInfo(final SpotifyService spotify){
@@ -235,6 +240,5 @@ public class MainActivity
 
     @Override
     public void onProfileFragmentInteraction(Profile button) {
-
     }
 }
