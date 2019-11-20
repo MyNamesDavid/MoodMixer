@@ -380,9 +380,9 @@ public class MusicPlayerFragment extends Fragment {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         songName = track.name;
                         songArtist = track.artist.name;
-
-                        songNameTextView.setText(songName);
-                        songArtistTextView.setText(songArtist);
+                        // TODO FIX
+                        songNameTextView.setText(songArtist);
+                        songArtistTextView.setText(songName);
 
                         // Get image from track
                         musicPlayer.getImagesApi()
