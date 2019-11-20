@@ -1,6 +1,7 @@
 package com.example.moodmixer;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,6 +33,8 @@ import static com.android.volley.VolleyLog.TAG;
 public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private String mParam1;
+    private String mParam2;
     private SettingsFragment.onFragmentInteractionSetting mListener;
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
@@ -41,6 +44,8 @@ public class SettingsFragment extends Fragment {
 
     public interface onFragmentInteractionSetting {
         void onFragmentInteraction(Uri uri);
+
+        void onFragmentInteractionSetting(Uri uri);
     }
 
     public SettingsFragment(){
@@ -55,6 +60,16 @@ public class SettingsFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,6 +102,32 @@ public class SettingsFragment extends Fragment {
         return rootView;
     }
 
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SettingsFragment.onFragmentInteractionSetting) {
+            mListener = (SettingsFragment.onFragmentInteractionSetting) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
     public void saveGenreSettings(View view) {
         File txtFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/MyFolder/");
         if (!txtFolder.exists()) {
@@ -110,6 +151,8 @@ public class SettingsFragment extends Fragment {
 
     }
 
-
+    public interface onFragmentInteractionListener {
+        void onFragmentInteractionSetting(Uri uri);
+    }
 
 }

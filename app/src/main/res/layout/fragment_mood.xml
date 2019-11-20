@@ -9,6 +9,88 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Select Current and Desired Mood" />
+
+    <Button
+        android:id="@+id/happy_mood_current"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="90dp"
+        android:layout_marginTop="125dp"
+        android:text="😃"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/happy_mood_desired"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="240dp"
+        android:layout_marginTop="125dp"
+        android:text="😃"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/sad_mood_current"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="90dp"
+        android:layout_marginTop="215dp"
+        android:text="😢"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/sad_mood_desired"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="240dp"
+        android:layout_marginTop="215dp"
+        android:text="😢"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/stressed_mood_current"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="90dp"
+        android:layout_marginTop="305dp"
+        android:text="🤯"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/stressed_mood_desired"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="240dp"
+        android:layout_marginTop="305dp"
+        android:text="🤯"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/angry_mood_current"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="90dp"
+        android:layout_marginTop="395dp"
+        android:text="😡"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/angry_mood_desired"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="240dp"
+        android:layout_marginTop="395dp"
+        android:text="😡"
+        android:textSize="20dp"/>
+
+    <Button
+        android:id="@+id/calm_mood_current"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="90dp"
+        android:layout_marginTop="485dp"
+        android:text="😎"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/calm_mood_desired"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="240dp"
+        android:layout_marginTop="485dp"
+        android:text="😎"
+        android:textSize="20dp"/>
 
 </FrameLayout>

@@ -227,6 +227,11 @@ public class MainActivity extends AppCompatActivity implements MusicPlayerFragme
 
     }
 
+    @Override
+    public void onFragmentInteractionSetting(Uri uri){
+
+    }
+
 }
 
 

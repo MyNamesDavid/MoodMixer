@@ -10,8 +10,9 @@ public class Moods {
     private Mood[] mood;
     private Mood desiredMood;
 
-    public Moods (){
+    public Moods(){
         mood = new Mood[WEEK_MOODS];
+        this.desiredMood = Mood.HAPPY;
     }
 
     public void putMoodToCollection(Mood currentMood){
