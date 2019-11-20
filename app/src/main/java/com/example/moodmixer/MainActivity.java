@@ -46,10 +46,6 @@ import kaaes.spotify.webapi.android.models.SavedTrack;
 import kaaes.spotify.webapi.android.models.TrackSimple;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity implements MusicPlayerFragment.OnFragmentInteractionListener,
-            SongFragment.OnSongListFragmentInteractionListener , UserProfileFragment.onProfileFragmentInteractionListener,
-        PlaylistFragment.OnPlaylistFragmentInteractionListener, SettingsFragment.onFragmentInteractionSetting {
-
 public class MainActivity
         extends AppCompatActivity
         implements MusicPlayerFragment.OnFragmentInteractionListener,

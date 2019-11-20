@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Desktop-MoodMixer.iml" filepath="$PROJECT_DIR$/Desktop-MoodMixer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/MoodMixer.iml" filepath="$PROJECT_DIR$/.idea/MoodMixer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/MoodMixer-app.iml" filepath="$PROJECT_DIR$/app/MoodMixer-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/spotify-app-remote-release-0.6.3/MoodMixer-spotify-app-remote-release-0.6.3.iml" filepath="$PROJECT_DIR$/spotify-app-remote-release-0.6.3/MoodMixer-spotify-app-remote-release-0.6.3.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/spotify-app-remote-release-0.6.3/spotify-app-remote-release-0.6.3.iml" filepath="$PROJECT_DIR$/spotify-app-remote-release-0.6.3/spotify-app-remote-release-0.6.3.iml" />
