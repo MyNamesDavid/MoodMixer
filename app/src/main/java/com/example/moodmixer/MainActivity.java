@@ -97,7 +97,6 @@ public class MainActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Mood Mixer");
-
         setUpLogin();
     }
 
@@ -150,8 +149,8 @@ public class MainActivity
                            // playlists.add(playlistSimplePager.items.get(i).name);
                             Playlists playlistItem = new Playlists(playlistSimplePager.items.get(i).name);
                             playlists.add(playlistItem);
-                            myPlaylistRecyclerViewAdapter.notifyItemInserted(playlists.size() - 1);
-                            myPlaylistRecyclerViewAdapter.notifyItemRangeChanged(i-1, playlists.size());
+                            //myPlaylistRecyclerViewAdapter.notifyItemInserted(playlists.size() - 1);
+                            //myPlaylistRecyclerViewAdapter.notifyDataSetChanged();
                            // myPlaylistRecyclerViewAdapter.notifyItemInserted(playlists.size() - 1);
                         }
                     }
@@ -164,7 +163,7 @@ public class MainActivity
 
         });
 
-        spotify.getPlaylistTracks("USERID","PLAYLISTID", new Callback<Pager<PlaylistTrack>>() {
+       /* spotify.getPlaylistTracks("USERID","PLAYLISTID", new Callback<Pager<PlaylistTrack>>() {
             @Override
             public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
                 Log.e("TEST", "GOT the tracks in playlist");
@@ -177,7 +176,7 @@ public class MainActivity
             public void failure(RetrofitError error) {
                 Log.e("TEST", "Could not get playlist tracks");
             }
-        });
+        });*/
     }
 
 

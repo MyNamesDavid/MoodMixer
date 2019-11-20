@@ -15,7 +15,16 @@ public class Playlists {
         return playlistName;
     }
 
-    public static final List<Playlists> PLAYLISTS = new ArrayList<Playlists>();
+    public static ArrayList<Playlists> createPlaylist(int numOfPlaylist){
+        ArrayList<Playlists> PLAYLISTS = new ArrayList<Playlists>();
+
+        for(int i = 1; i <= numOfPlaylist; i++){
+            PLAYLISTS.add(new Playlists("Playlist "+ i));
+        }
+        return PLAYLISTS;
+    }
+
+
 
 
 
