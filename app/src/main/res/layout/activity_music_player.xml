@@ -30,15 +30,6 @@
             android:layout_toLeftOf="@id/play_imagebutton" />
 
         <ImageButton
-            android:id="@+id/userprofile_imagebutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="350dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/genderless_user_icon" />
-
-
-        <ImageButton
             android:id="@+id/previous_song_imagebutton"
             android:layout_width="30dp"
             android:layout_height="30dp"

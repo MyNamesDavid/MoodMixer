@@ -149,7 +149,6 @@ public class MusicPlayerFragment extends Fragment {
         setUpWeatherImageButton(rootView);
         setUpAlbumCoverCollection(rootView);
         setUpMoodViews(rootView);
-        setUserProfileImageButton(rootView);
         setUpSongNameTextView(rootView);
         setUpSongArtistTextView(rootView);
 
@@ -327,18 +326,6 @@ public class MusicPlayerFragment extends Fragment {
         };
 
         albumCoverImageView = rootView.findViewById(R.id.album_cover_imageview);
-    }
-
-    private void setUserProfileImageButton(View rootView) {
-
-        userProfileImageButton = rootView.findViewById(R.id.userprofile_imagebutton);
-        userProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: userProfileImageButton Tapped");
-                tabBarController.openUserProfileActivity();
-            }
-        });
     }
 
     private void setUpMoodViews(View rootView) {
