@@ -56,6 +56,11 @@ public class SongFragment extends Fragment {
     private int mColumnCount = 1;
     private OnSongListFragmentInteractionListener mSongListener;
 
+    private RecyclerView.Adapter mAdapter;
+    private ArrayList<Songs> mSonglists;
+
+    RecyclerView recyclerView;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -101,7 +106,11 @@ public class SongFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySongRecyclerViewAdapter(Songs.SONGS, mSongListener, context));
+            // specify an adapter (see also next example)
+            mSonglists = SonglistSingleton.get(getContext()).getSonglist();
+            mAdapter = new MySongRecyclerViewAdapter(mSonglists,mSongListener,context);
+            recyclerView.setAdapter(mAdapter);
+            //recyclerView.setAdapter(new MySongRecyclerViewAdapter(Songs.SONGS, mSongListener, context));
         }
         return view;
     }
@@ -139,7 +148,22 @@ public class SongFragment extends Fragment {
         void onSongListFragmentInteraction(Songs item);
     }
 
+    private void updateUI() {
+        SonglistSingleton songlistSingleton = SonglistSingleton.get(getActivity());
+        ArrayList<Songs> songlist = songlistSingleton.getSonglist();
+        if (mAdapter == null) {
+            mAdapter = new MySongRecyclerViewAdapter(songlist, mSongListener, getContext());
+            recyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
 
 }

@@ -6,77 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/fragment_container"
+    <ImageView
+        android:id="@+id/background_color"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:background="#D3E3FC"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
 
-        <!--            app:srcCompat="@drawable/background_blueblackgradient"/>-->
-
-        <ImageButton
-            android:id="@+id/background_blueblackgradient"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="#D3E3FC"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop" />
-
-        <Space
-            android:id="@+id/previousbutton_space"
-            android:layout_width="14dp"
-            android:layout_height="12dp"
-            android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@id/play_imagebutton" />
-
-        <ImageButton
-            android:id="@+id/userprofile_imagebutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="350dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/genderless_user_icon" />
-
-
-        <ImageButton
-            android:id="@+id/previous_song_imagebutton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignBottom="@id/play_imagebutton"
-            android:layout_toStartOf="@id/previousbutton_space"
-            android:layout_toLeftOf="@id/previousbutton_space"
-            android:background="@drawable/previous_button_white"
-            android:paddingBottom="15dp" />
-
-        <ImageButton
-            android:id="@+id/play_imagebutton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_below="@id/line_imageview"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/play_button_image" />
-
-        <Space
-            android:id="@+id/nextbutton_space"
-            android:layout_width="20dp"
-            android:layout_height="10dp"
-            android:layout_toRightOf="@id/play_imagebutton" />
-
-        <ImageButton
-            android:id="@+id/next_song_imagebutton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignBottom="@id/play_imagebutton"
-            android:layout_toRightOf="@id/nextbutton_space"
-            android:background="@drawable/next_button_white" />
-
-        <ImageView
-            android:id="@+id/line_imageview"
-            android:layout_width="300dp"
-            android:layout_height="1dp"
-            android:layout_below="@+id/album_cover_imageview"
-            android:layout_marginHorizontal="30dp"
-            android:background="@drawable/line_image" />
+    <RelativeLayout
+        android:id="@+id/album_container"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@color/black">
 
         <ImageView
             android:id="@+id/album_cover_imageview"
@@ -84,155 +29,106 @@
             android:layout_height="250dp"
             android:layout_centerInParent="true"
             android:background="@drawable/album_cover_image" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/above_album_container"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_above="@id/album_container"
+        android:layout_centerHorizontal="true"
+        android:background="#00000000">
 
         <ImageView
             android:id="@+id/icon_moodmixer"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_alignBottom="@id/charts_imagebutton"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/icon_moodmixer" />
-
-        <Space
-            android:id="@+id/weath_space"
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_above="@+id/album_cover_imageview"
-            android:layout_alignEnd="@+id/album_cover_imageview"
-            android:layout_alignRight="@+id/album_cover_imageview" />
 
         <ImageButton
             android:id="@+id/weather_imagebutton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_above="@+id/weath_space"
-            android:layout_alignEnd="@+id/album_cover_imageview"
-            android:layout_alignRight="@+id/album_cover_imageview"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/weather_icon_image" />
-
-        <Space
-            android:id="@+id/charts_space"
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_above="@+id/album_cover_imageview"
-            android:layout_alignStart="@+id/album_cover_imageview"
-            android:layout_alignLeft="@+id/album_cover_imageview" />
-
-        <ImageButton
-            android:id="@+id/charts_imagebutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@id/charts_space"
-            android:layout_alignStart="@id/album_cover_imageview"
-            android:layout_alignLeft="@+id/album_cover_imageview"
-            android:background="@drawable/charts_icon_image"
-            android:paddingBottom="10dp" />
-
-        <TextView
-            android:id="@+id/songname_textview"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_above="@id/songartist_textview"
-            android:text="Starboy"
-            android:textColor="@color/black"
-            android:textSize="12pt"/>
-
-        <TextView
-            android:id="@+id/songartist_textview"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:text="The Weekend"
-            android:textColor="@color/black"
-            android:textSize="10pt"/>
     </RelativeLayout>
-
-    <!-- Start - Playlist Curator Options View-->
-
-    <!-- End - Playlist Curator Options View-->
 
     <RelativeLayout
-        android:id="@+id/moodmixer_playlist_options"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true">
-
-        <ImageView
-            android:id="@+id/moodmixer_playlist_options_background_imageview"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerInParent="true"
-            android:background="#1976D2" />
+        android:id="@+id/song_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#00000000">
 
         <TextView
-            android:id="@+id/curator_options_header"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_alignTop="@id/moodmixer_playlist_options_background_imageview"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:text="Curator Options"
-            android:textColor="@color/white" />
+            android:id="@+id/song_artist_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/song_name_textview"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="@string/artist_name"
+            android:textColor="@color/black"
+            android:textSize="9pt" />
 
         <TextView
-            android:id="@+id/currentmood_textview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignStart="@id/curator_options_header"
-            android:layout_alignLeft="@id/curator_options_header"
-            android:layout_alignTop="@+id/currentmood_backgroundView"
-            android:gravity="center"
-            android:text="Current"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/desiredmood_textview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignStart="@id/curator_options_header"
-            android:layout_alignLeft="@id/curator_options_header"
-            android:layout_alignTop="@+id/desiredmood_backgroundView"
-            android:gravity="center"
-            android:text="Desired"
-            android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/currentmood_backgroundView"
-            android:layout_width="125dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/curator_options_header"
-            android:layout_alignRight="@id/curator_options_header"
-            android:background="#80000000" />
-
-        <ImageView
-            android:id="@+id/desiredmood_backgroundView"
-            android:layout_width="125dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/currentmood_backgroundView"
-            android:layout_alignRight="@id/curator_options_header"
-            android:background="#80000000" />
-
-        <ImageButton
-            android:id="@+id/weatheroption_imagebutton"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_alignStart="@id/curator_options_header"
-            android:layout_alignLeft="@id/curator_options_header"
-            android:layout_alignBottom="@id/moodmixer_playlist_options_background_imageview"
-            android:background="@drawable/weather_icon_image" />
-
-        <ImageButton
-            android:id="@+id/musicgenreoption_imagebutton"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_alignEnd="@+id/curator_options_header"
-            android:layout_alignRight="@id/curator_options_header"
-            android:layout_alignBottom="@id/moodmixer_playlist_options_background_imageview"
-            android:background="@drawable/play_button_white" />
-
+            android:id="@+id/song_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="bottom"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="@string/song_name"
+            android:textColor="@color/black"
+            android:textSize="8pt" />
     </RelativeLayout>
 
-    <!-- End - Playlist Curator Options View-->
+    <RelativeLayout
+        android:id="@+id/control_container_view"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
+        android:layout_below="@id/album_container"
+        android:layout_centerHorizontal="true"
+        android:background="#00000000">
+
+        <ImageButton
+            android:id="@+id/play_imagebutton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/play_button_blue" />
+
+        <ImageButton
+            android:id="@+id/next_song_imagebutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/next_button_blue" />
+
+        <ImageButton
+            android:id="@+id/previous_song_imagebutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/previous_button_blue" />
+    </RelativeLayout>
 
 </RelativeLayout>
