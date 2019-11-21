@@ -148,7 +148,6 @@ public class MusicPlayerFragment extends Fragment {
         setUpChartsImageButton(rootView);
         setUpWeatherImageButton(rootView);
         setUpAlbumCoverCollection(rootView);
-        setUpMoodViews(rootView);
         setUpSongNameTextView(rootView);
         setUpSongArtistTextView(rootView);
 
@@ -254,39 +253,30 @@ public class MusicPlayerFragment extends Fragment {
 
 
         playImageButton = rootView.findViewById(R.id.play_imagebutton);
-        playImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        playImageButton.setOnClickListener( (View v) -> {
                 Log.d(TAG, "onClick: playImageButton Tapped");
                 buttonEffect(playImageButton);
                 onPlayPauseButtonTapped();
-            }
         });
     }
 
     private void setUpNextSongImageButton(View rootView) {
 
         nextSongImageButton = rootView.findViewById(R.id.next_song_imagebutton);
-        nextSongImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        nextSongImageButton.setOnClickListener((View v) ->  {
                 Log.d(TAG, "onClick: nextSongImageButton Tapped");
                 onNextSongButtonTapped();
                 buttonEffect(nextSongImageButton);
-            }
         });
     }
 
     private void setUpPreviousSongImageButton(View rootView) {
 
         previousSongImageButton = rootView.findViewById(R.id.previous_song_imagebutton);
-        previousSongImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        previousSongImageButton.setOnClickListener((View v) ->  {
                 Log.d(TAG, "onClick: previousSongImageButton Tapped");
                 onPreviousSongButtonTapped();
                 buttonEffect(previousSongImageButton);
-            }
         });
     }
 
@@ -306,19 +296,17 @@ public class MusicPlayerFragment extends Fragment {
     private void setUpWeatherImageButton(View rootView) {
 
         weatherImageButton = rootView.findViewById(R.id.weather_imagebutton);
-        weatherImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        weatherImageButton.setOnClickListener((View v) -> {
+
                 Log.d(TAG, "onClick: weatherImageButton Tapped");
                 toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
                 buttonEffect(weatherImageButton);
-            }
         });
     }
 
     private void setUpAlbumCoverCollection(View rootView) {
 
-        albumCoverImages = new int[]{
+        albumCoverImages = new int[] {
                 R.drawable.album_cover_image,
                 R.drawable.zeppelin_albumcover,
                 R.drawable.pinkfloyd_albumcover,
@@ -328,19 +316,13 @@ public class MusicPlayerFragment extends Fragment {
         albumCoverImageView = rootView.findViewById(R.id.album_cover_imageview);
     }
 
-    private void setUpMoodViews(View rootView) {
-
-        moodView = rootView.findViewById(R.id.moodmixer_playlist_options);
-        moodView.setVisibility(View.INVISIBLE);
-    }
-
     private void setUpSongNameTextView(View rootView) {
-        songNameTextView = rootView.findViewById(R.id.songname_textview);
+        songNameTextView = rootView.findViewById(R.id.song_name_textview);
         songNameTextView.setVisibility(View.VISIBLE);
     }
 
     private void setUpSongArtistTextView(View rootView) {
-        songArtistTextView = rootView.findViewById(R.id.songartist_textview);
+        songArtistTextView = rootView.findViewById(R.id.song_artist_textview);
         songArtistTextView.setVisibility(View.VISIBLE);
     }
 
@@ -353,8 +335,6 @@ public class MusicPlayerFragment extends Fragment {
         if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
             return;
         }
-
-//        musicPlayer.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
 
         musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
 
@@ -380,9 +360,8 @@ public class MusicPlayerFragment extends Fragment {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         songName = track.name;
                         songArtist = track.artist.name;
-                        // TODO FIX
-                        songNameTextView.setText(songArtist);
-                        songArtistTextView.setText(songName);
+                        songNameTextView.setText(songName);
+                        songArtistTextView.setText(songArtist);
 
                         // Get image from track
                         musicPlayer.getImagesApi()
@@ -419,10 +398,6 @@ public class MusicPlayerFragment extends Fragment {
         }
 
         musicPlayer.getPlayerApi().skipPrevious();
-    }
-
-    private void presentChartsActivity() {
-
     }
 
     private void toggleMoodViews() {
