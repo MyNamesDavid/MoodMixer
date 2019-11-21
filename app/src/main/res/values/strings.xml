@@ -25,4 +25,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="profile_and_settings">Profile and Settings</string>
 </resources>

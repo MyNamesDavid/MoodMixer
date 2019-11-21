@@ -16,6 +16,7 @@ public class Songs {
     String songGenre;
     String songArtistName;
     String SongUrl;
+    String songUri;
     ImageView songAlbumCover;
 
     String songId;
@@ -25,10 +26,10 @@ public class Songs {
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist, String id){
+    public Songs(String song, String artist, String uri){
         this.songName = song;
         this.songArtistName = artist;
-        this.songId = id;
+        this.songUri = uri;
     }
 
     public String getID(){return songId;}
@@ -40,6 +41,7 @@ public class Songs {
     }
     public String getSongArtistName(){ return songArtistName; }
     public String getSongUrl() { return SongUrl; }
+    public String getSongUri() {return songUri;}
 
 
     public void setSongName(String song) {
@@ -51,6 +53,7 @@ public class Songs {
     public void setSongArtist(String song) { songArtistName = song; }
     public void setSongUrl(String songUrl) { SongUrl = songUrl; }
     public void setSongId(String songid) { songId = songid; }
+    public void setSongUri(String Uri){songUri = Uri;}
 
 
 
@@ -65,15 +68,6 @@ public class Songs {
      */
     public static final Map<String, Songs> SONGS_MAP = new HashMap<String, Songs>();
 
-    private static final int COUNT = 25;
-
-   // static {
-        // Add some sample items.
-    //    for (int i = 1; i <= COUNT; i++) {
-      //      addItem(createSongs("Song Name " + i, "Artist Name " + i, i));
-
-     //   }
-   // }
 
 
 

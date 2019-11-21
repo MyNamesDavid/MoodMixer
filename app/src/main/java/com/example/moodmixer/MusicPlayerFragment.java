@@ -149,7 +149,6 @@ public class MusicPlayerFragment extends Fragment {
         setUpWeatherImageButton(rootView);
         setUpAlbumCoverCollection(rootView);
         setUpMoodViews(rootView);
-        setUserProfileImageButton(rootView);
         setUpSongNameTextView(rootView);
         setUpSongArtistTextView(rootView);
 
@@ -329,18 +328,6 @@ public class MusicPlayerFragment extends Fragment {
         albumCoverImageView = rootView.findViewById(R.id.album_cover_imageview);
     }
 
-    private void setUserProfileImageButton(View rootView) {
-
-        userProfileImageButton = rootView.findViewById(R.id.userprofile_imagebutton);
-        userProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: userProfileImageButton Tapped");
-                tabBarController.openUserProfileActivity();
-            }
-        });
-    }
-
     private void setUpMoodViews(View rootView) {
 
         moodView = rootView.findViewById(R.id.moodmixer_playlist_options);
@@ -373,12 +360,12 @@ public class MusicPlayerFragment extends Fragment {
 
             if (playerState.isPaused) {
                 musicPlayer.getPlayerApi().resume();
-                playImageButton.setBackgroundResource(R.drawable.pause_button_white);
+                playImageButton.setBackgroundResource(R.drawable.pause_button_blue);
                 subscribeToPlayerState();
 
             } else {
                 musicPlayer.getPlayerApi().pause();
-                playImageButton.setBackgroundResource(R.drawable.play_button_white);
+                playImageButton.setBackgroundResource(R.drawable.play_button_blue);
             }
         });
     }
@@ -393,9 +380,9 @@ public class MusicPlayerFragment extends Fragment {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         songName = track.name;
                         songArtist = track.artist.name;
-
-                        songNameTextView.setText(songName);
-                        songArtistTextView.setText(songArtist);
+                        // TODO FIX
+                        songNameTextView.setText(songArtist);
+                        songArtistTextView.setText(songName);
 
                         // Get image from track
                         musicPlayer.getImagesApi()
@@ -404,7 +391,6 @@ public class MusicPlayerFragment extends Fragment {
                                     albumCoverImageView.setImageBitmap(bitmap);
                                 });
                     }
-
                 });
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.AdapterListUpdateCallback;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,10 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import com.example.moodmixer.dummy.DummyContent;
-import com.example.moodmixer.dummy.DummyContent.Songs;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +27,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnPlaylistFragmentInteractionListener}
  * interface.
  */
-public class PlaylistFragment extends Fragment {
+public class PlaylistFragment extends Fragment  {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -33,6 +35,12 @@ public class PlaylistFragment extends Fragment {
     private int mColumnCount = 1;
     private OnPlaylistFragmentInteractionListener mListener;
     FloatingActionButton floatingActionButtonPlaylist;
+    OnPlaylistFragmentInteractionListener callback;
+
+    private RecyclerView.Adapter mAdapter;
+    private ArrayList<Playlists> mPlaylists;
+
+    RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,6 +67,7 @@ public class PlaylistFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
+
     }
 
     @Override
@@ -78,14 +87,19 @@ public class PlaylistFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(DummyContent.ITEMS, mListener, context));
+            // specify an adapter (see also next example)
+            mPlaylists = PlaylistSingleton.get(getContext()).getPlaylist();
+            mAdapter = new MyPlaylistRecyclerViewAdapter(mPlaylists,mListener,context);
+            recyclerView.setAdapter(mAdapter);
+            //recyclerView.setAdapter(MyPlaylistRecyclerViewAdapter);
+            //recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(Playlists.PLAYLISTS, mListener, context));
         }
         return view;
     }
@@ -120,7 +134,12 @@ public class PlaylistFragment extends Fragment {
      */
     public interface OnPlaylistFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onPlaylistFragmentInteraction(Songs item);
+
+        void onPlaylistFragmentInteraction(Playlists item);
+    }
+
+    public void setOnPlaylistFragmentInteractionListener(OnPlaylistFragmentInteractionListener callback){
+        this.callback = callback;
     }
 
     //Code for Floating action button
@@ -133,6 +152,23 @@ public class PlaylistFragment extends Fragment {
 
         }
     });*/
+
+    private void updateUI() {
+        PlaylistSingleton playlistSingleton = PlaylistSingleton.get(getActivity());
+        ArrayList<Playlists> playlists = playlistSingleton.getPlaylist();
+        if (mAdapter == null) {
+            mAdapter = new MyPlaylistRecyclerViewAdapter(playlists, mListener, getContext());
+            recyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
 
 }

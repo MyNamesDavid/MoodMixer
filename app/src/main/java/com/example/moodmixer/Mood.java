@@ -3,13 +3,15 @@ package com.example.moodmixer;
 
 
 public enum Mood {
-    HAPPY('\uD83D', "Happy"),
-    SAD('s',"Sad"),
-    NEUTRAL('n',"Neutral");
-    public final char emoji;
+    HAPPY("\uD83D\uDE03", "Happy"),
+    SAD("\uD83D\uDE22","Sad"),
+    STRESSED("\uD83E\uDD2F","Stressed"),
+    ANGRY("😡","Angry"),
+    CALM("\uD83D\uDE0E","Calm");
+    public final String emoji;
     public final String name;
 
-    Mood(char emoji, String name) {
+    Mood(String emoji, String name) {
         this.emoji = emoji;
         this.name = name;
     }
