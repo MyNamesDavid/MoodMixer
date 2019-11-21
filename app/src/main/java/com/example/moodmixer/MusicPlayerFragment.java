@@ -90,7 +90,6 @@ public class MusicPlayerFragment extends Fragment {
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
     private ImageButton previousSongImageButton;
-    private ImageButton chartsImageButton;
     private ImageButton weatherImageButton;
     private ImageButton userProfileImageButton;
     private ImageView albumCoverImageView;
@@ -145,7 +144,6 @@ public class MusicPlayerFragment extends Fragment {
         setUpPlayImageButton(rootView);
         setUpNextSongImageButton(rootView);
         setUpPreviousSongImageButton(rootView);
-        setUpChartsImageButton(rootView);
         setUpWeatherImageButton(rootView);
         setUpAlbumCoverCollection(rootView);
         setUpSongNameTextView(rootView);
@@ -277,19 +275,6 @@ public class MusicPlayerFragment extends Fragment {
                 Log.d(TAG, "onClick: previousSongImageButton Tapped");
                 onPreviousSongButtonTapped();
                 buttonEffect(previousSongImageButton);
-        });
-    }
-
-    private void setUpChartsImageButton(View rootView) {
-
-        chartsImageButton = rootView.findViewById(R.id.charts_imagebutton);
-        chartsImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: chartsImageButton Tapped");
-                toastMessage("📊 \nBPM: 150\n Fun Fact - fast-tempo songs are directly associated with more energy, movement, and dancing, typically linked to being in a joyful state.");
-                buttonEffect(chartsImageButton);
-            }
         });
     }
 
