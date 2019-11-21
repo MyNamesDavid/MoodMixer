@@ -26,6 +26,7 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
 public class MusicPlayerFragment extends Fragment {
@@ -175,6 +176,8 @@ public class MusicPlayerFragment extends Fragment {
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
                             Log.d(TAG, "Connected! Yay!");
+
+                            subscribeToPlayerState();
                         }
 
                         public void onFailure(Throwable error) {
@@ -268,8 +271,6 @@ public class MusicPlayerFragment extends Fragment {
 
             if (playerState.isPaused) {
                 musicPlayer.getPlayerApi().resume();
-                playImageButton.setBackgroundResource(R.drawable.pause_button_blue);
-                subscribeToPlayerState();
 
             } else {
                 musicPlayer.getPlayerApi().pause();
@@ -278,25 +279,50 @@ public class MusicPlayerFragment extends Fragment {
         });
     }
 
+    private void loadArtistName(Track track) {
+        songArtist = track.artist.name;
+        songArtistTextView.setText(songArtist);
+    }
+
+    private void loadSongName(Track track) {
+        songName = track.name;
+        songNameTextView.setText(songName);
+    }
+
+    private void loadAlbumCover(PlayerState playerState) {
+        // Get image from track
+        musicPlayer.getImagesApi()
+                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
+                .setResultCallback(bitmap -> {
+                    albumCoverImageView.setImageBitmap(bitmap);
+                });
+    }
+
+    private void loadMusicResources(Track track, PlayerState playerState) {
+
+        loadArtistName(track);
+        loadSongName(track);
+        loadAlbumCover(playerState);
+    }
+
     private void subscribeToPlayerState() {
         // Subscribe to PlayerState
         musicPlayer.getPlayerApi()
                 .subscribeToPlayerState()
                 .setEventCallback(playerState -> {
+                    
                     final Track track = playerState.track;
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        songName = track.name;
-                        songArtist = track.artist.name;
-                        songNameTextView.setText(songName);
-                        songArtistTextView.setText(songArtist);
 
-                        // Get image from track
-                        musicPlayer.getImagesApi()
-                                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
-                                .setResultCallback(bitmap -> {
-                                    albumCoverImageView.setImageBitmap(bitmap);
-                                });
+                        loadMusicResources(track, playerState);
+                    }
+
+                    if (playerState.isPaused) {
+                        playImageButton.setBackgroundResource(R.drawable.play_button_blue);
+
+                    } else {
+                        playImageButton.setBackgroundResource(R.drawable.pause_button_blue);
                     }
                 });
     }
