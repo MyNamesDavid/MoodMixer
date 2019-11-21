@@ -97,6 +97,7 @@ public class MusicPlayerFragment extends Fragment {
     private int[] albumCoverImages;
     private int songIndex = 0;
     private TabBarController tabBarController;
+    MessageModel message;
 
     private TextView songNameTextView;
     private TextView songArtistTextView;
@@ -138,6 +139,7 @@ public class MusicPlayerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Log.d(TAG, "onCreate - start");
+        message = new MessageModel(getTag(), getContext());
 
         View rootView = inflater.inflate(R.layout.activity_music_player, null);
 
@@ -205,7 +207,6 @@ public class MusicPlayerFragment extends Fragment {
 
             SpotifyAppRemote.connect(getContext(), connectionParams,
                     new Connector.ConnectionListener() {
-
                         @Override
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             musicPlayer = spotifyAppRemote;
@@ -213,33 +214,7 @@ public class MusicPlayerFragment extends Fragment {
                         }
 
                         public void onFailure(Throwable error) {
-                            if (error instanceof SpotifyRemoteServiceException) {
-                                if (error.getCause() instanceof SecurityException) {
-                                    logError(error, "SecurityException");
-                                } else if (error.getCause() instanceof IllegalStateException) {
-                                    logError(error, "IllegalStateException");
-                                }
-                            } else if (error instanceof NotLoggedInException) {
-                                logError(error, "NotLoggedInException");
-                            } else if (error instanceof AuthenticationFailedException) {
-                                logError(error, "AuthenticationFailedException");
-                            } else if (error instanceof CouldNotFindSpotifyApp) {
-                                logError(error, "CouldNotFindSpotifyApp");
-                            } else if (error instanceof LoggedOutException) {
-                                logError(error, "LoggedOutException");
-                            } else if (error instanceof OfflineModeException) {
-                                logError(error, "OfflineModeException");
-                            } else if (error instanceof UserNotAuthorizedException) {
-                                logError(error, "UserNotAuthorizedException");
-                            } else if (error instanceof UnsupportedFeatureVersionException) {
-                                logError(error, "UnsupportedFeatureVersionException");
-                            } else if (error instanceof SpotifyDisconnectedException) {
-                                logError(error, "SpotifyDisconnectedException");
-                            } else if (error instanceof SpotifyConnectionTerminatedException) {
-                                logError(error, "SpotifyConnectionTerminatedException");
-                            } else {
-                                logError(error, String.format("Connection failed: %s", error));
-                            }
+                            message.handleSpotifyOnFailureError(error);
                         }
                     });
         } else {
