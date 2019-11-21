@@ -138,7 +138,6 @@ public class MainActivity
 
     private void initSpotifyInfo(final SpotifyService spotify){
 
-
         spotify.getMyPlaylists(new Callback<Pager<PlaylistSimple>>(){
             @Override
             public void success(Pager<PlaylistSimple> playlistSimplePager, Response response) {
