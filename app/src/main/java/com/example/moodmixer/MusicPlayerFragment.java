@@ -2,22 +2,19 @@ package com.example.moodmixer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,49 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.MotionEvent;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-
 import com.spotify.protocol.types.Image;
-import com.spotify.protocol.types.ImageUri;
 import com.spotify.protocol.types.Track;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.ContentApi;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.android.appremote.api.error.AuthenticationFailedException;
-import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
-import com.spotify.android.appremote.api.error.LoggedOutException;
-import com.spotify.android.appremote.api.error.NotLoggedInException;
-import com.spotify.android.appremote.api.error.OfflineModeException;
-import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
-import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
-import com.spotify.android.appremote.api.error.SpotifyRemoteServiceException;
-import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
-import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
-import com.spotify.protocol.client.ErrorCallback;
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.Capabilities;
-import com.spotify.protocol.types.Image;
-import com.spotify.protocol.types.ListItem;
-import com.spotify.protocol.types.PlaybackSpeed;
-import com.spotify.protocol.types.PlayerContext;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Repeat;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-
 
 public class MusicPlayerFragment extends Fragment {
 
@@ -104,6 +63,9 @@ public class MusicPlayerFragment extends Fragment {
     private String songName;
     private String songArtist;
 
+    Animation fadeOutAnimation;
+    Animation fadeInAnimation;
+
     // MARK: Lifecycle
 
     /**
@@ -139,10 +101,12 @@ public class MusicPlayerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Log.d(TAG, "onCreate - start");
+
         message = new MessageModel(getTag(), getContext());
+        fadeOutAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fadeout);
+        fadeInAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fadein);
 
         View rootView = inflater.inflate(R.layout.activity_music_player, null);
-
         setUpPlayImageButton(rootView);
         setUpNextSongImageButton(rootView);
         setUpPreviousSongImageButton(rootView);
@@ -226,30 +190,34 @@ public class MusicPlayerFragment extends Fragment {
 
 
         playImageButton = rootView.findViewById(R.id.play_imagebutton);
-        playImageButton.setOnClickListener( (View v) -> {
-                Log.d(TAG, "onClick: playImageButton Tapped");
-                buttonEffect(playImageButton);
-                onPlayPauseButtonTapped();
+        playImageButton.setOnClickListener((View v) -> {
+            Log.d(TAG, "onClick: playImageButton Tapped");
+            buttonEffect(playImageButton);
+            onPlayPauseButtonTapped();
         });
     }
 
     private void setUpNextSongImageButton(View rootView) {
 
         nextSongImageButton = rootView.findViewById(R.id.next_song_imagebutton);
-        nextSongImageButton.setOnClickListener((View v) ->  {
-                Log.d(TAG, "onClick: nextSongImageButton Tapped");
-                onNextSongButtonTapped();
-                buttonEffect(nextSongImageButton);
+        nextSongImageButton.setOnClickListener((View v) -> {
+            Log.d(TAG, "onClick: nextSongImageButton Tapped");
+            onNextSongButtonTapped();
+            buttonEffect(nextSongImageButton);
+            albumCoverImageView.startAnimation(fadeOutAnimation);
+            albumCoverImageView.startAnimation(fadeInAnimation);
         });
     }
 
     private void setUpPreviousSongImageButton(View rootView) {
 
         previousSongImageButton = rootView.findViewById(R.id.previous_song_imagebutton);
-        previousSongImageButton.setOnClickListener((View v) ->  {
-                Log.d(TAG, "onClick: previousSongImageButton Tapped");
-                onPreviousSongButtonTapped();
-                buttonEffect(previousSongImageButton);
+        previousSongImageButton.setOnClickListener((View v) -> {
+            Log.d(TAG, "onClick: previousSongImageButton Tapped");
+            onPreviousSongButtonTapped();
+            buttonEffect(previousSongImageButton);
+            albumCoverImageView.startAnimation(fadeOutAnimation);
+            albumCoverImageView.startAnimation(fadeInAnimation);
         });
     }
 
@@ -258,15 +226,15 @@ public class MusicPlayerFragment extends Fragment {
         weatherImageButton = rootView.findViewById(R.id.weather_imagebutton);
         weatherImageButton.setOnClickListener((View v) -> {
 
-                Log.d(TAG, "onClick: weatherImageButton Tapped");
-                toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
-                buttonEffect(weatherImageButton);
+            Log.d(TAG, "onClick: weatherImageButton Tapped");
+            toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
+            buttonEffect(weatherImageButton);
         });
     }
 
     private void setUpAlbumCoverCollection(View rootView) {
 
-        albumCoverImages = new int[] {
+        albumCoverImages = new int[]{
                 R.drawable.album_cover_image,
                 R.drawable.zeppelin_albumcover,
                 R.drawable.pinkfloyd_albumcover,
