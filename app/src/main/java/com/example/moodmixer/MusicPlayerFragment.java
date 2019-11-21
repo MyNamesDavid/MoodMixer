@@ -5,11 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,68 +17,36 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.view.MotionEvent;
-
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.types.Image;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
+import java.beans.*;
 
 public class MusicPlayerFragment extends Fragment {
 
+    public static final String TAG = "MusicPlayerFragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private MusicPlayerFragment.OnFragmentInteractionListener mListener;
 
-    private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
-    private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
-    private SpotifyAppRemote musicPlayer; // mSpotifyAppRemote
-
-    private static final String TAG = "MusicPlayerActivity";
-    private RelativeLayout moodView;
-    private ImageButton currentMoodOneImageButton;
-    private ImageButton currentMoodTwoImageButton;
-    private ImageButton currentMoodThreeImageButton;
-    private ImageButton desiredMoodOneImageButton;
-    private ImageButton desiredMoodTwoImageButton;
-    private ImageButton desiredMoodThreeImageButton;
     private ImageButton playImageButton;
     private ImageButton nextSongImageButton;
     private ImageButton previousSongImageButton;
     private ImageButton weatherImageButton;
-    private ImageButton userProfileImageButton;
     private ImageView albumCoverImageView;
-    private ImageView backgroundView;
-    private int[] albumCoverImages;
-    private int songIndex = 0;
-    private TabBarController tabBarController;
     MessageModel message;
 
+    private SpotifyModel spotify;
     private TextView songNameTextView;
     private TextView songArtistTextView;
     private String songName;
     private String songArtist;
 
+    public PropertyChangeListener listener;
     Animation fadeOutAnimation;
     Animation fadeInAnimation;
 
     // MARK: Lifecycle
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -103,6 +71,7 @@ public class MusicPlayerFragment extends Fragment {
 
         Log.d(TAG, "onCreate - start");
 
+        spotify = new SpotifyModel(MusicPlayerFragment.TAG, getContext());
         message = new MessageModel(getTag(), getContext());
         fadeOutAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fadeout);
         fadeInAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fadein);
@@ -116,6 +85,8 @@ public class MusicPlayerFragment extends Fragment {
         setUpSongNameTextView(rootView);
         setUpSongArtistTextView(rootView);
 
+        handleSpotifyPropertyChanges();
+
         return rootView;
     }
 
@@ -127,7 +98,7 @@ public class MusicPlayerFragment extends Fragment {
         String message = String.format("Package Name: %s\n ", appPackageName);
         Log.d(TAG, message);
 
-        setUpConnectionToSpotify();
+        spotify.setUpConnectionToSpotify();
     }
 
     @Override
@@ -151,46 +122,40 @@ public class MusicPlayerFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        SpotifyAppRemote.disconnect(musicPlayer);
+        spotify.disconnect();
+    }
+
+    // MARK: Actions
+
+    private void onPreviousSongButtonTapped() {
+
+        if (spotify.isConnected()) {
+            spotify.previousSong();
+        }
+    }
+
+    private void onNextSongButtonTapped() {
+
+        if (spotify.isConnected()) {
+            spotify.nextSong();
+        }
+    }
+
+    private void onPlayPauseButtonTapped() {
+
+        if (spotify.isConnected()) {
+
+            if (spotify.isPaused)
+                spotify.resume();
+
+            else
+                spotify.pause();
+        }
     }
 
     // MARK: Setup
 
-    /**
-     * Set Up Bottom Tab Bar Navigation Item
-     */
-
-    private void setUpConnectionToSpotify() {
-
-        if (SpotifyAppRemote.isSpotifyInstalled(getContext())) {
-
-            ConnectionParams connectionParams =
-                    new ConnectionParams.Builder(CLIENT_ID)
-                            .setRedirectUri(REDIRECT_URI)
-                            .showAuthView(true)
-                            .build();
-
-            SpotifyAppRemote.connect(getContext(), connectionParams,
-                    new Connector.ConnectionListener() {
-                        @Override
-                        public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                            musicPlayer = spotifyAppRemote;
-                            Log.d(TAG, "Connected! Yay!");
-
-                            subscribeToPlayerState();
-                        }
-
-                        public void onFailure(Throwable error) {
-                            message.handleSpotifyOnFailureError(error);
-                        }
-                    });
-        } else {
-            Log.d(TAG, "Requirement: Spotify must be installed on device with a premium membership");
-        }
-    }
-
     private void setUpPlayImageButton(View rootView) {
-
 
         playImageButton = rootView.findViewById(R.id.play_imagebutton);
         playImageButton.setOnClickListener((View v) -> {
@@ -230,20 +195,12 @@ public class MusicPlayerFragment extends Fragment {
         weatherImageButton.setOnClickListener((View v) -> {
 
             Log.d(TAG, "onClick: weatherImageButton Tapped");
-            toastMessage("☀️Warm Sunny Day Mood Recommendation - Joyful");
+            message.toast("☀️Warm Sunny Day Mood Recommendation - Joyful");
             buttonEffect(weatherImageButton);
         });
     }
 
     private void setUpAlbumCoverCollection(View rootView) {
-
-        albumCoverImages = new int[]{
-                R.drawable.album_cover_image,
-                R.drawable.zeppelin_albumcover,
-                R.drawable.pinkfloyd_albumcover,
-                R.drawable.beatles_albumcover
-        };
-
         albumCoverImageView = rootView.findViewById(R.id.album_cover_imageview);
     }
 
@@ -257,128 +214,39 @@ public class MusicPlayerFragment extends Fragment {
         songArtistTextView.setVisibility(View.VISIBLE);
     }
 
-    // MARK: Actions
+    // MARK: Helpers
 
-    private void onPlayPauseButtonTapped() {
-        // increment a progress bar
+    private void handleSpotifyPropertyChanges() {
 
-        // GUARD
-        if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
-            return;
-        }
+        listener = new PropertyChangeListener() { //This is how we define the listener and tell it what to do when it hears something change
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                if (event.getPropertyName().equals(SpotifyProps.SongArtist.toString())) {
+                    songArtist = event.getNewValue().toString();
+                    songArtistTextView.setText(songArtist);
+                }
 
-        musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+                if (event.getPropertyName().equals(SpotifyProps.SongName.toString())) {
+                    songName = event.getNewValue().toString();
+                    songNameTextView.setText(songName);
+                }
 
-            if (playerState.isPaused) {
-                musicPlayer.getPlayerApi().resume();
+                if (event.getPropertyName().equals(SpotifyProps.AlbumCover.toString())) {
+                    albumCoverImageView.setImageBitmap((Bitmap) event.getNewValue());
+                }
 
-            } else {
-                musicPlayer.getPlayerApi().pause();
-                playImageButton.setBackgroundResource(R.drawable.play_button_blue);
-            }
-        });
-    }
-
-    private void loadArtistName(Track track) {
-        songArtist = track.artist.name;
-        songArtistTextView.setText(songArtist);
-    }
-
-    private void loadSongName(Track track) {
-        songName = track.name;
-        songNameTextView.setText(songName);
-    }
-
-    private void loadAlbumCover(PlayerState playerState) {
-        // Get image from track
-        musicPlayer.getImagesApi()
-                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
-                .setResultCallback(bitmap -> {
-                    albumCoverImageView.setImageBitmap(bitmap);
-                });
-    }
-
-    private void loadMusicResources(Track track, PlayerState playerState) {
-
-        loadArtistName(track);
-        loadSongName(track);
-        loadAlbumCover(playerState);
-    }
-
-    private void subscribeToPlayerState() {
-        // Subscribe to PlayerState
-        musicPlayer.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-
-                        loadMusicResources(track, playerState);
-                    }
-
-                    if (playerState.isPaused) {
+                if (event.getPropertyName().equals(SpotifyProps.IsPaused.toString())) {
+                    Boolean isPaused = (Boolean) event.getNewValue();
+                    if (isPaused) {
                         playImageButton.setBackgroundResource(R.drawable.play_button_blue);
-
                     } else {
                         playImageButton.setBackgroundResource(R.drawable.pause_button_blue);
                     }
-                });
-    }
+                }
+            }
+        };
 
-    private void onNextSongButtonTapped() {
-        // cycle through albumCoverImages
-
-        // GUARD
-        if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
-            songIndex = (songIndex < albumCoverImages.length - 1) ? (songIndex + 1) : (0);
-            albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
-//            toastMessage("error - Spotify Not Connected");
-            return;
-        }
-
-        musicPlayer.getPlayerApi().skipNext();
-    }
-
-    private void onPreviousSongButtonTapped() {
-
-        // GUARD
-        if (!SpotifyAppRemote.isSpotifyInstalled(getContext()) || musicPlayer == null || !musicPlayer.isConnected()) {
-            songIndex = (songIndex > 0) ? (songIndex - 1) : (albumCoverImages.length - 1);
-            albumCoverImageView.setBackgroundResource(albumCoverImages[songIndex]);
-            //            toastMessage("error - Spotify Not Connected");
-            return;
-        }
-
-        musicPlayer.getPlayerApi().skipPrevious();
-    }
-
-    private void toggleMoodViews() {
-
-        switch (moodView.getVisibility()) {
-            case View.VISIBLE:
-                moodView.setVisibility(View.INVISIBLE);
-                break;
-
-            case View.INVISIBLE:
-                moodView.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
-    // MARK: Messages
-
-    private void toastMessage(String message) {
-
-        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP, 0, 120);
-        toast.show();
-    }
-
-    private void logError(Throwable throwable, String msg) {
-        Toast.makeText(getContext(), "Error: " + msg, Toast.LENGTH_SHORT).show();
-        Log.e(TAG, msg, throwable);
+        spotify.propertyChange.addPropertyChangeListener(listener); //The Support class binds the property change listener to our Object
     }
 
     // MARK: Static Functions
