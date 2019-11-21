@@ -75,23 +75,35 @@
 
     <TextView
         android:id="@+id/song_artist_textview"
-        android:layout_width="250dp"
-        android:layout_height="20dp"
         android:layout_above="@id/song_name_textview"
-        android:text="Artist"
+        android:text="@string/artist_name"
         android:textColor="@color/black"
-        android:textSize="9pt" />
+        android:textSize="9pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/song_name_textview"
-        android:layout_width="200dp"
-        android:layout_height="20dp"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
-        android:text="Song Name"
+        android:text="@string/song_name"
         android:textColor="@color/black"
-        android:textSize="8pt" />
+        android:textSize="8pt"
 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"  />
 
     <RelativeLayout
         android:id="@+id/control_container_view"

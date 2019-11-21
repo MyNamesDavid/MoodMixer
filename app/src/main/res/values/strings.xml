@@ -17,7 +17,6 @@
     <string name="play_next">Play Next</string>
     <string name="play_prev">Play Previous</string>
     <string name="authorize_spotify">Authorize Spotify</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_hello">HelloActivity</string>
