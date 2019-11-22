@@ -73,6 +73,7 @@ public class MainActivity
     List<TrackSimple> tracksList = new ArrayList<>();
     Toolbar toolbar;
     private MessageModel message;
+    private PreferenceManager preferences;
 
     public String userId;
     public String playlistId;
@@ -90,20 +91,25 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, "onCreate - start");
-
+        this.preferences = new PreferenceManager(this);
         this.message = new MessageModel(MainActivity.TAG, this);
 
-        setTitle("Mood Mixer");
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Mood Mixer");
+        getSupportActionBar().setTitle(preferences.getArtistName());
 
         setUpLogin();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getSupportActionBar().setTitle(preferences.getArtistName());
     }
 
     @Override
@@ -142,7 +148,6 @@ public class MainActivity
     }
 
     private void initSpotifyInfo(final SpotifyService spotify){
-
 
         spotify.getMyPlaylists(new Callback<Pager<PlaylistSimple>>(){
             @Override
