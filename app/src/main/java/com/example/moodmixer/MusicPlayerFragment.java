@@ -148,14 +148,18 @@ public class MusicPlayerFragment extends Fragment {
     private void onPreviousSongButtonTapped() {
 
         if (spotify.isConnected()) {
+            albumCoverImageView.startAnimation(fadeOutAnimation);
             spotify.previousSong();
+            albumCoverImageView.startAnimation(fadeInAnimation);
         }
     }
 
     private void onNextSongButtonTapped() {
 
         if (spotify.isConnected()) {
+            albumCoverImageView.startAnimation(fadeOutAnimation);
             spotify.nextSong();
+            albumCoverImageView.startAnimation(fadeInAnimation);
         }
     }
 
@@ -190,8 +194,6 @@ public class MusicPlayerFragment extends Fragment {
             Log.d(TAG, "onClick: nextSongImageButton Tapped");
             onNextSongButtonTapped();
             buttonEffect(nextSongImageButton);
-            albumCoverImageView.startAnimation(fadeOutAnimation);
-            albumCoverImageView.startAnimation(fadeInAnimation);
         });
     }
 
@@ -202,8 +204,6 @@ public class MusicPlayerFragment extends Fragment {
             Log.d(TAG, "onClick: previousSongImageButton Tapped");
             onPreviousSongButtonTapped();
             buttonEffect(previousSongImageButton);
-            albumCoverImageView.startAnimation(fadeOutAnimation);
-            albumCoverImageView.startAnimation(fadeInAnimation);
         });
     }
 
@@ -253,7 +253,6 @@ public class MusicPlayerFragment extends Fragment {
 
                 if (event.getPropertyName().equals(SpotifyProps.AlbumCover.toString())) {
                     albumCoverImageView.setImageBitmap((Bitmap) event.getNewValue());
-                    preferences.put("LastPlayedSongAlbumBitmap", (String) event.getNewValue());
                 }
 
                 if (event.getPropertyName().equals(SpotifyProps.IsPaused.toString())) {
@@ -273,9 +272,6 @@ public class MusicPlayerFragment extends Fragment {
     private void loadLastPlayedMusicResources() {
         songArtist = preferences.get("LastPlayedSongArtistName", ""); // "a string"
         songName = preferences.get("LastPlayedSongName", ""); // "a string"
-
-        songArtistTextView.setText(songArtist);
-        songNameTextView.setText(songName);
     }
 
     // MARK: Static Functions

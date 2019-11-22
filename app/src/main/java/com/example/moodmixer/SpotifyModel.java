@@ -2,8 +2,6 @@ package com.example.moodmixer;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -104,6 +102,7 @@ public class SpotifyModel {
         musicPlayer.getImagesApi()
                 .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
                 .setResultCallback(bitmap -> {
+
                     this.propertyChange.firePropertyChange(SpotifyProps.AlbumCover.toString(), null, bitmap);
                 });
     }
