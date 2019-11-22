@@ -38,8 +38,6 @@ public class MusicPlayerFragment extends Fragment {
     MessageModel message;
 
     private SpotifyModel spotify;
-    private TextView songNameTextView;
-    private TextView songArtistTextView;
     private String songName;
     private String songArtist;
 
@@ -103,8 +101,6 @@ public class MusicPlayerFragment extends Fragment {
         setUpPreviousSongImageButton(rootView);
         setUpWeatherImageButton(rootView);
         setUpAlbumCoverCollection(rootView);
-        setUpSongNameTextView(rootView);
-        setUpSongArtistTextView(rootView);
 
         loadLastPlayedMusicResources();
         handleSpotifyPropertyChanges();
@@ -226,16 +222,6 @@ public class MusicPlayerFragment extends Fragment {
         albumCoverImageView = rootView.findViewById(R.id.album_cover_imageview);
     }
 
-    private void setUpSongNameTextView(View rootView) {
-        songNameTextView = rootView.findViewById(R.id.song_name_textview);
-        songNameTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void setUpSongArtistTextView(View rootView) {
-        songArtistTextView = rootView.findViewById(R.id.song_artist_textview);
-        songArtistTextView.setVisibility(View.VISIBLE);
-    }
-
     // MARK: Helpers
 
     private void handleSpotifyPropertyChanges() {
@@ -245,14 +231,12 @@ public class MusicPlayerFragment extends Fragment {
             public void propertyChange(PropertyChangeEvent event) {
                 if (event.getPropertyName().equals(SpotifyProps.SongArtist.toString())) {
                     songArtist = event.getNewValue().toString();
-                    songArtistTextView.setText(songArtist);
                     preferences.setLastPlayedSongArtistName(songArtist);
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(preferences.getArtistName());
                 }
 
                 if (event.getPropertyName().equals(SpotifyProps.SongName.toString())) {
                     songName = event.getNewValue().toString();
-                    songNameTextView.setText(songName);
                     preferences.setLastPlayedSongName(songName);
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(preferences.getSongName());
                 }

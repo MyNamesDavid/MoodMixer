@@ -59,46 +59,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/song_details_container"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#00000000">
-
-        <TextView
-            android:id="@+id/song_artist_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/song_name_textview"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="@string/artist_name"
-            android:textColor="@color/black"
-            android:textSize="9pt" />
-
-        <TextView
-            android:id="@+id/song_name_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="bottom"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="@string/song_name"
-            android:textColor="@color/black"
-            android:textSize="8pt" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/control_container_view"
         android:layout_width="150dp"
         android:layout_height="75dp"
