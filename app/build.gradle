@@ -34,6 +34,10 @@ repositories {
 
 dependencies {
 
+    def cardview_version = "1.0.0"
+
+    implementation "androidx.cardview:cardview:$cardview_version"
+
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     compile 'com.github.kaaes:spotify-web-api-android:0.4.1'
