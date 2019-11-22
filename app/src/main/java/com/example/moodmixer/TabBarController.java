@@ -22,11 +22,6 @@ final public class TabBarController {
 
 
 
-    public void openUserProfileActivity() {
-
-        Intent intent = new Intent(context, UserProfileActivity.class);
-        context.startActivity(intent);
-    }
 
 
 }

@@ -30,6 +30,7 @@ public class Songs {
         this.songName = song;
         this.songArtistName = artist;
         this.songUri = uri;
+       // this.songGenre = genre;
     }
 
     public String getID(){return songId;}
@@ -54,34 +55,6 @@ public class Songs {
     public void setSongUrl(String songUrl) { SongUrl = songUrl; }
     public void setSongId(String songid) { songId = songid; }
     public void setSongUri(String Uri){songUri = Uri;}
-
-
-
-
-    /**
-     * An array of sample (dummy) items.
-     */
-    public static final List<Songs> SONGS = new ArrayList<Songs>();
-
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-    public static final Map<String, Songs> SONGS_MAP = new HashMap<String, Songs>();
-
-
-
-
-    public static void addItem(Songs item) {
-        SONGS.add(item);
-        SONGS_MAP.put(item.songName, item);
-        SONGS_MAP.put(item.songArtistName, item);
-    }
-
-
-   public static Songs createSongs(String trackName, String artistName, String id) {
-        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, id);
-        return songs;
-    }
 
 
 }

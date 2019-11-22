@@ -8,4 +8,33 @@
         <item name="colorAccent">#D3E3FC</item>
     </style>
 
+    <style name="DefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/midnight_city</item>
+    </style>
+
+    <style name="HappyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/oh_happiness</item>
+    </style>
+
+    <style name="SadTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/sea_blue</item>
+    </style>
+
+    <style name="StressedTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/bloody_mary</item>
+    </style>
+
+    <style name="AngryTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/the_strain</item>
+    </style>
+
+    <style name="CalmTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/purple_bliss</item>
+    </style>
 </resources>

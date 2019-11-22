@@ -270,6 +270,8 @@ public class MainActivity
     @Override
     public void onSongListFragmentInteraction(Songs item) {
         musicPlayer.getPlayerApi().play(item.getSongUri());
+        changeBackground(item.songGenre);
+
     }
 
     @Override
@@ -287,10 +289,6 @@ public class MainActivity
             PlaylistFragment playlistFragment = (PlaylistFragment) fragment;
             playlistFragment.setOnPlaylistFragmentInteractionListener(this);
         }
-    }
-
-    public void initPlaylistRecyclerview(){
-
     }
 
     public void initUserId(final SpotifyService spotify) {
@@ -317,5 +315,23 @@ public class MainActivity
                 Log.d(TAG, "Failure: " + error.toString());
             }
         });
+    }
+
+    public void changeBackground(String genre){
+        if(mood == sad){
+            setTheme(R.style.SadTheme);
+        }
+        else if(mood == angry){
+            setTheme(R.style.AngryTheme);
+        }
+        else if(mood == stressed){
+            setTheme(R.style.StressedTheme);
+        }
+        else if(mood == happy){
+            setTheme(R.style.HappyTheme);
+        }
+        else if(mood == calm){
+            setTheme(R.style.CalmTheme);
+        }
     }
 }
