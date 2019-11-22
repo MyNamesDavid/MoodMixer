@@ -7,6 +7,7 @@ import android.content.Context;
 enum PreferenceKey {
     LastPlayedSongName,
     LastPlayedSongArtistName
+    // ADD KEYS HERE TO ACT AS ACCESSORS TO THE DEVICES STORAGE
 }
 
 public class PreferenceManager {

@@ -2,6 +2,7 @@ package com.example.moodmixer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
@@ -246,12 +247,14 @@ public class MusicPlayerFragment extends Fragment {
                     songArtist = event.getNewValue().toString();
                     songArtistTextView.setText(songArtist);
                     preferences.setLastPlayedSongArtistName(songArtist);
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(preferences.getArtistName());
                 }
 
                 if (event.getPropertyName().equals(SpotifyProps.SongName.toString())) {
                     songName = event.getNewValue().toString();
                     songNameTextView.setText(songName);
                     preferences.setLastPlayedSongName(songName);
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(preferences.getSongName());
                 }
 
                 if (event.getPropertyName().equals(SpotifyProps.AlbumCover.toString())) {
