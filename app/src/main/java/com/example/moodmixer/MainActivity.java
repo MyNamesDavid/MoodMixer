@@ -89,6 +89,7 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTheme(R.style.MoonlitAsteroid);
 
         Log.d(TAG, "onCreate - start");
 
@@ -285,11 +286,8 @@ public class MainActivity
         if (fragment instanceof PlaylistFragment) {
             PlaylistFragment playlistFragment = (PlaylistFragment) fragment;
             playlistFragment.setOnPlaylistFragmentInteractionListener(this);
+            //setTheme(R.style.MoonlitAsteroid);
         }
-    }
-
-    public void initPlaylistRecyclerview(){
-
     }
 
     public void initUserId(final SpotifyService spotify) {

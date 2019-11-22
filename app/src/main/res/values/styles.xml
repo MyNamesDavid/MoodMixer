@@ -8,4 +8,17 @@
         <item name="colorAccent">#D3E3FC</item>
     </style>
 
+    <style name="MoonlitAsteroid" parent="@android:style/Theme.Light">
+        <item name="android:windowBackground">@drawable/moonlit_asteroid</item>
+    </style>
+
+    <style name="MidnightCity" parent="@android:style/Theme.Light">
+        <item name="android:windowBackground">@drawable/midnight_city</item>
+    </style>
+
+    <style name="AppThemeMidnight" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/midnight_city</item>
+    </style>
+
 </resources>

@@ -43,11 +43,6 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_musicPlayerFragment_to_settings">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                             <entry key="action_musicPlayerFragment_to_userProfileFragment">
                               <value>
                                 <LayoutPositions />
@@ -65,18 +60,6 @@
                           <Point>
                             <option name="x" value="-1076" />
                             <option name="y" value="-100" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="settings">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
