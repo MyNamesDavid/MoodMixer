@@ -2,6 +2,7 @@ package com.example.moodmixer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.MotionEvent;
 import java.beans.*;
+import java.util.prefs.Preferences;
 
 public class MusicPlayerFragment extends Fragment {
 
@@ -36,11 +38,10 @@ public class MusicPlayerFragment extends Fragment {
     MessageModel message;
 
     private SpotifyModel spotify;
-    private TextView songNameTextView;
-    private TextView songArtistTextView;
     private String songName;
     private String songArtist;
 
+    private PreferenceManager preferences;
     public PropertyChangeListener listener;
     Animation fadeOutAnimation;
     Animation fadeInAnimation;
@@ -65,16 +66,34 @@ public class MusicPlayerFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MusicPlayerFragment.OnFragmentInteractionListener) {
+            mListener = (MusicPlayerFragment.OnFragmentInteractionListener) context;
+            preferences = new PreferenceManager(context);
+
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Log.d(TAG, "onCreate - start");
-
         spotify = new SpotifyModel(MusicPlayerFragment.TAG, getContext());
         message = new MessageModel(getTag(), getContext());
         fadeOutAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fadeout);
         fadeInAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fadein);
+        preferences = new PreferenceManager(getContext());
 
         View rootView = inflater.inflate(R.layout.activity_music_player, null);
         setUpPlayImageButton(rootView);
@@ -82,12 +101,17 @@ public class MusicPlayerFragment extends Fragment {
         setUpPreviousSongImageButton(rootView);
         setUpWeatherImageButton(rootView);
         setUpAlbumCoverCollection(rootView);
-        setUpSongNameTextView(rootView);
-        setUpSongArtistTextView(rootView);
 
+        loadLastPlayedMusicResources();
         handleSpotifyPropertyChanges();
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override
@@ -102,14 +126,8 @@ public class MusicPlayerFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof MusicPlayerFragment.OnFragmentInteractionListener) {
-            mListener = (MusicPlayerFragment.OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -130,14 +148,18 @@ public class MusicPlayerFragment extends Fragment {
     private void onPreviousSongButtonTapped() {
 
         if (spotify.isConnected()) {
+            albumCoverImageView.startAnimation(fadeOutAnimation);
             spotify.previousSong();
+            albumCoverImageView.startAnimation(fadeInAnimation);
         }
     }
 
     private void onNextSongButtonTapped() {
 
         if (spotify.isConnected()) {
+            albumCoverImageView.startAnimation(fadeOutAnimation);
             spotify.nextSong();
+            albumCoverImageView.startAnimation(fadeInAnimation);
         }
     }
 
@@ -172,8 +194,6 @@ public class MusicPlayerFragment extends Fragment {
             Log.d(TAG, "onClick: nextSongImageButton Tapped");
             onNextSongButtonTapped();
             buttonEffect(nextSongImageButton);
-            albumCoverImageView.startAnimation(fadeOutAnimation);
-            albumCoverImageView.startAnimation(fadeInAnimation);
         });
     }
 
@@ -184,8 +204,6 @@ public class MusicPlayerFragment extends Fragment {
             Log.d(TAG, "onClick: previousSongImageButton Tapped");
             onPreviousSongButtonTapped();
             buttonEffect(previousSongImageButton);
-            albumCoverImageView.startAnimation(fadeOutAnimation);
-            albumCoverImageView.startAnimation(fadeInAnimation);
         });
     }
 
@@ -204,31 +222,23 @@ public class MusicPlayerFragment extends Fragment {
         albumCoverImageView = rootView.findViewById(R.id.album_cover_imageview);
     }
 
-    private void setUpSongNameTextView(View rootView) {
-        songNameTextView = rootView.findViewById(R.id.song_name_textview);
-        songNameTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void setUpSongArtistTextView(View rootView) {
-        songArtistTextView = rootView.findViewById(R.id.song_artist_textview);
-        songArtistTextView.setVisibility(View.VISIBLE);
-    }
-
     // MARK: Helpers
 
     private void handleSpotifyPropertyChanges() {
 
-        listener = new PropertyChangeListener() { //This is how we define the listener and tell it what to do when it hears something change
+        listener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
                 if (event.getPropertyName().equals(SpotifyProps.SongArtist.toString())) {
                     songArtist = event.getNewValue().toString();
-                    songArtistTextView.setText(songArtist);
+                    preferences.setLastPlayedSongArtistName(songArtist);
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(preferences.getArtistName());
                 }
 
                 if (event.getPropertyName().equals(SpotifyProps.SongName.toString())) {
                     songName = event.getNewValue().toString();
-                    songNameTextView.setText(songName);
+                    preferences.setLastPlayedSongName(songName);
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(preferences.getSongName());
                 }
 
                 if (event.getPropertyName().equals(SpotifyProps.AlbumCover.toString())) {
@@ -247,6 +257,11 @@ public class MusicPlayerFragment extends Fragment {
         };
 
         spotify.propertyChange.addPropertyChangeListener(listener); //The Support class binds the property change listener to our Object
+    }
+
+    private void loadLastPlayedMusicResources() {
+        songArtist = preferences.getArtistName();
+        songName = preferences.getSongName();
     }
 
     // MARK: Static Functions
