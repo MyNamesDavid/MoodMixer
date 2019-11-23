@@ -1,7 +1,11 @@
 package com.example.moodmixer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.telecom.Call;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -79,6 +84,8 @@ public class MainActivity
 
     static int random;
 
+    static int style = 0;
+    static boolean webLogin = false;
 
     @Override
     public Context getBaseContext() {
@@ -103,7 +110,10 @@ public class MainActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(preferences.getArtistName());
 
-        setUpLogin();
+        if(webLogin == false) {
+            setUpLogin();
+            webLogin = true;
+        }
     }
 
     @Override
@@ -317,28 +327,64 @@ public class MainActivity
         });
     }
 
+    //Has to be used before oncreate
     public void changeBackground(){
+
         random = new Random().nextInt((5- 0) + 1) + 0;
+
         switch (random){
             case 0:{
-                setTheme(R.style.SadTheme);
+                style = R.style.AngryTheme;
+                restartThis();
+                break;
             }
             case 1:{
-                setTheme(R.style.AngryTheme);
+                style = R.style.AppTheme;
+                restartThis();
+                break;
             }
             case 2:{
-                setTheme(R.style.StressedTheme);
+                style = R.style.SadTheme;
+                restartThis();
+                break;
             }
             case 3:{
-                setTheme(R.style.HappyTheme);
+                style = R.style.CalmTheme;
+                restartThis();
+                break;
             }
             case 4:{
-                setTheme(R.style.CalmTheme);
+                style = R.style.HappyTheme;
+                restartThis();
+                break;
             }
             case 5:{
-                setTheme(R.style.DefaultTheme);
+                style = R.style.StressedTheme;
+                restartThis();
+                break;
             }
         }
 
     }
+
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        if(style == 0){
+            theme.applyStyle(R.style.DefaultTheme, true);
+        }else {
+            theme.applyStyle(style, true);
+        }
+        return theme;
+    }
+
+    private void restartThis() {
+        finish();
+        overridePendingTransition(0, 0);
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
 }
+
