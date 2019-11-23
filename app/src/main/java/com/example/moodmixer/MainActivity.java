@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyCallback;
 import kaaes.spotify.webapi.android.SpotifyError;
@@ -60,9 +62,6 @@ public class MainActivity
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private static final int REQUEST_CODE = 1337;
     public static String token;
-    private ArrayList<Playlists> playlists = new ArrayList<>();
-    private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
-    public MyPlaylistRecyclerViewAdapter myPlaylistAdapter;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     private Songs tracks;
     private String trackName;
@@ -77,6 +76,8 @@ public class MainActivity
 
     public String userId;
     public String playlistId;
+
+    static int random;
 
 
     @Override
@@ -270,8 +271,7 @@ public class MainActivity
     @Override
     public void onSongListFragmentInteraction(Songs item) {
         musicPlayer.getPlayerApi().play(item.getSongUri());
-        changeBackground(item.songGenre);
-
+        changeBackground();
     }
 
     @Override
@@ -317,21 +317,28 @@ public class MainActivity
         });
     }
 
-    public void changeBackground(String genre){
-        if(mood == sad){
-            setTheme(R.style.SadTheme);
+    public void changeBackground(){
+        random = new Random().nextInt((5- 0) + 1) + 0;
+        switch (random){
+            case 0:{
+                setTheme(R.style.SadTheme);
+            }
+            case 1:{
+                setTheme(R.style.AngryTheme);
+            }
+            case 2:{
+                setTheme(R.style.StressedTheme);
+            }
+            case 3:{
+                setTheme(R.style.HappyTheme);
+            }
+            case 4:{
+                setTheme(R.style.CalmTheme);
+            }
+            case 5:{
+                setTheme(R.style.DefaultTheme);
+            }
         }
-        else if(mood == angry){
-            setTheme(R.style.AngryTheme);
-        }
-        else if(mood == stressed){
-            setTheme(R.style.StressedTheme);
-        }
-        else if(mood == happy){
-            setTheme(R.style.HappyTheme);
-        }
-        else if(mood == calm){
-            setTheme(R.style.CalmTheme);
-        }
+
     }
 }
