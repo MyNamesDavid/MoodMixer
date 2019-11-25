@@ -94,44 +94,7 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         holder.mPopupView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(mCtx, holder.mPopupView);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.song_option_menu);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.option_add_to_playlist:
-                                return true;
-                            case R.id.option_play_next:
-                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-                                    musicPlayer.getPlayerApi().skipNext();
-                                    subscribeToPlayerState();
-                                });
-                                return true;
-                            case R.id.option_song_play:
-                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-                                    // musicPlayer.getPlayerApi().play(SONG_ID);
-                                    subscribeToPlayerState();
-                                });
-                                return true;
-                            case R.id.option_play_previous:
-                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-                                    musicPlayer.getPlayerApi().skipPrevious();
-                                    subscribeToPlayerState();
-                                });
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                //displaying the popup
-                popup.show();
-
+                //Should be able to add to playlist
             }
         });
     }

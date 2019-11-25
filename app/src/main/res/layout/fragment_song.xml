@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:foreground="?android:attr/selectableItemBackground"
         >
-
-
         <TextView
             android:id="@+id/song_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="25dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/song_icon"
             android:padding="4dp"
             android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="@string/song_name"
             />
+
         <TextView
             android:id="@+id/artist_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="25dp"
             android:layout_toRightOf="@id/song_icon"
             android:layout_below="@id/song_name"
             android:padding="4dp"
@@ -42,16 +51,15 @@
         <ImageButton
             android:id="@+id/song_popup"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="41dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="33dp"
-            android:layout_marginRight="33dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginRight="17dp"
             android:background="?android:selectableItemBackground"
-            app:srcCompat="@drawable/song_popup_icon"
-            android:onClick="showPopupPlease"/>
+            app:srcCompat="@drawable/plus_icon" />
 
 
     </RelativeLayout>

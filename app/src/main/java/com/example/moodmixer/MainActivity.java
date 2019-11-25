@@ -184,6 +184,7 @@ public class MainActivity
         spotify.getTopTracks(new Callback<Pager<Track>>() {
             @Override
             public void success(Pager<Track> trackPager, Response response) {
+                int i = 0;
                 List<Track> items = trackPager.items;
                 for( Track pt : items){
                     Log.e("TEST", pt.name + " - " + pt.id);
@@ -330,7 +331,7 @@ public class MainActivity
     //Has to be used before oncreate
     public void changeBackground(){
 
-        random = new Random().nextInt((5- 0) + 1) + 0;
+        random = new Random().nextInt((4 - 0) + 1) + 0;
 
         switch (random){
             case 0:{
@@ -339,26 +340,21 @@ public class MainActivity
                 break;
             }
             case 1:{
-                style = R.style.AppTheme;
-                restartThis();
-                break;
-            }
-            case 2:{
                 style = R.style.SadTheme;
                 restartThis();
                 break;
             }
-            case 3:{
+            case 2:{
                 style = R.style.CalmTheme;
                 restartThis();
                 break;
             }
-            case 4:{
+            case 3:{
                 style = R.style.HappyTheme;
                 restartThis();
                 break;
             }
-            case 5:{
+            case 4:{
                 style = R.style.StressedTheme;
                 restartThis();
                 break;
@@ -380,11 +376,11 @@ public class MainActivity
 
     private void restartThis() {
         finish();
-        overridePendingTransition(0, 0);
+        //overridePendingTransition(0, 0);
         Intent intent = getIntent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
-        overridePendingTransition(0, 0);
+        //overridePendingTransition(0, 0);
     }
 }
 
