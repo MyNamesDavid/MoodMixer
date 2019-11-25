@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
 public class MoodFragment extends Fragment {
@@ -26,6 +29,9 @@ public class MoodFragment extends Fragment {
     private Button sadCurrentButton;
     private Button stressedCurrentButton;
     private Button calmCurrentButton;
+    public ArrayAdapter<CharSequence> adapter;
+    public String [] currentMood = {"Angry","Nervous","Sad","Stressed"};
+    public String [] desiredMood = {"Calm","Happy","Optimistic"};
     private Moods mood;
 
     public MoodFragment() {
@@ -39,6 +45,11 @@ public class MoodFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_mood, null);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (getContext(),android.R.layout.simple_dropdown_item_1line,currentMood);
+        MaterialBetterSpinner betterSpinnerOne = (MaterialBetterSpinner)rootView.findViewById(R.id.current_mood);
+        
 
         setUpHappyMoodCurrentButton(rootView);
         setUpSadMoodCurrentButton(rootView);
