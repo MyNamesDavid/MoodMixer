@@ -184,12 +184,12 @@ public class MainActivity
         spotify.getTopTracks(new Callback<Pager<Track>>() {
             @Override
             public void success(Pager<Track> trackPager, Response response) {
-                int i = 0;
                 List<Track> items = trackPager.items;
                 for( Track pt : items){
                     Log.e("TEST", pt.name + " - " + pt.id);
-                    Songs songlistItem = new Songs(pt.name, pt.type, pt.uri);
+                    Songs songlistItem = new Songs(pt.name, pt.artists.get(0).name, pt.uri, pt.duration_ms);
                     SonglistSingleton.get(getBaseContext()).addSonglist(songlistItem);
+                    Log.e("TEST", pt.name + " - " + pt.id);
                 }
             }
 

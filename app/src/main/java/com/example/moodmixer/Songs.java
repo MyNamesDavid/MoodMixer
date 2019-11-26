@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Songs {
     public int title;
@@ -18,7 +19,7 @@ public class Songs {
     String SongUrl;
     String songUri;
     ImageView songAlbumCover;
-
+    String songLength;
     String songId;
 
 
@@ -26,10 +27,11 @@ public class Songs {
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist, String uri){
+    public Songs(String song, String artist, String uri, long timeMS){
         this.songName = song;
         this.songArtistName = artist;
         this.songUri = uri;
+        this.songLength = convertTime(timeMS);
        // this.songGenre = genre;
     }
 
@@ -55,6 +57,16 @@ public class Songs {
     public void setSongUrl(String songUrl) { SongUrl = songUrl; }
     public void setSongId(String songid) { songId = songid; }
     public void setSongUri(String Uri){songUri = Uri;}
+
+    public String convertTime(long timeMS){
+        long timeMin = (timeMS/1000) / 60;
+        long timeSec = (timeMS/1000) % 60;
+        if(timeSec > 9){
+            return (timeMin + ":" + timeSec);
+        }else{
+            return (timeMin + ":0" + timeSec);
+        }
+    }
 
 
 }
