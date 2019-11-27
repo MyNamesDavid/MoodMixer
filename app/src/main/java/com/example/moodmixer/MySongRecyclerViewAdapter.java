@@ -78,6 +78,7 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         holder.mItem = mValues.get(position);
         holder.mSongNameView.setText(mValues.get(position).songName);
         holder.mArtistNameView.setText(mValues.get(position).songArtistName);
+        holder.mSongLengthView.setText(mValues.get(position).songLength);
         //holder.mAlbumView.setId(mValues.get(position).songAlbumCover);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -94,44 +95,7 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         holder.mPopupView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(mCtx, holder.mPopupView);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.song_option_menu);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.option_add_to_playlist:
-                                return true;
-                            case R.id.option_play_next:
-                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-                                    musicPlayer.getPlayerApi().skipNext();
-                                    subscribeToPlayerState();
-                                });
-                                return true;
-                            case R.id.option_song_play:
-                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-                                    // musicPlayer.getPlayerApi().play(SONG_ID);
-                                    subscribeToPlayerState();
-                                });
-                                return true;
-                            case R.id.option_play_previous:
-                                musicPlayer.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
-                                    musicPlayer.getPlayerApi().skipPrevious();
-                                    subscribeToPlayerState();
-                                });
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                //displaying the popup
-                popup.show();
-
+                //Should be able to add to playlist
             }
         });
     }
@@ -147,6 +111,7 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         public final TextView mArtistNameView;
         public final ImageView mAlbumView;
         public final ImageButton mPopupView;
+        public final TextView mSongLengthView;
         public Songs mItem;
 
         public ViewHolder(View view) {
@@ -156,6 +121,7 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
             mArtistNameView = (TextView) view.findViewById(R.id.artist_name);
             mAlbumView = (ImageView) view.findViewById(R.id.song_icon);
             mPopupView = (ImageButton) view.findViewById(R.id.song_popup);
+            mSongLengthView = (TextView) view.findViewById(R.id.song_length);
         }
     }
 
