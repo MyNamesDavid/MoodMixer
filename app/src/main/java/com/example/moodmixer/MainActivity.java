@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -13,7 +15,9 @@ import android.telecom.Call;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,6 +38,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -69,15 +76,18 @@ public class MainActivity
     public static String token;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     private Songs tracks;
-    private String trackName;
-    private String trackArtist;
+    private String songName;
+    private String songArtist;
     private ImageView trackAlbumCover;
     SpotifyApi api = new SpotifyApi();
     SpotifyService spotify = api.getService();
+    SpotifyModel spotifyModel;
     List<TrackSimple> tracksList = new ArrayList<>();
     Toolbar toolbar;
     private MessageModel message;
     private PreferenceManager preferences;
+    public PropertyChangeListener listener;
+    ImageButton playImageButton;
 
     public String userId;
     public String playlistId;
@@ -109,6 +119,8 @@ public class MainActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(preferences.getArtistName());
+
+        setUpPlayImageButton();
 
         if(webLogin == false) {
             setUpLogin();
@@ -211,6 +223,15 @@ public class MainActivity
         builder.setShowDialog(true);
         AuthenticationRequest request = builder.build();
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+    }
+
+    private void setUpPlayImageButton() {
+        playImageButton = toolbar.findViewById(R.id.toolbar_playbutton);
+        playImageButton.setOnClickListener((View v) -> {
+            Log.d(TAG, "onClick: playImageButton Tapped");
+            buttonEffect(playImageButton);
+            onPlayPauseButtonTapped();
+        });
     }
 
     @Override
@@ -381,6 +402,40 @@ public class MainActivity
         //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         //overridePendingTransition(0, 0);
+    }
+
+
+    private void onPlayPauseButtonTapped() {
+
+        if (spotifyModel.isConnected()) {
+
+            if (spotifyModel.isPaused)
+                spotifyModel.resume();
+
+            else
+                spotifyModel.pause();
+        }
+    }
+
+    public static void buttonEffect(View button) {
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }
 

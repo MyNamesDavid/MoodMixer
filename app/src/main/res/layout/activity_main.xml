@@ -14,6 +14,7 @@
         android:minHeight="@dimen/abc_action_bar_default_height_material">
 
         <ImageButton
+            android:id="@+id/toolbar_playbutton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"
