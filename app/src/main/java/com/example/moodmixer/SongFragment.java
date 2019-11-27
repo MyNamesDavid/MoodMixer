@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -30,8 +31,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -60,6 +64,8 @@ public class SongFragment extends Fragment {
     private ArrayList<Songs> mSonglists;
 
     RecyclerView recyclerView;
+
+    HorizontalScrollView mHorizontalScroll;
 
 
     /**
@@ -110,7 +116,6 @@ public class SongFragment extends Fragment {
             mSonglists = SonglistSingleton.get(getContext()).getSonglist();
             mAdapter = new MySongRecyclerViewAdapter(mSonglists,mSongListener,context);
             recyclerView.setAdapter(mAdapter);
-            //recyclerView.setAdapter(new MySongRecyclerViewAdapter(Songs.SONGS, mSongListener, context));
         }
         return view;
     }

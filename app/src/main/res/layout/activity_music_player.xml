@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/background_color"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:background="#D3E3FC"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:id="@+id/album_container"

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Songs {
     public int title;
@@ -18,7 +19,7 @@ public class Songs {
     String SongUrl;
     String songUri;
     ImageView songAlbumCover;
-
+    String songLength;
     String songId;
 
 
@@ -26,10 +27,12 @@ public class Songs {
 
     private List<Songs> mSong;
 
-    public Songs(String song, String artist, String uri){
+    public Songs(String song, String artist, String uri, long timeMS){
         this.songName = song;
         this.songArtistName = artist;
         this.songUri = uri;
+        this.songLength = convertTime(timeMS);
+       // this.songGenre = genre;
     }
 
     public String getID(){return songId;}
@@ -55,32 +58,14 @@ public class Songs {
     public void setSongId(String songid) { songId = songid; }
     public void setSongUri(String Uri){songUri = Uri;}
 
-
-
-
-    /**
-     * An array of sample (dummy) items.
-     */
-    public static final List<Songs> SONGS = new ArrayList<Songs>();
-
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-    public static final Map<String, Songs> SONGS_MAP = new HashMap<String, Songs>();
-
-
-
-
-    public static void addItem(Songs item) {
-        SONGS.add(item);
-        SONGS_MAP.put(item.songName, item);
-        SONGS_MAP.put(item.songArtistName, item);
-    }
-
-
-   public static Songs createSongs(String trackName, String artistName, String id) {
-        Songs songs = new Songs("Song:" + trackName, "Artist" + artistName, id);
-        return songs;
+    public String convertTime(long timeMS){
+        long timeMin = (timeMS/1000) / 60;
+        long timeSec = (timeMS/1000) % 60;
+        if(timeSec > 9){
+            return (timeMin + ":" + timeSec);
+        }else{
+            return (timeMin + ":0" + timeSec);
+        }
     }
 
 
