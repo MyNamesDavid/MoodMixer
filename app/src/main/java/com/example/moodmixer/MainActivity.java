@@ -60,7 +60,9 @@ public class MainActivity
         implements MusicPlayerFragment.OnFragmentInteractionListener,
         SongFragment.OnSongListFragmentInteractionListener,
         UserProfileFragment.onProfileFragmentInteractionListener,
-        PlaylistFragment.OnPlaylistFragmentInteractionListener {
+        PlaylistFragment.OnPlaylistFragmentInteractionListener,
+        PlaylistAdderDialogueFragment.OnInputListener
+{
 
     private static final String TAG = "MainActivity";
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
@@ -160,6 +162,7 @@ public class MainActivity
 
     private void initSpotifyInfo(final SpotifyService spotify){
 
+        initUserId(spotify);
         spotify.getMyPlaylists(new Callback<Pager<PlaylistSimple>>(){
             @Override
             public void success(Pager<PlaylistSimple> playlistSimplePager, Response response) {
@@ -376,11 +379,23 @@ public class MainActivity
 
     private void restartThis() {
         finish();
-        //overridePendingTransition(0, 0);
         Intent intent = getIntent();
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
-        //overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public void OnSongListFragmentAddToPlaylistInteractionListener(Songs item) {
+        FragmentManager fm = getSupportFragmentManager();
+        PlaylistAdderDialogueFragment dialog = new PlaylistAdderDialogueFragment();
+        dialog.show(fm, "PlaylistAdderDialogue");
+    }
+
+    @Override
+    public void sendInput(String input) {
+        Log.d(TAG, "sendInput: found incoming input: " + input);
+        Playlists playlistItem = new Playlists(input);
+        PlaylistSingleton.get(this).addPlaylist(playlistItem);
+        
     }
 }
 

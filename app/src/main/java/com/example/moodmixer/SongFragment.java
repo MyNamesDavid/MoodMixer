@@ -151,6 +151,7 @@ public class SongFragment extends Fragment {
     public interface OnSongListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onSongListFragmentInteraction(Songs item);
+        void OnSongListFragmentAddToPlaylistInteractionListener(Songs mItem);
     }
 
     private void updateUI() {

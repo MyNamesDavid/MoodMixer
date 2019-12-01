@@ -1,5 +1,6 @@
 package com.example.moodmixer;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -55,8 +56,6 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
 
 
 
-
-
     public MySongRecyclerViewAdapter(List<Songs> items, OnSongListFragmentInteractionListener listener, Context mCtx) {
         mValues = items;
         mSongListener = listener;
@@ -95,7 +94,7 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         holder.mPopupView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Should be able to add to playlist
+                mSongListener.OnSongListFragmentAddToPlaylistInteractionListener(holder.mItem);
             }
         });
     }
@@ -122,30 +121,8 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
             mAlbumView = (ImageView) view.findViewById(R.id.song_icon);
             mPopupView = (ImageButton) view.findViewById(R.id.song_popup);
             mSongLengthView = (TextView) view.findViewById(R.id.song_length);
+
         }
-    }
-
-    private void subscribeToPlayerState() {
-        // Subscribe to PlayerState
-        musicPlayer.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        trackName = track.name;
-                        trackArtist = track.artist.name;
-
-                        // Get image from track
-                        musicPlayer.getImagesApi()
-                                .getImage(playerState.track.imageUri, Image.Dimension.LARGE)
-                                .setResultCallback(bitmap -> {
-                                    trackAlbumCover.setImageBitmap(bitmap);
-//                                    mImageLabel.setText(String.format(Locale.ENGLISH, "%d x %d", bitmap.getWidth(), bitmap.getHeight()));
-                                });
-                    }
-
-                });
     }
 
 }
