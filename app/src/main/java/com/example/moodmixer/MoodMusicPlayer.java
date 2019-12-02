@@ -7,8 +7,8 @@ public class MoodMusicPlayer {
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private SpotifyAppRemote musicPlayer;
     private Mood getCurrentMood;
-    public void setMoodMusicPlayer(Mood getCurrentMood){
-        //Open text file to getCurrentMood;
+    private Mood getDesiredMood;
+    public void setMoodMusicPlayer(Mood getCurrentMood, Mood getDesiredMood){
         this.getCurrentMood = getCurrentMood;
 
         //musicPlayer.getPlayerApi().
