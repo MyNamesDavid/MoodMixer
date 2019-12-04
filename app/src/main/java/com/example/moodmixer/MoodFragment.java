@@ -24,7 +24,7 @@ public class MoodFragment extends Fragment {
     String SelectedServerTwo;
     MainActivity newActivity;
 
-    public String [] currentMood = {"Angry","Nervous","Sad","Stressed"};
+    public String [] currentMood = {"Angry","Calm","Happy","Nervous","Sad","Stressed","Optimistic"};
     public String [] desiredMood = {"Calm","Happy","Optimistic"};
     private Moods mood;
     private String firstMood;
@@ -42,8 +42,8 @@ public class MoodFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_mood, null);
 
         View view = inflater.inflate(R.layout.fragment_mood, null);
-        TextView tv = (TextView) view.findViewById(R.id.firstMood);
-        tv.setText("hello");
+
+
         ArrayAdapter<String> arrayAdapterOne = new ArrayAdapter<String>
                 (getContext(), android.R.layout.simple_dropdown_item_1line, currentMood);
         MaterialBetterSpinner betterSpinnerOne = (MaterialBetterSpinner) rootView.findViewById(R.id.current_mood);
@@ -82,9 +82,7 @@ public class MoodFragment extends Fragment {
         return rootView;
     }
 
-    public void playSong() {
-        newActivity.
-    }
+
 
 
 }
