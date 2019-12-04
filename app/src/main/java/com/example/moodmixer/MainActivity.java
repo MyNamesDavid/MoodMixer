@@ -42,7 +42,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -77,14 +79,9 @@ public class MainActivity
     private static final int REQUEST_CODE = 1337;
     public static String token;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
-    private Songs tracks;
-    private String songName;
-    private String songArtist;
-    private ImageView trackAlbumCover;
     SpotifyApi api = new SpotifyApi();
     SpotifyService spotify = api.getService();
     SpotifyModel spotifyModel;
-    List<TrackSimple> tracksList = new ArrayList<>();
     Toolbar toolbar;
     private MessageModel message;
     private PreferenceManager preferences;
@@ -98,6 +95,10 @@ public class MainActivity
 
     static int style = 0;
     static boolean webLogin = false;
+
+    private Playlist playlistObj;
+
+
 
     @Override
     public Context getBaseContext() {
@@ -412,10 +413,9 @@ public class MainActivity
 
     @Override
     public void sendInput(String input) {
-        Log.d(TAG, "sendInput: found incoming input: " + input);
+        createNewPlaylist(input, userId);
         Playlists playlistItem = new Playlists(input);
         PlaylistSingleton.get(this).addPlaylist(playlistItem);
-        
     }
 
 
@@ -448,6 +448,30 @@ public class MainActivity
                     }
                 }
                 return false;
+            }
+        });
+    }
+
+    public void createNewPlaylist(final String newPlaylistName, final String userIdValue){
+        Log.d(TAG, "createNewPlaylist");
+        final Map<String, Object> options = new HashMap<>();
+        options.put("name", newPlaylistName);
+        options.put("public", true);
+        options.put("collaborative", false);
+        options.put("description", "new playlist");
+        spotify.createPlaylist(userIdValue, options, new Callback<Playlist>(){
+            @Override
+            public void success(final Playlist playlist, Response response) {
+                playlistObj = playlist;
+                final Playlist newPlaylist = playlist;
+                Map<String, Object> playlistWTracks = new HashMap<>();
+                Log.d(TAG, "getPlaylist");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                Log.d(TAG, "New playlist not created Failure: " + error.toString());
             }
         });
     }
