@@ -464,7 +464,6 @@ public class MainActivity
             public void success(final Playlist playlist, Response response) {
                 playlistObj = playlist;
                 final Playlist newPlaylist = playlist;
-                Map<String, Object> playlistWTracks = new HashMap<>();
                 Log.d(TAG, "getPlaylist");
             }
 

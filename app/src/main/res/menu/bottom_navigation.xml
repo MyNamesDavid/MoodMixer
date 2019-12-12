@@ -18,10 +18,6 @@
         android:id="@+id/songFragment"
         android:icon="@drawable/songlist_vector"
         android:title="@string/songlist_viewer" />
-    <item
-        android:id="@+id/libraryFragment"
-        android:icon="@drawable/library_vector"
-        android:title="@string/library_viewer" />
 
 
 
