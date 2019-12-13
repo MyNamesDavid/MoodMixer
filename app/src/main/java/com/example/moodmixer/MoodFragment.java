@@ -66,12 +66,12 @@ public class MoodFragment extends Fragment {
         MaterialBetterSpinner calmGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.calm_genre);
         //MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.optimistic_genre);
         MaterialBetterSpinner angryGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.angry_genre);
-        MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.sad_genre);
+        //MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.sad_genre);
         happyGenreSpinner.setAdapter(arrayAdapter);
         calmGenreSpinner.setAdapter(arrayAdapter);
         //optimisticGenreSpinner.setAdapter(arrayAdapter);
         angryGenreSpinner.setAdapter(arrayAdapter);
-        sadGenreSpinner.setAdapter(arrayAdapter);
+        //sadGenreSpinner.setAdapter(arrayAdapter);
 
 
         // Saves Preference to currentMood data
@@ -158,7 +158,7 @@ public class MoodFragment extends Fragment {
 
             }
         });
-
+/*
         sadGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -171,7 +171,7 @@ public class MoodFragment extends Fragment {
 
             }
         });
-
+*/
         return rootView;
     }
 
