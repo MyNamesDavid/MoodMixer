@@ -46,6 +46,8 @@ public class MusicPlayerFragment extends Fragment {
     Animation fadeOutAnimation;
     Animation fadeInAnimation;
 
+    private MainActivity mainActivity;
+
     // MARK: Lifecycle
 
     public interface OnFragmentInteractionListener {
@@ -104,6 +106,10 @@ public class MusicPlayerFragment extends Fragment {
 
         loadLastPlayedMusicResources();
         handleSpotifyPropertyChanges();
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.spotifyModel = spotify;
+        mainActivity.listener = listener;
 
         return rootView;
     }
@@ -248,8 +254,11 @@ public class MusicPlayerFragment extends Fragment {
                 if (event.getPropertyName().equals(SpotifyProps.IsPaused.toString())) {
                     Boolean isPaused = (Boolean) event.getNewValue();
                     if (isPaused) {
+                        mainActivity.playImageButton.setImageResource(R.drawable.play_button_blue);
                         playImageButton.setBackgroundResource(R.drawable.play_button_blue);
+
                     } else {
+                        mainActivity.playImageButton.setImageResource(R.drawable.pause_button_blue);
                         playImageButton.setBackgroundResource(R.drawable.pause_button_blue);
                     }
                 }

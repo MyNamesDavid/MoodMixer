@@ -1,7 +1,13 @@
 package com.example.moodmixer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +15,9 @@ import android.telecom.Call;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.example.moodmixer.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,8 +38,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyCallback;
 import kaaes.spotify.webapi.android.SpotifyError;
@@ -60,24 +74,28 @@ public class MainActivity
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private static final int REQUEST_CODE = 1337;
     public static String token;
-    private ArrayList<Playlists> playlists = new ArrayList<>();
-    private MySongRecyclerViewAdapter mSongRecyclerViewAdapter;
-    public MyPlaylistRecyclerViewAdapter myPlaylistAdapter;
     private SpotifyAppRemote musicPlayer; // mSpotifyAppRemove
     private Songs tracks;
-    private String trackName;
-    private String trackArtist;
+    private String songName;
+    private String songArtist;
     private ImageView trackAlbumCover;
     SpotifyApi api = new SpotifyApi();
     SpotifyService spotify = api.getService();
+    SpotifyModel spotifyModel;
     List<TrackSimple> tracksList = new ArrayList<>();
     Toolbar toolbar;
     private MessageModel message;
     private PreferenceManager preferences;
+    public PropertyChangeListener listener;
+    ImageButton playImageButton;
 
     public String userId;
     public String playlistId;
 
+    static int random;
+
+    static int style = 0;
+    static boolean webLogin = false;
 
     @Override
     public Context getBaseContext() {
@@ -102,7 +120,12 @@ public class MainActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(preferences.getArtistName());
 
-        setUpLogin();
+        setUpPlayImageButton();
+
+        if(webLogin == false) {
+            setUpLogin();
+            webLogin = true;
+        }
     }
 
     @Override
@@ -176,8 +199,9 @@ public class MainActivity
                 List<Track> items = trackPager.items;
                 for( Track pt : items){
                     Log.e("TEST", pt.name + " - " + pt.id);
-                    Songs songlistItem = new Songs(pt.name, pt.type, pt.uri);
+                    Songs songlistItem = new Songs(pt.name, pt.artists.get(0).name, pt.uri, pt.duration_ms);
                     SonglistSingleton.get(getBaseContext()).addSonglist(songlistItem);
+                    Log.e("TEST", pt.name + " - " + pt.id);
                 }
             }
 
@@ -201,9 +225,17 @@ public class MainActivity
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
+    private void setUpPlayImageButton() {
+        playImageButton = toolbar.findViewById(R.id.toolbar_playbutton);
+        playImageButton.setOnClickListener((View v) -> {
+            Log.d(TAG, "onClick: playImageButton Tapped");
+            buttonEffect(playImageButton);
+            onPlayPauseButtonTapped();
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
         return true;
     }
 
@@ -270,6 +302,7 @@ public class MainActivity
     @Override
     public void onSongListFragmentInteraction(Songs item) {
         musicPlayer.getPlayerApi().play(item.getSongUri());
+        changeBackground();
     }
 
     @Override
@@ -287,10 +320,6 @@ public class MainActivity
             PlaylistFragment playlistFragment = (PlaylistFragment) fragment;
             playlistFragment.setOnPlaylistFragmentInteractionListener(this);
         }
-    }
-
-    public void initPlaylistRecyclerview(){
-
     }
 
     public void initUserId(final SpotifyService spotify) {
@@ -318,4 +347,94 @@ public class MainActivity
             }
         });
     }
+
+    //Has to be used before oncreate
+    public void changeBackground(){
+
+        random = new Random().nextInt((4 - 0) + 1) + 0;
+
+        switch (random){
+            case 0:{
+                style = R.style.AngryTheme;
+                restartThis();
+                break;
+            }
+            case 1:{
+                style = R.style.SadTheme;
+                restartThis();
+                break;
+            }
+            case 2:{
+                style = R.style.CalmTheme;
+                restartThis();
+                break;
+            }
+            case 3:{
+                style = R.style.HappyTheme;
+                restartThis();
+                break;
+            }
+            case 4:{
+                style = R.style.StressedTheme;
+                restartThis();
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        if(style == 0){
+            theme.applyStyle(R.style.DefaultTheme, true);
+        }else {
+            theme.applyStyle(style, true);
+        }
+        return theme;
+    }
+
+    private void restartThis() {
+        finish();
+        //overridePendingTransition(0, 0);
+        Intent intent = getIntent();
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        //overridePendingTransition(0, 0);
+    }
+
+
+    private void onPlayPauseButtonTapped() {
+
+        if (spotifyModel.isConnected()) {
+
+            if (spotifyModel.isPaused)
+                spotifyModel.resume();
+
+            else
+                spotifyModel.pause();
+        }
+    }
+
+    public static void buttonEffect(View button) {
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 }
+
