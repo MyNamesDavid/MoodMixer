@@ -11,15 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:layout_marginTop="25dp"
-        android:textSize="40dp"
+        android:layout_marginTop="20dp"
+        android:textSize="30dp"
         android:text="Mood Settings" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:textSize="20dp"
         android:text="Select Current and Desired Mood" />
 
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="120dp"
         android:textSize="20dp"
         android:text="Current mood" />
 
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="210dp"
         android:textSize="20dp"
         android:text="Desired mood" />
 
@@ -47,7 +47,7 @@
         android:hint="Select Current Mood"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="150dp"
 
         />
 
@@ -58,7 +58,7 @@
         android:hint="Select Desired Mood"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="270dp"/>
+        android:layout_marginTop="240dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -67,6 +67,14 @@
         android:layout_marginTop="310dp"
         android:textSize="20dp"
         android:text="Select Genre to Mood" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="340dp"
+        android:textSize="20dp"
+        android:text="Happy" />
 
 
 

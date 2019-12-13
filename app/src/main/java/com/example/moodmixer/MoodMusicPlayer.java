@@ -20,6 +20,7 @@ public class MoodMusicPlayer {
     private float desiredEnergy;
     private float currentInstrumentalness;
     private float desiredInstrumentalness;
+    private MoodFragment settings;
     float currentLiveness;
     float desiredLiveness;
     private SettingsFragment settingInfo = null;
@@ -29,46 +30,71 @@ public class MoodMusicPlayer {
     public void setMoodMusicPlayer(Mood getCurrentMood, Mood getDesiredMood){
         this.getCurrentMood = getCurrentMood;
         this.getDesiredMood = getDesiredMood;
-
-
+/*
         // set the song attributes for the
         if(this.getCurrentMood == Mood.ANGRY){
             currentBPM = 180;
             currentMode  = 0;
             currentKey = 100;
-            currentEnergy = 1.0f;
+            currentEnergy = 0.87f;
+            currentInstrumentalness = 0.6f;
+            currentLiveness = 1.0f;
         } else if (this.getCurrentMood == Mood.NERVOUS){
             currentBPM = 180;
             currentMode  = 0;
             currentKey = 100;
-            currentEnergy = 0.75f;
+            currentEnergy = 0.5f;
+            currentInstrumentalness = 0.6f;
+            currentLiveness = 1.0f;
         } else if (this.getCurrentMood == Mood.SAD){
             currentBPM = 180;
-            currentMode  = 70;
+            currentMode  = 0;
             currentKey = 100;
             currentEnergy = 0.0f;
+            currentInstrumentalness = 0.6f;
+            currentLiveness = 1.0f;
         } else if (this.getCurrentMood == Mood.STRESSED){
             currentBPM = 180;
             currentMode  = 0;
             currentKey = 100;
             currentEnergy = 0.75f;
+            currentInstrumentalness = 0.6f;
+            currentLiveness = 1.0f;
         }
 
         if(this.getDesiredMood == Mood.HAPPY){
             desiredBPM = 180;
             desiredMode  = 1;
-            desiredMode = 100;
+            desiredKey = 100;
+            desiredEnergy = 100;
+            desiredInstrumentalness = 0.5f;
+            desiredLiveness = 1.0f;
         } else if (this.getDesiredMood == Mood.CALM){
             desiredBPM = 180;
-            desiredMode  = 70;
+            desiredMode  = 1;
             desiredKey = 100;
+            desiredEnergy = 100;
+            desiredInstrumentalness = 0.5f;
+            desiredLiveness = 1.0f;
         } else if (this.getCurrentMood == Mood.OPTIMISTIC) {
             desiredBPM = 180;
-            desiredMode = 70;
+            desiredMode = 1;
             desiredKey = 100;
+            desiredEnergy = 100;
+            desiredInstrumentalness = 0.5f;
+            desiredLiveness = 1.0f;
         }
+
+*/
+
+        setSongId();
+    }
+
+    public void searchSongById(){
 
     }
 
-    //public void searchSongById()
+    public void setSongId(){
+
+    }
 }

@@ -8,7 +8,6 @@ public enum Mood {
     STRESSED("\uD83E\uDD2F","Stressed"),
     ANGRY("😡","Angry"),
     CALM("\uD83D\uDE0E","Calm"),
-    NERVOUS("\uD83D\uDE28","Nervous"),
     OPTIMISTIC("\uD83D\uDE01","Optimistic");
 
     public final String emoji;
