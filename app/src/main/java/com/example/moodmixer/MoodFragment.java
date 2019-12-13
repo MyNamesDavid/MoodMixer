@@ -47,27 +47,30 @@ public class MoodFragment extends Fragment {
 
 
         // Spinner for current and Desired mood
-        ArrayAdapter<String> arrayAdapterOne = new ArrayAdapter<String>
+        ArrayAdapter<String> arrayAdapterCurrentMood = new ArrayAdapter<String>
                 (getContext(), android.R.layout.simple_dropdown_item_1line, currentMood);
         MaterialBetterSpinner currentMoodSpinner = (MaterialBetterSpinner) rootView.findViewById(R.id.current_mood);
-        currentMoodSpinner.setAdapter(arrayAdapterOne);
+        currentMoodSpinner.setAdapter(arrayAdapterCurrentMood);
 
-        ArrayAdapter<String> arrayAdapterTwo = new ArrayAdapter<String>
+        ArrayAdapter<String> arrayAdapterDesiredMood = new ArrayAdapter<String>
                 (getContext(), android.R.layout.simple_dropdown_item_1line, desiredMood);
         MaterialBetterSpinner desiredMoodSpinner = (MaterialBetterSpinner) rootView.findViewById(R.id.desired_mood);
-        desiredMoodSpinner.setAdapter(arrayAdapterTwo);
+        desiredMoodSpinner.setAdapter(arrayAdapterDesiredMood);
 
 
 
         // Spinner for Genre mood selection
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
                 (getContext(),android.R.layout.simple_dropdown_item_1line,genre);
-        MaterialBetterSpinner happyGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_one);
-        MaterialBetterSpinner calmGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_two);
-        MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_three);
-        MaterialBetterSpinner angryGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_four);
-        MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_four);
-
+        MaterialBetterSpinner happyGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.happy_genre);
+        MaterialBetterSpinner calmGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.calm_genre);
+        MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.optimistic_genre);
+        MaterialBetterSpinner angryGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.angry_genre);
+        //MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_four);
+        happyGenreSpinner.setAdapter(arrayAdapter);
+        calmGenreSpinner.setAdapter(arrayAdapter);
+        optimisticGenreSpinner.setAdapter(arrayAdapter);
+        angryGenreSpinner.setAdapter(arrayAdapter);
 
 
         // Saves Preference to currentMood data
@@ -101,8 +104,59 @@ public class MoodFragment extends Fragment {
         });
 
 
-
         happyGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreHappyServer = adapterView.getItemAtPosition(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        calmGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreCalmServer = adapterView.getItemAtPosition(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        optimisticGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreOptimisticServer = adapterView.getItemAtPosition(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        angryGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreAngryServer = adapterView.getItemAtPosition(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+/*
+        angryGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 desiredMoodServer = adapterView.getItemAtPosition(i).toString();
@@ -114,7 +168,7 @@ public class MoodFragment extends Fragment {
 
             }
         });
-
+*/
         return rootView;
     }
 
