@@ -55,11 +55,10 @@ public class SpotifyModel {
 
     public void resume() {
         musicPlayer.getPlayerApi().resume();
+
     }
 
-    public void pause() {
-        musicPlayer.getPlayerApi().pause();
-    }
+    public void pause() { musicPlayer.getPlayerApi().pause(); }
 
     public void nextSong() {
         musicPlayer.getPlayerApi().skipNext();
