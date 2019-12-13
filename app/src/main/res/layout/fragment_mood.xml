@@ -111,20 +111,4 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="390dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="440dp"
-        android:textSize="20dp"
-        android:text="Sad" />
-
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/sad_genre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Select Genre"
-        android:textColorHint="#05ab9a"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="470dp"/>
 </FrameLayout>
