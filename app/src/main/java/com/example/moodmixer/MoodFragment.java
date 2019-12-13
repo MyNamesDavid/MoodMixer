@@ -1,32 +1,37 @@
 package com.example.moodmixer;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
 public class MoodFragment extends Fragment {
 
+    String currentMoodServer;
+    String desiredMoodServer;
+    String SelectedGenreHappyServer;
+    String SelectedGenreCalmServer;
+    String SelectedGenreOptimisticServer;
+    String SelectedGenreAngryServer;
+    String SelectedGenreStressedServer;
+    String SelectedGenreSadServer;
+    MainActivity newActivity;
+    PreferenceManager preferences;
 
-    private Button angryDesiredButton;
-    private Button happyDesiredButton;
-    private Button sadDesiredButton;
-    private Button stressedDesiredButton;
-    private Button calmDesiredButton;
-    private Button angryCurrentButton;
-    private Button happyCurrentButton;
-    private Button sadCurrentButton;
-    private Button stressedCurrentButton;
-    private Button calmCurrentButton;
+    public String [] currentMood = {"Angry","Calm","Happy","Sad"};
+    public String [] desiredMood = {"Calm","Happy","Optimistic"};
+    public String [] genre = {"Alternative","Blues","Classical","Dance",
+            "Country","Gospel","Jazz","K-Pop","Pop","Rap","R&B","Rock"};
     private Moods mood;
+    private String firstMood;
 
     public MoodFragment() {
         // Required empty public constructor
@@ -40,159 +45,137 @@ public class MoodFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_mood, null);
 
-        setUpHappyMoodCurrentButton(rootView);
-        setUpSadMoodCurrentButton(rootView);
-        setUpAngryMoodCurrentButton(rootView);
-        setUpStressedCurrentButton(rootView);
-        setUpCalmCurrentButton(rootView);
-        setUpHappyMoodDesiredButton(rootView);
-        setUpSadMoodDesiredButton(rootView);
-        setUpStressedDesiredButton(rootView);
-        setUpAngryDesiredButton(rootView);
-        setUpCalmDesiredButton(rootView);
+
+        // Spinner for current and Desired mood
+        ArrayAdapter<String> arrayAdapterCurrentMood = new ArrayAdapter<String>
+                (getContext(), android.R.layout.simple_dropdown_item_1line, currentMood);
+        MaterialBetterSpinner currentMoodSpinner = (MaterialBetterSpinner) rootView.findViewById(R.id.current_mood);
+        currentMoodSpinner.setAdapter(arrayAdapterCurrentMood);
+
+        ArrayAdapter<String> arrayAdapterDesiredMood = new ArrayAdapter<String>
+                (getContext(), android.R.layout.simple_dropdown_item_1line, desiredMood);
+        MaterialBetterSpinner desiredMoodSpinner = (MaterialBetterSpinner) rootView.findViewById(R.id.desired_mood);
+        desiredMoodSpinner.setAdapter(arrayAdapterDesiredMood);
+
+
+
+        // Spinner for Genre mood selection
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (getContext(),android.R.layout.simple_dropdown_item_1line,genre);
+        MaterialBetterSpinner happyGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.happy_genre);
+        MaterialBetterSpinner calmGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.calm_genre);
+        MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.optimistic_genre);
+        MaterialBetterSpinner angryGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.angry_genre);
+        MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.sad_genre);
+        happyGenreSpinner.setAdapter(arrayAdapter);
+        calmGenreSpinner.setAdapter(arrayAdapter);
+        optimisticGenreSpinner.setAdapter(arrayAdapter);
+        angryGenreSpinner.setAdapter(arrayAdapter);
+        sadGenreSpinner.setAdapter(arrayAdapter);
+
+
+        // Saves Preference to currentMood data
+        currentMoodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                currentMoodServer = adapterView.getItemAtPosition(i).toString();
+                mood.putMoodToCollection(Mood.valueOf(currentMoodServer));
+                preferences.setCurrentMood(currentMoodServer);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        // Saves Preference to desiredMood data
+        desiredMoodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                desiredMoodServer = adapterView.getItemAtPosition(i).toString();
+                mood.setDesiredMood(Mood.valueOf(desiredMoodServer));
+                preferences.setDesiredMood(desiredMoodServer);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // saves preferences to genre moods
+        happyGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreHappyServer = adapterView.getItemAtPosition(i).toString();
+                preferences.setHappyGenre(SelectedGenreHappyServer);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        calmGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreCalmServer = adapterView.getItemAtPosition(i).toString();
+                preferences.setCalmGenre(SelectedGenreCalmServer);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        optimisticGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreOptimisticServer = adapterView.getItemAtPosition(i).toString();
+                preferences.setOptimisticGenre(SelectedGenreOptimisticServer);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        angryGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreAngryServer = adapterView.getItemAtPosition(i).toString();
+                preferences.setOptimisticGenre(SelectedGenreAngryServer);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        sadGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectedGenreSadServer = adapterView.getItemAtPosition(i).toString();
+                preferences.setSadGenre(SelectedGenreSadServer);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         return rootView;
     }
 
-    private void setUpAngryDesiredButton(View rootView) {
-        angryDesiredButton = rootView.findViewById(R.id.angry_mood_desired);
-        angryDesiredButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAngryDesiredButtonTapped();
-            }
-        });
-    }
 
-    private void onAngryDesiredButtonTapped() {
-        this.mood.setDesiredMood(Mood.ANGRY);
-    }
-
-    private void setUpStressedDesiredButton(View rootView) {
-        stressedDesiredButton = rootView.findViewById(R.id.stressed_mood_desired);
-        stressedDesiredButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onStressedDesiredButtonTapped();
-            }
-        });
-    }
-
-    private void onStressedDesiredButtonTapped() {
-        this.mood.setDesiredMood(Mood.STRESSED);
-    }
-
-    private void setUpSadMoodDesiredButton(View rootView) {
-        sadDesiredButton = rootView.findViewById(R.id.sad_mood_desired);
-        sadDesiredButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSadDesiredButtonTapped();
-            }
-        });
-    }
-
-    private void onSadDesiredButtonTapped() {
-        this.mood.setDesiredMood(Mood.SAD);
-    }
-
-    private void setUpHappyMoodDesiredButton(View rootView) {
-        happyDesiredButton = rootView.findViewById(R.id.happy_mood_desired);
-        happyDesiredButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onHappyDesiredButtonTapped();
-            }
-
-        });
-    }
-
-    private void onHappyDesiredButtonTapped() {
-        this.mood.setDesiredMood(Mood.HAPPY);
-    }
-
-    private void setUpCalmCurrentButton(View rootView) {
-        calmCurrentButton = rootView.findViewById(R.id.calm_mood_current);
-        calmCurrentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onCalmCurrentButtonTapped();
-            }
-        });
-    }
-
-    private void onCalmCurrentButtonTapped() {
-        this.mood.putMoodToCollection(Mood.CALM);
-    }
-
-    private void setUpStressedCurrentButton(View rootView) {
-        stressedCurrentButton = rootView.findViewById(R.id.stressed_mood_current);
-        stressedCurrentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onStressedCurrentButtonTapped();
-            }
-        });
-    }
-
-    private void onStressedCurrentButtonTapped() {
-        this.mood.putMoodToCollection(Mood.STRESSED);
-    }
-
-    private void setUpCalmDesiredButton(View rootView) {
-        calmDesiredButton = rootView.findViewById(R.id.calm_mood_current);
-        calmDesiredButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onCalmDesiredButtonTapped();
-            }
-        });
-    }
-
-    private void onCalmDesiredButtonTapped() {
-        this.mood.setDesiredMood(Mood.CALM);
-    }
-
-    private void setUpAngryMoodCurrentButton(View rootView) {
-        angryCurrentButton = rootView.findViewById(R.id.angry_mood_current);
-        angryCurrentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAngryCurrentButtonTapped();
-            }
-        });
-    }
-
-    private void onAngryCurrentButtonTapped() {
-        this.mood.putMoodToCollection(Mood.ANGRY);
-    }
-
-    private void setUpSadMoodCurrentButton(View rootView) {
-        sadCurrentButton = rootView.findViewById(R.id.sad_mood_current);
-        sadCurrentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSadCurrentButtonTapped();
-            }
-        });
-    }
-
-    private void onSadCurrentButtonTapped() {
-        this.mood.putMoodToCollection(Mood.SAD);
-    }
-
-    private void setUpHappyMoodCurrentButton(View rootView) {
-        happyCurrentButton = rootView.findViewById(R.id.happy_mood_current);
-        happyCurrentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onHappyCurrentButtonTapped();
-            }
-        });
-    }
-
-    private void onHappyCurrentButtonTapped() {
-        this.mood.putMoodToCollection(Mood.HAPPY);
-    }
 
 
 }
