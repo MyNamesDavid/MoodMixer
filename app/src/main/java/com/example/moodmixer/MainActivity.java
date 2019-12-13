@@ -209,6 +209,7 @@ public class MainActivity
                     Songs songlistItem = new Songs(pt.name, pt.artists.get(0).name, pt.uri, pt.duration_ms);
                     SonglistSingleton.get(getBaseContext()).addSonglist(songlistItem);
                     Log.e("TEST", pt.name + " - " + pt.id);
+
                 }
             }
 
