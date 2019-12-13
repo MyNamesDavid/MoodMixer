@@ -66,11 +66,12 @@ public class MoodFragment extends Fragment {
         MaterialBetterSpinner calmGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.calm_genre);
         MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.optimistic_genre);
         MaterialBetterSpinner angryGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.angry_genre);
-        //MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_four);
+        MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.sad_genre);
         happyGenreSpinner.setAdapter(arrayAdapter);
         calmGenreSpinner.setAdapter(arrayAdapter);
         optimisticGenreSpinner.setAdapter(arrayAdapter);
         angryGenreSpinner.setAdapter(arrayAdapter);
+        sadGenreSpinner.setAdapter(arrayAdapter);
 
 
         // Saves Preference to currentMood data
@@ -95,6 +96,7 @@ public class MoodFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 desiredMoodServer = adapterView.getItemAtPosition(i).toString();
                 mood.setDesiredMood(Mood.valueOf(desiredMoodServer));
+                preferences.setDesiredMood(desiredMoodServer);
             }
 
             @Override
@@ -103,12 +105,12 @@ public class MoodFragment extends Fragment {
             }
         });
 
-
+        // saves preferences to genre moods
         happyGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 SelectedGenreHappyServer = adapterView.getItemAtPosition(i).toString();
-
+                preferences.setHappyGenre(SelectedGenreHappyServer);
             }
 
             @Override
@@ -121,6 +123,7 @@ public class MoodFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 SelectedGenreCalmServer = adapterView.getItemAtPosition(i).toString();
+                preferences.setCalmGenre(SelectedGenreCalmServer);
 
             }
 
@@ -134,7 +137,7 @@ public class MoodFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 SelectedGenreOptimisticServer = adapterView.getItemAtPosition(i).toString();
-
+                preferences.setOptimisticGenre(SelectedGenreOptimisticServer);
             }
 
             @Override
@@ -147,7 +150,7 @@ public class MoodFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 SelectedGenreAngryServer = adapterView.getItemAtPosition(i).toString();
-
+                preferences.setOptimisticGenre(SelectedGenreAngryServer);
             }
 
             @Override
@@ -155,12 +158,12 @@ public class MoodFragment extends Fragment {
 
             }
         });
-/*
-        angryGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        sadGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                desiredMoodServer = adapterView.getItemAtPosition(i).toString();
-
+                SelectedGenreSadServer = adapterView.getItemAtPosition(i).toString();
+                preferences.setSadGenre(SelectedGenreSadServer);
             }
 
             @Override
@@ -168,7 +171,7 @@ public class MoodFragment extends Fragment {
 
             }
         });
-*/
+
         return rootView;
     }
 

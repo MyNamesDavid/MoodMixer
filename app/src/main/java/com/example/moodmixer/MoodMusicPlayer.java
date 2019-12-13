@@ -15,14 +15,14 @@ public class MoodMusicPlayer {
     String desiredMoodGenre;
     private String GenreId;
     private SettingsFragment settingInfo = null;
-
+    int songCounter;
 
 
     public void setMoodMusicPlayer(){
 
         getCurrentMood = Mood.valueOf(preferenceManager.getCurrentMoodSavedData());
         getDesiredMood = Mood.valueOf(preferenceManager.getDesiredMoodSavedData());
-
+        this.songCounter = 0;
         // checks the currentMood and sets the currentMoodGenre
         if(getCurrentMood.name.equals("Happy")){
             currentMoodGenre =  preferenceManager.getHappyGenre();
@@ -48,16 +48,28 @@ public class MoodMusicPlayer {
 
     }
 
-    public void playMoodSongs(){
-        int counter = 0;
-        while(true){
-            if(counter == 0){
-
-            }
-        }
+    // Gets the song by genreId
+    public String getGenreId(){
+        setSongGenreId();
+        return this.GenreId;
     }
 
-    public void setSongGenreId(String genre){
-        
+
+    // Algorithm that sets the Genre based on selected moods
+    public void setSongGenreId(){
+        // Magic numbers yay!
+        if(this.songCounter < 5){
+            this.GenreId = currentMoodGenre;
+            this.songCounter++;
+        } else if(this.songCounter < 7){
+            this.GenreId = desiredMoodGenre;
+            this.songCounter++;
+        } else if (this.songCounter % 2 == 0 && this.songCounter < 15){
+            this.GenreId = currentMoodGenre;
+            songCounter++;
+        } else {
+            this.GenreId = desiredMoodGenre;
+            songCounter++;
+        }
     }
 }
