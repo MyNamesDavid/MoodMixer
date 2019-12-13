@@ -176,6 +176,7 @@ public class MusicPlayerFragment extends Fragment {
             if (spotify.isPaused)
                 spotify.resume();
 
+
             else
                 spotify.pause();
         }

@@ -27,7 +27,7 @@ public class MoodFragment extends Fragment {
     PreferenceManager preferences;
 
     public String [] currentMood = {"Angry","Calm","Happy","Sad"};
-    public String [] desiredMood = {"Calm","Happy","Optimistic"};
+    public String [] desiredMood = {"Calm","Happy"};
     public String [] genre = {"Alternative","Blues","Classical","Dance",
             "Country","Gospel","Jazz","K-Pop","Pop","Rap","R&B","Rock"};
     private Moods mood;
@@ -64,12 +64,12 @@ public class MoodFragment extends Fragment {
                 (getContext(),android.R.layout.simple_dropdown_item_1line,genre);
         MaterialBetterSpinner happyGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.happy_genre);
         MaterialBetterSpinner calmGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.calm_genre);
-        MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.optimistic_genre);
+        //MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.optimistic_genre);
         MaterialBetterSpinner angryGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.angry_genre);
         MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.sad_genre);
         happyGenreSpinner.setAdapter(arrayAdapter);
         calmGenreSpinner.setAdapter(arrayAdapter);
-        optimisticGenreSpinner.setAdapter(arrayAdapter);
+        //optimisticGenreSpinner.setAdapter(arrayAdapter);
         angryGenreSpinner.setAdapter(arrayAdapter);
         sadGenreSpinner.setAdapter(arrayAdapter);
 
@@ -132,7 +132,7 @@ public class MoodFragment extends Fragment {
 
             }
         });
-
+/*
         optimisticGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -145,7 +145,7 @@ public class MoodFragment extends Fragment {
 
             }
         });
-
+*/
         angryGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

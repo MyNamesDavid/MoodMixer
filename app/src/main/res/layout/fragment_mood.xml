@@ -11,29 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:layout_marginTop="20dp"
-        android:textSize="25dp"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
         android:text="😃Mood Settings😡" />
         android:adjustViewBounds="true"
         android:background="#D3E3FC"
         android:contentDescription="@null"
         android:scaleType="centerCrop" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:layout_marginTop="60dp"
-        android:textSize="20dp"
-        android:text="Select Current and Desired Mood" />
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="90dp"
+        android:textAlignment="center"
+        android:layout_marginTop="40dp"
         android:textSize="20dp"
-        android:text="Current mood" />
+        android:text="Select Current and Desired Mood" />
+
+
 
 
     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -43,16 +39,9 @@
         android:hint="Select Current Mood"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="120dp" />
+        android:layout_marginTop="90dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="180dp"
-        android:textSize="20dp"
-        android:text="Desired mood" />
-
+=
     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/desired_mood"
         android:layout_width="match_parent"
@@ -60,13 +49,13 @@
         android:hint="Select Desired Mood"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="210dp"/>
+        android:layout_marginTop="150dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="210dp"
         android:textSize="20dp"
         android:text="Preferred Mood Genres" />
 
@@ -74,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="230dp"
         android:textSize="20dp"
         android:text="Happy" />
 
@@ -85,13 +74,13 @@
         android:hint="Select Genre"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="340dp"/>
+        android:layout_marginTop="250dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="390dp"
+        android:layout_marginTop="300dp"
         android:textSize="20dp"
         android:text="Calm" />
 
@@ -102,30 +91,14 @@
         android:hint="Select Genre"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="420dp"/>
+        android:layout_marginTop="320dp"/>
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="470dp"
-        android:textSize="20dp"
-        android:text="Optimistic" />
-
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/optimistic_genre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Select Genre"
-        android:textColorHint="#05ab9a"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="500dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="550dp"
+        android:layout_marginTop="370dp"
         android:textSize="20dp"
         android:text="Angry" />
 
@@ -136,13 +109,13 @@
         android:hint="Select Genre"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="580dp"/>
+        android:layout_marginTop="390dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="630dp"
+        android:layout_marginTop="440dp"
         android:textSize="20dp"
         android:text="Sad" />
 
@@ -153,6 +126,5 @@
         android:hint="Select Genre"
         android:textColorHint="#05ab9a"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="660dp"/>
-
+        android:layout_marginTop="470dp"/>
 </FrameLayout>
