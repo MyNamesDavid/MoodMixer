@@ -8,8 +8,10 @@ public class MoodMusicPlayer {
     private static final String CLIENT_ID = "a6d6003f62b54f1c9a3ea665f4ded656";
     private static final String REDIRECT_URI = "com.example.moodmixer://callback/";
     private SpotifyAppRemote musicPlayer;
+    PreferenceManager preferenceManager;
     private Mood getCurrentMood = null;
     private Mood getDesiredMood = null;
+/*
     private int currentBPM;
     private int desiredBPM;
     private int currentKey;
@@ -23,14 +25,45 @@ public class MoodMusicPlayer {
     private MoodFragment settings;
     float currentLiveness;
     float desiredLiveness;
+
+ */
+    String currentMoodGenre;
+    String desiredMoodGenre;
+    private String GenreId;
     private SettingsFragment settingInfo = null;
 
-    
 
-    public void setMoodMusicPlayer(Mood getCurrentMood, Mood getDesiredMood){
-        this.getCurrentMood = getCurrentMood;
-        this.getDesiredMood = getDesiredMood;
-/*
+
+    public void setMoodMusicPlayer(){
+
+        getCurrentMood = Mood.valueOf(preferenceManager.getCurrentMoodSavedData());
+        getDesiredMood = Mood.valueOf(preferenceManager.getDesiredMoodSavedData());
+
+        // checks the currentMood and sets the currentMoodGenre
+        if(getCurrentMood.name.equals("Happy")){
+            currentMoodGenre =  preferenceManager.getHappyGenre();
+        } else if(getCurrentMood.name.equals("Calm")){
+            currentMoodGenre = preferenceManager.getCalmGenre();
+        } else if(getCurrentMood.name.equals("Sad")){
+            currentMoodGenre = preferenceManager.getSadGenre();
+        } else if(getCurrentMood.name.equals("Angry")){
+            currentMoodGenre = preferenceManager.getCalmGenre();
+        }
+
+        // checks the desiredMood and sets the desiredMoodGenre
+        if(getDesiredMood.name.equals("Happy")){
+            desiredMoodGenre =  preferenceManager.getHappyGenre();
+        } else if(getDesiredMood.name.equals("Calm")){
+            desiredMoodGenre = preferenceManager.getCalmGenre();
+        } else if(getDesiredMood.name.equals("Sad")){
+            desiredMoodGenre = preferenceManager.getSadGenre();
+        } else if(getDesiredMood.name.equals("Angry")){
+            desiredMoodGenre = preferenceManager.getCalmGenre();
+        }
+
+
+
+        /*
         // set the song attributes for the
         if(this.getCurrentMood == Mood.ANGRY){
             currentBPM = 180;
@@ -87,7 +120,7 @@ public class MoodMusicPlayer {
 
 */
 
-        setSongId();
+
     }
 
     public void searchSongById(){
@@ -95,6 +128,6 @@ public class MoodMusicPlayer {
     }
 
     public void setSongId(){
-
+            
     }
 }

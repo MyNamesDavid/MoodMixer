@@ -60,6 +60,26 @@ public class PreferenceManager {
         return preferences.getString(PreferenceKey.happyGenre.toString(),"");
     }
 
+    public String getCalmGenre(){
+        return preferences.getString(PreferenceKey.calmGenre.toString(),"");
+    }
+
+    public String getOptimisticGenre(){
+        return preferences.getString(PreferenceKey.optimisticGenre.toString(),"");
+    }
+
+    public String getSadGenre(){
+        return preferences.getString(PreferenceKey.sadGenre.toString(),"");
+    }
+
+    public String getStressedGenre(){
+        return preferences.getString(PreferenceKey.stressedGenre.toString(),"");
+    }
+
+    public String getAngryGenre(){
+        return preferences.getString(PreferenceKey.angryGenre.toString(),"");
+    }
+
     public void setCurrentMood(String currentMood){
         editor = preferences.edit();
         editor.putString(PreferenceKey.CurrentMoood.toString(), currentMood);

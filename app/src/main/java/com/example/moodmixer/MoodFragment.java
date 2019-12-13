@@ -24,8 +24,9 @@ public class MoodFragment extends Fragment {
     String SelectedGenreStressedServer;
     String SelectedGenreSadServer;
     MainActivity newActivity;
+    PreferenceManager preferences;
 
-    public String [] currentMood = {"Angry","Calm","Happy","Sad","Stressed"};
+    public String [] currentMood = {"Angry","Calm","Happy","Sad"};
     public String [] desiredMood = {"Calm","Happy","Optimistic"};
     public String [] genre = {"Alternative","Blues","Classical","Dance",
             "Country","Gospel","Jazz","K-Pop","Pop","Rap","R&B","Rock"};
@@ -66,7 +67,6 @@ public class MoodFragment extends Fragment {
         MaterialBetterSpinner optimisticGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_three);
         MaterialBetterSpinner angryGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_four);
         MaterialBetterSpinner sadGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_four);
-        MaterialBetterSpinner stressedGenreSpinner = (MaterialBetterSpinner)rootView.findViewById(R.id.genre_select_four);
 
 
 
@@ -76,6 +76,7 @@ public class MoodFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 currentMoodServer = adapterView.getItemAtPosition(i).toString();
                 mood.putMoodToCollection(Mood.valueOf(currentMoodServer));
+                preferences.setCurrentMood(currentMoodServer);
             }
 
             @Override
