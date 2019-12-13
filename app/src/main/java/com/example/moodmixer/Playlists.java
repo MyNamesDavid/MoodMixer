@@ -7,11 +7,13 @@ import java.util.UUID;
 public class Playlists {
 
     String playlistName;
+    String playlistId;
     int mId = 0;
 
-    public Playlists(String playlist){
+    public Playlists(String playlist, String id){
         this.playlistName = playlist;
         this.mId = mId++;
+        this.playlistId = id;
     }
 
     public String getPlaylistName(){
@@ -20,8 +22,8 @@ public class Playlists {
 
     public static final List<Playlists> PLAYLISTS = new ArrayList<Playlists>();
 
-    public int getId() {
-        return mId;
+    public String getId() {
+        return playlistId;
     }
 
 }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.AdapterListUpdateCallback;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,10 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 
 
-import com.example.moodmixer.dummy.DummyContent;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,35 +21,36 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnPlaylistFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnTrackListFragmentInteractionListener}
  * interface.
  */
-public class PlaylistFragment extends Fragment  {
+public class TrackFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnPlaylistFragmentInteractionListener mListener;
-    FloatingActionButton floatingActionButtonPlaylist;
-    OnPlaylistFragmentInteractionListener callback;
+    private OnTrackListFragmentInteractionListener mSongListener;
 
     private RecyclerView.Adapter mAdapter;
-    private ArrayList<Playlists> mPlaylists;
+    private ArrayList<Songs> mSonglists;
 
     RecyclerView recyclerView;
+
+    HorizontalScrollView mHorizontalScroll;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PlaylistFragment() {
+    public TrackFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PlaylistFragment newInstance(int columnCount) {
-        PlaylistFragment fragment = new PlaylistFragment();
+    public static TrackFragment newInstance(int columnCount) {
+        TrackFragment fragment = new TrackFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -66,40 +64,25 @@ public class PlaylistFragment extends Fragment  {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_playlist_list, container, false);
-
-        //Code for Floating action button
-      /*  FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating_action_button_playlist_fragment);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });*/
+        View view = inflater.inflate(R.layout.fragment_tracks_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
-            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
+            RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            // specify an adapter (see also next example)
-            mPlaylists = PlaylistSingleton.get(getContext()).getPlaylist();
-            mAdapter = new MyPlaylistRecyclerViewAdapter(mPlaylists,mListener,context);
+            mSonglists = TracksInPlaylistSingleton.get(getContext()).getTracklist();
+            mAdapter = new MyTrackRecyclerViewAdapter(mSonglists,mSongListener,context);
             recyclerView.setAdapter(mAdapter);
-            //recyclerView.setAdapter(MyPlaylistRecyclerViewAdapter);
-            //recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(Playlists.PLAYLISTS, mListener, context));
         }
         return view;
     }
@@ -108,18 +91,18 @@ public class PlaylistFragment extends Fragment  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPlaylistFragmentInteractionListener) {
-            mListener = (OnPlaylistFragmentInteractionListener) context;
+        if (context instanceof OnTrackListFragmentInteractionListener) {
+            mSongListener = (OnTrackListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnTrackListFragmentInteractionListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mSongListener = null;
     }
 
     /**
@@ -132,33 +115,18 @@ public class PlaylistFragment extends Fragment  {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnPlaylistFragmentInteractionListener {
+    public interface OnTrackListFragmentInteractionListener {
         // TODO: Update argument type and name
-
-        void onPlaylistFragmentInteraction(Playlists item);
-        void OnPlayListFragmentPlayPlaylistInteractionListener(Playlists mItem);
+        void onTrackListFragmentInteraction(Songs item);
+        void OnTrackListFragmentAddToPlaylistInteractionListener(Songs mItem);
     }
 
-    public void setOnPlaylistFragmentInteractionListener(OnPlaylistFragmentInteractionListener callback){
-        this.callback = callback;
-    }
-
-    //Code for Floating action button
-   /* floatingActionButtonPlaylist =
-            (FloatingActionButton) findViewById(R.id.floating_action_button_playlist);
-        floatingActionButtonPlaylist.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            //Handles the click
-
-        }
-    });*/
 
     private void updateUI() {
-        PlaylistSingleton playlistSingleton = PlaylistSingleton.get(getActivity());
-        ArrayList<Playlists> playlists = playlistSingleton.getPlaylist();
+        TracksInPlaylistSingleton songlistSingleton = TracksInPlaylistSingleton.get(getActivity());
+        ArrayList<Songs> songlist = songlistSingleton.getTracklist();
         if (mAdapter == null) {
-            mAdapter = new MyPlaylistRecyclerViewAdapter(playlists, mListener, getContext());
+            mAdapter = new MyTrackRecyclerViewAdapter(songlist, mSongListener, getContext());
             recyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();

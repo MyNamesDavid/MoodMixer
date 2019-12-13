@@ -70,7 +70,8 @@ public class MainActivity
         SongFragment.OnSongListFragmentInteractionListener,
         UserProfileFragment.onProfileFragmentInteractionListener,
         PlaylistFragment.OnPlaylistFragmentInteractionListener,
-        PlaylistAdderDialogueFragment.OnInputListener
+        PlaylistAdderDialogueFragment.OnInputListener,
+        TrackFragment.OnTrackListFragmentInteractionListener
 {
 
     private static final String TAG = "MainActivity";
@@ -95,6 +96,8 @@ public class MainActivity
 
     static int style = 0;
     static boolean webLogin = false;
+
+
 
     private Playlist playlistObj;
 
@@ -183,7 +186,7 @@ public class MainActivity
                     for(int i = 0; i < playlistSimplePager.items.size(); i++){
                         if(playlistSimplePager.items.get(i).tracks.total != 0 && playlistSimplePager.items.get(i).tracks.total != 1)
                         {
-                            Playlists playlistItem = new Playlists(playlistSimplePager.items.get(i).name);
+                            Playlists playlistItem = new Playlists(playlistSimplePager.items.get(i).name, playlistSimplePager.items.get(i).id);
                             PlaylistSingleton.get(getBaseContext()).addPlaylist(playlistItem);
                             playlistId = playlistSimplePager.items.get(i).id;
                         }
@@ -309,10 +312,6 @@ public class MainActivity
         changeBackground();
     }
 
-    @Override
-    public void onPlaylistFragmentInteraction(Playlists item) {
-
-    }
 
     @Override
     public void onProfileFragmentInteraction(Profile button) {
@@ -414,7 +413,7 @@ public class MainActivity
     @Override
     public void sendInput(String input) {
         createNewPlaylist(input, userId);
-        Playlists playlistItem = new Playlists(input);
+        Playlists playlistItem = new Playlists(input, "newid");
         PlaylistSingleton.get(this).addPlaylist(playlistItem);
     }
 
@@ -474,5 +473,75 @@ public class MainActivity
             }
         });
     }
+
+    public void getTracksFromPlaylist(Playlists item) {
+        final Map<String, Object> options = new HashMap<>();
+        options.put(SpotifyService.LIMIT, 100);
+        // get tracks 0-99
+        options.put(SpotifyService.OFFSET, 0);
+        String temp = item.playlistId;
+
+        spotify.getPlaylistTracks(userId, item.playlistId, options, new Callback<Pager<PlaylistTrack>>() {
+            @Override
+            public void success(Pager<PlaylistTrack> playlistTrackPager, final Response response) {
+                for(int i = 0; i < playlistTrackPager.items.size(); i++) {
+                    Songs songlistItem = new Songs(playlistTrackPager.items.get(i).track.name,
+                            playlistTrackPager.items.get(i).track.artists.get(0).name,
+                            playlistTrackPager.items.get(i).track.uri,
+                            playlistTrackPager.items.get(i).track.duration_ms);
+
+                    TracksInPlaylistSingleton.get(getBaseContext()).addTracklist(songlistItem);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, error.toString());
+            }
+        });
+    }
+
+    @Override
+    public void onPlaylistFragmentInteraction(Playlists item) {
+        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.navigate(R.id.action_playlistFragment_to_trackFragment);
+        Log.d(TAG, "New playlist not created Failure: ");
+        getTracksFromPlaylist(item);
+    }
+
+    @Override
+    public void OnPlayListFragmentPlayPlaylistInteractionListener(Playlists item) {
+        final Map<String, Object> options = new HashMap<>();
+        options.put(SpotifyService.LIMIT, 100);
+        // get tracks 0-99
+        options.put(SpotifyService.OFFSET, 0);
+        String temp = item.playlistId;
+
+        spotify.getPlaylistTracks(userId, item.playlistId, options, new Callback<Pager<PlaylistTrack>>() {
+            @Override
+            public void success(Pager<PlaylistTrack> playlistTrackPager, final Response response) {
+                       musicPlayer.getPlayerApi().play(playlistTrackPager.items.get(0).track.uri);
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, error.toString());
+            }
+        });
+    }
+
+    @Override
+    public void onTrackListFragmentInteraction(Songs item) {
+        musicPlayer.getPlayerApi().play(item.getSongUri());
+    }
+
+    @Override
+    public void OnTrackListFragmentAddToPlaylistInteractionListener(Songs mItem) {
+        FragmentManager fm = getSupportFragmentManager();
+        PlaylistAdderDialogueFragment dialog = new PlaylistAdderDialogueFragment();
+        dialog.show(fm, "PlaylistAdderDialogue");
+    }
+
+
+
 }
 

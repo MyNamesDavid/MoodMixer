@@ -26,7 +26,11 @@
         android:id="@+id/playlistFragment"
         android:name="com.example.moodmixer.PlaylistFragment"
         android:label="fragment_playlist_list"
-        tools:layout="@layout/fragment_playlist_list" />
+        tools:layout="@layout/fragment_playlist_list" >
+        <action
+            android:id="@+id/action_playlistFragment_to_trackFragment"
+            app:destination="@id/trackFragment" />
+    </fragment>
     <fragment
         android:id="@+id/libraryFragment"
         android:name="com.example.moodmixer.LibraryFragment"
@@ -46,4 +50,8 @@
         android:id="@+id/settings"
         android:name="com.example.moodmixer.SettingsFragment"
         android:label="Settings" />
+    <fragment
+        android:id="@+id/trackFragment"
+        android:name="com.example.moodmixer.TrackFragment"
+        android:label="TrackFragment" />
 </navigation>
